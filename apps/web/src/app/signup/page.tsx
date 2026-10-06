@@ -1,0 +1,120 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { useAuth } from '@/lib/auth-context';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { ArrowRight } from 'lucide-react';
+
+export default function SignupPage() {
+  const { signup } = useAuth();
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [workspaceName, setWorkspaceName] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setIsLoading(true);
+    try {
+      await signup({
+        fullName,
+        email,
+        password,
+        workspaceName: workspaceName.trim() || undefined,
+      });
+    } catch (err: any) {
+      setError(err.message || 'Erreur lors de la création du compte');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0B0D11] flex flex-col items-center justify-center p-4 relative overflow-hidden select-none">
+      <div className="absolute top-1/4 -right-20 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -left-20 w-96 h-96 bg-amber-600/10 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="w-full max-w-md relative z-10 space-y-6">
+        <div className="flex flex-col items-center text-center space-y-2">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-warm flex items-center justify-center font-black text-white text-2xl tracking-wider shadow-xl shadow-orange-950/60 mb-2">
+            EX
+          </div>
+          <h1 className="text-2xl font-extrabold text-white tracking-tight">
+            Créer un compte Kanban<span className="text-orange-500">EX</span>
+          </h1>
+          <p className="text-xs text-slate-400">
+            Rejoignez l'écosystème Expansion et orchestrez vos projets
+          </p>
+        </div>
+
+        <div className="p-8 rounded-3xl bg-[#12151C]/90 border border-slate-800 shadow-2xl backdrop-blur-xl space-y-5">
+          {error && (
+            <div className="p-3.5 rounded-xl bg-rose-950/70 border border-rose-800 text-rose-300 text-xs font-medium">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Input
+              label="Nom complet *"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="Alban Expansion"
+              required
+              autoFocus
+            />
+
+            <Input
+              label="Adresse email *"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="alban@expansion.io"
+              required
+            />
+
+            <Input
+              label="Mot de passe * (min 8 caractères)"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••••••"
+              required
+            />
+
+            <Input
+              label="Nom de l'espace de travail (optionnel)"
+              value={workspaceName}
+              onChange={(e) => setWorkspaceName(e.target.value)}
+              placeholder="ex. Expansion Studio"
+            />
+
+            <Button
+              type="submit"
+              size="lg"
+              className="w-full brand-glow mt-2"
+              isLoading={isLoading}
+            >
+              <span>Commencer immédiatement</span>
+              <ArrowRight className="w-4 h-4 ml-1.5" />
+            </Button>
+          </form>
+
+          <div className="pt-4 border-t border-slate-800/80 text-center">
+            <p className="text-xs text-slate-400">
+              Déjà inscrit ?{' '}
+              <Link href="/login" className="text-orange-400 hover:text-orange-300 font-semibold underline underline-offset-4">
+                Se connecter
+              </Link>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

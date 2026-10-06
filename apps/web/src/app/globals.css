@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 4%;
+    --foreground: 210 40% 98%;
+  }
+
+  body {
+    background-color: #0B0D11;
+    color: #F8FAFC;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom smooth horizontal scrollbar */
+.horizontal-scroll-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 122, 0, 0.4) rgba(18, 21, 28, 0.8);
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-track {
+  background: rgba(18, 21, 28, 0.8);
+  border-radius: 9999px;
+  margin: 0 24px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #FF7A00 0%, #FF4500 100%);
+  border-radius: 9999px;
+  border: 2px solid rgba(18, 21, 28, 0.8);
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #FFA040 0%, #FF6020 100%);
+}
+
+/* Standard scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
+}
+
+/* Glass & cinematic accents */
+.cinematic-glass {
+  background: rgba(18, 21, 28, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand-glow {
+  box-shadow: 0 0 25px -5px rgba(255, 122, 0, 0.35);
+}
+
+.card-hover-effect {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+}
+
+.card-hover-effect:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.5), 0 0 20px -2px rgba(255, 122, 0, 0.2);
+  border-color: rgba(255, 122, 0, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

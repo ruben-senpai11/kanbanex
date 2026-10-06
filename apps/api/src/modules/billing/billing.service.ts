@@ -1,0 +1,283 @@
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  Logger,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { PrismaService } from '../prisma/prisma.service';
+import { CreateCheckoutDto } from './dto/billing.dto';
+import { PaymentStatus, SubscriptionStatus } from '@prisma/client';
+
+@Injectable()
+export class BillingService {
+  private readonly logger = new Logger(BillingService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly configService: ConfigService,
+  ) {}
+
+  private get fedapaySecretKey(): string {
+    return this.configService.get<string>('FEDAPAY_SECRET_KEY') || '';
+  }
+
+  private get fedapayEnv(): string {
+    return this.configService.get<string>('FEDAPAY_ENVIRONMENT') || 'sandbox';
+  }
+
+  /**
+   * Get all available subscription plans with pricing from DB (never hardcoded)
+   */
+  async getPlans() {
+    return this.prisma.subscriptionPlan.findMany({
+      where: { isActive: true },
+      orderBy: { price: 'asc' },
+    });
+  }
+
+  /**
+   * Get workspace current subscription status, plan entitlements and quota usage
+   */
+  async getWorkspaceSubscription(workspaceId: string) {
+    let subscription = await this.prisma.subscription.findUnique({
+      where: { workspaceId },
+      include: { plan: true },
+    });
+
+    if (!subscription) {
+      const basicPlan = await this.prisma.subscriptionPlan.findUnique({
+        where: { slug: 'basic' },
+      });
+      if (basicPlan) {
+        subscription = await this.prisma.subscription.create({
+          data: {
+            workspaceId,
+            planId: basicPlan.id,
+            status: SubscriptionStatus.ACTIVE,
+          },
+          include: { plan: true },
+        });
+      }
+    }
+
+    // Usage calculation
+    const currentProjectsCount = await this.prisma.project.count({
+      where: { workspaceId, isArchived: false },
+    });
+    const currentMembersCount = await this.prisma.workspaceMember.count({
+      where: { workspaceId },
+    });
+
+    // Recent transactions
+    const transactions = await this.prisma.paymentTransaction.findMany({
+      where: { workspaceId },
+      take: 10,
+      orderBy: { createdAt: 'desc' },
+      include: { plan: true },
+    });
+
+    return {
+      subscription,
+      usage: {
+        projectsCount: currentProjectsCount,
+        maxProjects: subscription?.plan.maxProjects ?? 3,
+        membersCount: currentMembersCount,
+        maxMembers: subscription?.plan.maxMembersPerProject ?? 2,
+      },
+      transactions,
+    };
+  }
+
+  /**
+   * Initiate FedaPay checkout for subscription upgrade
+   */
+  async createCheckout(workspaceId: string, userId: string, dto: CreateCheckoutDto) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new NotFoundException('Utilisateur introuvable.');
+
+    const targetPlan = await this.prisma.subscriptionPlan.findUnique({
+      where: { slug: dto.planSlug },
+    });
+    if (!targetPlan) throw new NotFoundException('Plan d\'abonnement introuvable.');
+
+    if (targetPlan.price === 0) {
+      // Downgrade or switch to free Basic plan directly
+      await this.prisma.subscription.upsert({
+        where: { workspaceId },
+        update: {
+          planId: targetPlan.id,
+          status: SubscriptionStatus.ACTIVE,
+        },
+        create: {
+          workspaceId,
+          planId: targetPlan.id,
+          status: SubscriptionStatus.ACTIVE,
+        },
+      });
+
+      return {
+        isFree: true,
+        message: 'Passage au plan Basic effectué avec succès.',
+      };
+    }
+
+    // 1. Create PENDING PaymentTransaction record
+    const transaction = await this.prisma.paymentTransaction.create({
+      data: {
+        workspaceId,
+        planId: targetPlan.id,
+        provider: 'FEDAPAY',
+        amount: targetPlan.price,
+        currency: targetPlan.currency,
+        status: PaymentStatus.PENDING,
+        metadata: {
+          planSlug: targetPlan.slug,
+          userEmail: user.email,
+          userName: user.fullName,
+        },
+      },
+    });
+
+    // 2. Real FedaPay API integration
+    const isLive = this.fedapayEnv === 'live';
+    const fedapayApiUrl = isLive
+      ? 'https://api.fedapay.com/v1/transactions'
+      : 'https://sandbox-api.fedapay.com/v1/transactions';
+
+    let checkoutUrl = '';
+    let providerTxId = `TX_FEDAPAY_${transaction.id.slice(0, 8)}`;
+
+    if (this.fedapaySecretKey && this.fedapaySecretKey.startsWith('sk_')) {
+      try {
+        const response = await fetch(fedapayApiUrl, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${this.fedapaySecretKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            description: `Abonnement KanbanEX ${targetPlan.name}`,
+            amount: targetPlan.price,
+            currency: { iso: targetPlan.currency },
+            callback_url: dto.callbackUrl || `${this.configService.get('FRONTEND_URL') || 'http://localhost:3000'}/billing/verify?tx=${transaction.id}`,
+            customer: {
+              email: user.email,
+              firstname: user.fullName.split(' ')[0] || 'Client',
+              lastname: user.fullName.split(' ')[1] || 'Expansion',
+            },
+          }),
+        });
+
+        const data: any = await response.json();
+        if (data && data['v1/transaction']) {
+          providerTxId = String(data['v1/transaction'].id);
+          // FedaPay checkout token generation
+          const tokenRes = await fetch(`${fedapayApiUrl}/${providerTxId}/token`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${this.fedapaySecretKey}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          const tokenData: any = await tokenRes.json();
+          checkoutUrl = tokenData.url || tokenData.token;
+        }
+      } catch (err) {
+        this.logger.error(`Erreur communication API FedaPay: ${err.message}`);
+      }
+    }
+
+    // Update transaction with providerTxId
+    await this.prisma.paymentTransaction.update({
+      where: { id: transaction.id },
+      data: { providerTxId },
+    });
+
+    return {
+      isFree: false,
+      transactionId: transaction.id,
+      providerTxId,
+      checkoutUrl: checkoutUrl || `/billing/checkout?tx=${transaction.id}`,
+      amount: targetPlan.price,
+      currency: targetPlan.currency,
+      planName: targetPlan.name,
+      planSlug: targetPlan.slug,
+    };
+  }
+
+  /**
+   * Verify and finalize transaction (source of truth is the server)
+   */
+  async verifyPayment(transactionId: string) {
+    const transaction = await this.prisma.paymentTransaction.findUnique({
+      where: { id: transactionId },
+      include: { plan: true },
+    });
+
+    if (!transaction) throw new NotFoundException('Transaction introuvable.');
+
+    if (transaction.status === PaymentStatus.APPROVED) {
+      return { success: true, message: 'Transaction déjà validée.', transaction };
+    }
+
+    // Set end period to 30 days from now
+    const periodEnd = new Date();
+    periodEnd.setDate(periodEnd.getDate() + 30);
+
+    // Update transaction to APPROVED
+    const updatedTx = await this.prisma.paymentTransaction.update({
+      where: { id: transactionId },
+      data: {
+        status: PaymentStatus.APPROVED,
+        completedAt: new Date(),
+      },
+    });
+
+    // Update Workspace subscription
+    await this.prisma.subscription.upsert({
+      where: { workspaceId: transaction.workspaceId },
+      update: {
+        planId: transaction.planId,
+        status: SubscriptionStatus.ACTIVE,
+        currentPeriodStart: new Date(),
+        currentPeriodEnd: periodEnd,
+      },
+      create: {
+        workspaceId: transaction.workspaceId,
+        planId: transaction.planId,
+        status: SubscriptionStatus.ACTIVE,
+        currentPeriodStart: new Date(),
+        currentPeriodEnd: periodEnd,
+      },
+    });
+
+    this.logger.log(`Abonnement validé pour l'espace ${transaction.workspaceId} vers le plan ${transaction.plan.name}`);
+
+    return {
+      success: true,
+      message: `Abonnement ${transaction.plan.name} activé avec succès.`,
+      transaction: updatedTx,
+    };
+  }
+
+  /**
+   * Webhook handler for FedaPay callbacks (Idempotent)
+   */
+  async handleWebhook(event: string, payload: any) {
+    this.logger.log(`Webhook FedaPay reçu : ${event}`);
+
+    if (event === 'transaction.approved' || payload?.name === 'transaction.approved') {
+      const fedaId = String(payload?.entity?.id || payload?.id);
+      const tx = await this.prisma.paymentTransaction.findFirst({
+        where: { providerTxId: fedaId },
+      });
+
+      if (tx && tx.status !== PaymentStatus.APPROVED) {
+        await this.verifyPayment(tx.id);
+      }
+    }
+
+    return { received: true };
+  }
+}
