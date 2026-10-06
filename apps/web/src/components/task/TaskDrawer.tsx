@@ -21,6 +21,7 @@ import { api } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
 import { StatusBadge, PriorityBadge } from '@/components/ui/Badge';
 import { formatDate, formatDateTime } from '@/lib/utils';
+import { animateDrawerSlideIn, animateCheckmarkPop } from '@/lib/animations';
 
 interface TaskDrawerProps {
   taskId: string | null;
@@ -37,6 +38,13 @@ export function TaskDrawer({
 }: TaskDrawerProps) {
   const [task, setTask] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const drawerRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (taskId && drawerRef.current) {
+      animateDrawerSlideIn(drawerRef.current);
+    }
+  }, [taskId]);
 
   // Form states
   const [title, setTitle] = useState('');
@@ -197,8 +205,8 @@ export function TaskDrawer({
         onClick={onClose}
       />
 
-      {/* Slide-out Drawer Panel */}
-      <div className="relative w-full max-w-xl bg-[#12151C] border-l border-slate-800/90 shadow-2xl h-full flex flex-col z-10 animate-fade-in text-slate-100">
+      {/* Slide-out Drawer Panel with GSAP */}
+      <div ref={drawerRef} className="relative w-full max-w-xl bg-[#12151C] border-l border-slate-800/90 shadow-2xl h-full flex flex-col z-10 text-slate-100">
         {/* Header Bar */}
         <div className="h-14 px-6 border-b border-slate-800 flex items-center justify-between shrink-0 bg-[#0E1117]">
           <div className="flex items-center gap-2 text-xs text-slate-400">

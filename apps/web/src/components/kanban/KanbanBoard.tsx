@@ -203,7 +203,7 @@ export function KanbanBoard({
                     draggable
                     onDragStart={(e) => handleDragStart(e, task.id)}
                     onClick={() => onTaskClick(task.id)}
-                    className="p-3.5 rounded-xl bg-[#181D26] hover:bg-[#1E2430] border border-slate-800 hover:border-slate-700 transition-all cursor-pointer shadow-sm hover:shadow-md flex flex-col gap-2 group active:cursor-grabbing"
+                    className="p-3.5 rounded-xl bg-[#181D26] hover:bg-[#1E2430] border border-slate-800 hover:border-orange-500/50 hover:shadow-lg hover:shadow-orange-950/20 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer shadow-sm flex flex-col gap-2 group active:cursor-grabbing active:scale-[0.98]"
                   >
                     {/* Top Labels row */}
                     {task.labels?.length > 0 && (

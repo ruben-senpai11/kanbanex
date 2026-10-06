@@ -4,15 +4,19 @@ import React, { useRef, useState, useEffect } from 'react';
 import { ProjectCard, ProjectOverviewData } from './ProjectCard';
 import { ChevronLeft, ChevronRight, Plus, Sparkles, FolderPlus } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { ProjectCardSkeleton } from '@/components/ui/Skeleton';
+import { animatePanoramicEntrance } from '@/lib/animations';
 
 interface HorizontalProjectListProps {
   projects: ProjectOverviewData[];
+  isLoading?: boolean;
   onOpenNewProject: () => void;
   onOpenThemeSelector: (projectId: string) => void;
 }
 
 export function HorizontalProjectList({
   projects,
+  isLoading = false,
   onOpenNewProject,
   onOpenThemeSelector,
 }: HorizontalProjectListProps) {
@@ -42,7 +46,14 @@ export function HorizontalProjectList({
     const handleResize = () => checkScrollBounds();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [projects]);
+  }, [projects, isLoading]);
+
+  // Trigger GSAP Staggered Entrance on Projects Loaded
+  useEffect(() => {
+    if (!isLoading && projects.length > 0 && containerRef.current) {
+      animatePanoramicEntrance(containerRef.current);
+    }
+  }, [isLoading, projects.length]);
 
   // Mouse drag handlers
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -62,7 +73,7 @@ export function HorizontalProjectList({
     const walk = (x - startX) * 1.5; // Drag sensitivity
     containerRef.current.scrollLeft = scrollLeft - walk;
 
-    // Track velocity for inertia
+    // Track velocity for natural inertia
     const now = Date.now();
     const dt = now - lastTime.current;
     if (dt > 10) {
@@ -81,7 +92,7 @@ export function HorizontalProjectList({
 
     // Apply natural smooth inertia
     if (Math.abs(velocity) > 0.2) {
-      const momentumDistance = velocity * 250;
+      const momentumDistance = velocity * 260;
       containerRef.current.scrollBy({
         left: -momentumDistance,
         behavior: 'smooth',
@@ -93,7 +104,6 @@ export function HorizontalProjectList({
   const handleWheel = (e: React.WheelEvent) => {
     if (!containerRef.current) return;
     if (e.deltaY !== 0 && !e.shiftKey) {
-      // Allow vertical wheel to scroll horizontally if within panoramic view
       containerRef.current.scrollLeft += e.deltaY * 0.8;
       checkScrollBounds();
     }
@@ -109,11 +119,25 @@ export function HorizontalProjectList({
     setTimeout(checkScrollBounds, 300);
   };
 
-  // Zero Dummy Data: True Empty State
+  // 1. Shimmer Skeleton Loading State
+  if (isLoading) {
+    return (
+      <div className="relative w-full flex-1 flex flex-col h-full min-h-0 select-none">
+        <div className="horizontal-scroll-container flex-1 flex items-stretch gap-6 px-6 md:px-10 py-6 overflow-x-auto overflow-y-hidden">
+          <ProjectCardSkeleton />
+          <ProjectCardSkeleton />
+          <ProjectCardSkeleton />
+          <ProjectCardSkeleton />
+        </div>
+      </div>
+    );
+  }
+
+  // 2. Zero Dummy Data: True Empty State
   if (projects.length === 0) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-8 text-center min-h-[500px]">
-        <div className="w-20 h-20 rounded-3xl bg-[#15181F] border border-slate-800 flex items-center justify-center mb-6 shadow-xl relative">
+        <div className="w-20 h-20 rounded-3xl bg-[#15181F] border border-slate-800 flex items-center justify-center mb-6 shadow-xl relative interactive-scale">
           <FolderPlus className="w-10 h-10 text-orange-500" />
           <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-orange-500 animate-ping opacity-75" />
         </div>
@@ -125,7 +149,7 @@ export function HorizontalProjectList({
           Bienvenue dans votre espace KanbanEX. Donnez vie à vos idées en créant votre premier projet avec son univers visuel cinématographique.
         </p>
 
-        <Button size="lg" onClick={onOpenNewProject} className="brand-glow">
+        <Button size="lg" onClick={onOpenNewProject} className="brand-glow interactive-scale">
           <Plus className="w-5 h-5 mr-2" />
           Créer mon premier projet
         </Button>
@@ -133,13 +157,14 @@ export function HorizontalProjectList({
     );
   }
 
+  // 3. Real Loaded Panoramic Experience with GSAP & Inertia
   return (
     <div className="relative w-full flex-1 flex flex-col h-full min-h-0 select-none">
       {/* Floating Left Navigation Arrow */}
       {canScrollLeft && (
         <button
           onClick={() => scrollByAmount(-400)}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-2xl bg-black/80 hover:bg-black border border-slate-700/80 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all hover:scale-105 active:scale-95"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-2xl bg-black/80 hover:bg-black border border-slate-700/80 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all hover:scale-110 active:scale-95"
           title="Faire défiler vers la gauche"
         >
           <ChevronLeft className="w-6 h-6 text-orange-400" />
@@ -150,7 +175,7 @@ export function HorizontalProjectList({
       {canScrollRight && (
         <button
           onClick={() => scrollByAmount(400)}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-2xl bg-black/80 hover:bg-black border border-slate-700/80 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all hover:scale-105 active:scale-95"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-2xl bg-black/80 hover:bg-black border border-slate-700/80 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all hover:scale-110 active:scale-95"
           title="Faire défiler vers la droite"
         >
           <ChevronRight className="w-6 h-6 text-orange-400" />
@@ -181,7 +206,7 @@ export function HorizontalProjectList({
         {/* Append "+ Créer un projet" End Card */}
         <div
           onClick={onOpenNewProject}
-          className="w-[280px] shrink-0 h-full flex flex-col items-center justify-center rounded-3xl border border-dashed border-slate-800 hover:border-orange-500/50 bg-[#12151C]/40 hover:bg-[#15181F]/80 transition-all cursor-pointer p-8 text-center group"
+          className="w-[280px] shrink-0 h-full flex flex-col items-center justify-center rounded-3xl border border-dashed border-slate-800 hover:border-orange-500/50 bg-[#12151C]/40 hover:bg-[#15181F]/80 transition-all cursor-pointer p-8 text-center group interactive-scale"
         >
           <div className="w-14 h-14 rounded-2xl bg-[#1A1F29] border border-slate-700/80 group-hover:bg-gradient-warm flex items-center justify-center text-slate-400 group-hover:text-white transition-all shadow-md group-hover:scale-110 mb-4">
             <Plus className="w-7 h-7" />

@@ -119,18 +119,13 @@ export default function OverviewPage() {
             </div>
           </div>
 
-          {/* Panoramic Horizontal Projects List with Inertia & Wheel */}
-          {isLoading ? (
-            <div className="flex-1 flex items-center justify-center text-xs text-slate-500">
-              Chargement de votre univers de projets...
-            </div>
-          ) : (
-            <HorizontalProjectList
-              projects={projects}
-              onOpenNewProject={() => setIsNewProjectOpen(true)}
-              onOpenThemeSelector={(pId) => setThemeModalProjectId(pId)}
-            />
-          )}
+          {/* Panoramic Horizontal Projects List with Inertia, GSAP & Shimmer Skeletons */}
+          <HorizontalProjectList
+            projects={projects}
+            isLoading={isLoading}
+            onOpenNewProject={() => setIsNewProjectOpen(true)}
+            onOpenThemeSelector={(pId) => setThemeModalProjectId(pId)}
+          />
         </main>
       </div>
 

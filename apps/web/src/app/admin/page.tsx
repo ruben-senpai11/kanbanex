@@ -23,6 +23,7 @@ import {
   Save,
   X,
 } from 'lucide-react';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export default function SuperAdminPage() {
   const router = useRouter();
@@ -107,8 +108,36 @@ export default function SuperAdminPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#0B0D11] text-slate-100 flex items-center justify-center text-xs text-slate-500">
-        Chargement de la console Super Admin...
+      <div className="min-h-screen bg-[#0B0D11] text-slate-100 flex flex-col overflow-hidden">
+        <AppHeader />
+        <div className="flex-1 flex overflow-hidden">
+          <AppSidebar />
+          <main className="flex-1 overflow-y-auto p-6 md:p-10 space-y-8 bg-[#0B0D11]">
+            <div className="max-w-6xl mx-auto space-y-3">
+              <Skeleton className="h-6 w-48 rounded-full" />
+              <Skeleton className="h-9 w-80 rounded-xl" />
+              <Skeleton className="h-4 w-96 rounded-md" />
+            </div>
+            <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="p-5 rounded-2xl bg-[#12151C] border border-slate-800 space-y-2">
+                  <Skeleton className="h-4 w-28 rounded" />
+                  <Skeleton className="h-8 w-20 rounded-lg" />
+                </div>
+              ))}
+            </div>
+            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="p-6 rounded-3xl bg-[#12151C] border border-slate-800 space-y-4">
+                  <Skeleton className="h-6 w-32 rounded-lg" />
+                  <Skeleton className="h-4 w-full rounded" />
+                  <Skeleton className="h-8 w-32 rounded-xl my-4" />
+                  <Skeleton className="h-10 w-full rounded-xl" />
+                </div>
+              ))}
+            </div>
+          </main>
+        </div>
       </div>
     );
   }

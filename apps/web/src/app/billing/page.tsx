@@ -8,6 +8,7 @@ import { AppSidebar } from '@/components/layout/AppSidebar';
 import { Button } from '@/components/ui/Button';
 import { formatFCFA, formatDate } from '@/lib/utils';
 import { Check, Shield, Sparkles, CreditCard, ExternalLink, AlertCircle } from 'lucide-react';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export default function BillingPage() {
   const { currentWorkspace, refreshUserData } = useAuth();
@@ -147,8 +148,25 @@ export default function BillingPage() {
           )}
 
           {/* Subscription Plans Grid (Prices dynamically loaded from DB) */}
-          <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-            {plans.map((plan) => {
+          {isLoading ? (
+            <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="p-6 rounded-3xl bg-[#12151C] border border-slate-800 space-y-4">
+                  <Skeleton className="h-6 w-24 rounded-lg" />
+                  <Skeleton className="h-4 w-full rounded" />
+                  <Skeleton className="h-8 w-36 rounded-xl my-4" />
+                  <div className="space-y-2 pt-4 border-t border-slate-800">
+                    <Skeleton className="h-4 w-full rounded" />
+                    <Skeleton className="h-4 w-4/5 rounded" />
+                    <Skeleton className="h-4 w-3/4 rounded" />
+                  </div>
+                  <Skeleton className="h-10 w-full rounded-xl mt-6" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+              {plans.map((plan) => {
               const isCurrent = activePlanSlug === plan.slug;
               const isEclosion = plan.slug === 'eclosion';
 
@@ -253,6 +271,7 @@ export default function BillingPage() {
               );
             })}
           </div>
+          )}
 
           {/* Transactions History */}
           {subscriptionData?.transactions?.length > 0 && (

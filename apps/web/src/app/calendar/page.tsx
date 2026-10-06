@@ -8,6 +8,7 @@ import { AppSidebar } from '@/components/layout/AppSidebar';
 import { ProjectCalendar } from '@/components/calendar/ProjectCalendar';
 import { TaskDrawer } from '@/components/task/TaskDrawer';
 import { GlobalSearchModal } from '@/components/layout/GlobalSearchModal';
+import { CalendarSkeleton } from '@/components/ui/Skeleton';
 
 export default function WorkspaceCalendarPage() {
   const { currentWorkspace } = useAuth();
@@ -90,9 +91,7 @@ export default function WorkspaceCalendarPage() {
 
           <div className="flex-1 overflow-hidden">
             {isLoading ? (
-              <div className="flex items-center justify-center h-full text-xs text-slate-500">
-                Chargement du calendrier...
-              </div>
+              <CalendarSkeleton />
             ) : projects.length === 0 ? (
               <div className="flex items-center justify-center h-full text-xs text-slate-500">
                 Créez d'abord un projet pour planifier vos tâches.

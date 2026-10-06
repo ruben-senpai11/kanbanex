@@ -26,6 +26,12 @@ import {
 import { StatusBadge, PriorityBadge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { getThemeById } from '@/lib/themes';
+import {
+  KanbanColumnSkeleton,
+  GanttChartSkeleton,
+  CalendarSkeleton,
+} from '@/components/ui/Skeleton';
+import { animateViewTransition } from '@/lib/animations';
 
 type ActiveView = 'kanban' | 'gantt' | 'calendar';
 
@@ -38,6 +44,15 @@ export default function ProjectWorkspacePage() {
   const [project, setProject] = useState<any>(null);
   const [activeView, setActiveView] = useState<ActiveView>('kanban');
   const [isLoading, setIsLoading] = useState(true);
+  const viewContainerRef = React.useRef<HTMLDivElement>(null);
+
+  // Switch view with GSAP animation
+  const switchView = (newView: ActiveView) => {
+    setActiveView(newView);
+    if (viewContainerRef.current) {
+      animateViewTransition(viewContainerRef.current);
+    }
+  };
 
   // Task Drawer & Modals state
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
@@ -223,8 +238,8 @@ export default function ProjectWorkspacePage() {
             {/* Center: View Switcher (Kanban, Gantt, Calendar) */}
             <div className="flex items-center gap-1 bg-[#181D26] p-1 rounded-2xl border border-slate-800">
               <button
-                onClick={() => setActiveView('kanban')}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                onClick={() => switchView('kanban')}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all interactive-scale ${
                   activeView === 'kanban'
                     ? 'bg-gradient-warm text-white shadow-md shadow-orange-950/40'
                     : 'text-slate-400 hover:text-white'
@@ -235,8 +250,8 @@ export default function ProjectWorkspacePage() {
               </button>
 
               <button
-                onClick={() => setActiveView('gantt')}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                onClick={() => switchView('gantt')}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all interactive-scale ${
                   activeView === 'gantt'
                     ? 'bg-gradient-warm text-white shadow-md shadow-orange-950/40'
                     : 'text-slate-400 hover:text-white'
@@ -247,8 +262,8 @@ export default function ProjectWorkspacePage() {
               </button>
 
               <button
-                onClick={() => setActiveView('calendar')}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                onClick={() => switchView('calendar')}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all interactive-scale ${
                   activeView === 'calendar'
                     ? 'bg-gradient-warm text-white shadow-md shadow-orange-950/40'
                     : 'text-slate-400 hover:text-white'
@@ -263,7 +278,7 @@ export default function ProjectWorkspacePage() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setIsThemeModalOpen(true)}
-                className="p-2 rounded-xl bg-[#1A1F29] hover:bg-slate-800 text-slate-400 hover:text-orange-400 border border-slate-800 transition-colors"
+                className="p-2 rounded-xl bg-[#1A1F29] hover:bg-slate-800 text-slate-400 hover:text-orange-400 border border-slate-800 transition-colors interactive-scale"
                 title="Personnaliser l'identité du projet"
               >
                 <Palette className="w-4 h-4" />
@@ -271,8 +286,8 @@ export default function ProjectWorkspacePage() {
             </div>
           </div>
 
-          {/* Render Active Synchronized View */}
-          <div className="flex-1 overflow-hidden relative">
+          {/* Render Active Synchronized View with GSAP animation container */}
+          <div ref={viewContainerRef} className="flex-1 overflow-hidden relative">
             {activeView === 'kanban' && (
               <KanbanBoard
                 lists={lists}
