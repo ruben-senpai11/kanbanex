@@ -77,7 +77,7 @@ export default function OverviewPage() {
   const currentThemeProject = projects.find((p) => p.id === themeModalProjectId);
 
   return (
-    <div className="min-h-screen bg-[#0B0D11] text-slate-100 flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col overflow-hidden">
       <AppHeader
         onOpenSearch={() => setIsSearchOpen(true)}
         onOpenNewProject={() => setIsNewProjectOpen(true)}
@@ -89,21 +89,21 @@ export default function OverviewPage() {
           projects={projects.map((p) => ({ id: p.id, name: p.name, customColor: p.customColor }))}
         />
 
-        {/* Main Overview Canvas */}
-        <main className="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden bg-gradient-to-b from-[#0E1117] to-[#0B0D11] relative">
-          {/* Subtle Ambient Glow */}
-          <div className="absolute top-0 left-1/3 w-[600px] h-32 bg-orange-600/5 blur-3xl pointer-events-none" />
+        {/* Main Overview Canvas (Gradient & Light Background) */}
+        <main className="flex-1 flex flex-col h-[calc(100vh-48px)] overflow-hidden bg-gradient-to-br from-slate-100 via-white to-orange-50/20 relative">
+          {/* Subtle Ambient Warm Glow */}
+          <div className="absolute top-0 right-1/4 w-[500px] h-40 bg-orange-500/5 blur-3xl pointer-events-none" />
 
           {/* Panoramic Page Header */}
           <div className="px-6 md:px-10 pt-6 pb-2 shrink-0 flex items-center justify-between">
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold text-orange-400 uppercase tracking-widest flex items-center gap-1.5">
+                <span className="text-[11px] font-bold text-orange-600 uppercase tracking-widest flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5" />
                   Univers de Projets
                 </span>
               </div>
-              <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mt-0.5">
+              <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-0.5">
                 Tous mes projets
               </h1>
             </div>
@@ -111,7 +111,7 @@ export default function OverviewPage() {
             <div className="flex items-center gap-3">
               <Button
                 onClick={() => setIsNewProjectOpen(true)}
-                className="brand-glow shadow-lg shadow-orange-950/40"
+                className="brand-glow shadow-sm"
               >
                 <Plus className="w-4 h-4 mr-1.5" />
                 Nouveau Projet

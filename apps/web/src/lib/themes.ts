@@ -1,98 +1,132 @@
 export interface ProjectTheme {
   id: string;
   name: string;
-  category: 'cinematic' | 'futuristic' | 'celestial' | 'nature' | 'minimal';
-  gradient: string;
+  category: 'silk' | 'minimal' | 'gradient' | 'celestial' | 'nature';
+  backgroundClass: string;
+  backgroundStyle?: React.CSSProperties;
   accentColor: string;
-  overlay: string;
+  isDark?: boolean;
   previewBg: string;
   description: string;
 }
 
 export const CINEMATIC_THEMES: ProjectTheme[] = [
   {
+    id: 'silk-flow',
+    name: 'Courbes de Soie Métallique',
+    category: 'silk',
+    backgroundClass: 'bg-silk-pattern',
+    backgroundStyle: {
+      backgroundColor: '#1E232A',
+      backgroundImage: `radial-gradient(at 0% 0%, rgba(55, 65, 81, 0.4) 0px, transparent 50%),
+                        radial-gradient(at 100% 100%, rgba(30, 41, 59, 0.7) 0px, transparent 50%),
+                        linear-gradient(135deg, #181C24 0%, #222834 40%, #151820 100%)`,
+    },
+    accentColor: '#FF7A00',
+    isDark: true,
+    previewBg: 'linear-gradient(135deg, #2D3748 0%, #1A202C 100%)',
+    description: 'Courbes soyeuses et ondes métalliques contemporaines inspirées de l\'élégance Trello.',
+  },
+  {
+    id: 'pure-white',
+    name: 'Blanc Épuré & Minimaliste',
+    category: 'minimal',
+    backgroundClass: 'bg-slate-50',
+    backgroundStyle: {
+      backgroundColor: '#F8FAFC',
+      backgroundImage: `radial-gradient(#E2E8F0 1px, transparent 1px)`,
+      backgroundSize: '24px 24px',
+    },
+    accentColor: '#FF7A00',
+    isDark: false,
+    previewBg: 'linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%)',
+    description: 'Fond blanc épuré haute clarté, contraste maximal et focus absolu sur les tâches.',
+  },
+  {
+    id: 'warm-sunrise',
+    name: 'Aurore Expansion (Dégradé Chaud)',
+    category: 'gradient',
+    backgroundClass: 'bg-gradient-to-br from-orange-50 via-amber-50/50 to-slate-100',
+    backgroundStyle: {
+      background: 'linear-gradient(135deg, #FFF7ED 0%, #FEF3C7 35%, #F8FAFC 100%)',
+    },
+    accentColor: '#EA580C',
+    isDark: false,
+    previewBg: 'linear-gradient(135deg, #FFEDD5 0%, #FED7AA 50%, #FFF7ED 100%)',
+    description: 'Dégradé solaire chaleureux reflétant l\'énergie et la signature de la marque Expansion.',
+  },
+  {
+    id: 'azure-sky',
+    name: 'Ciel Clair & Azur',
+    category: 'gradient',
+    backgroundClass: 'bg-gradient-to-br from-sky-50 via-blue-50/40 to-slate-100',
+    backgroundStyle: {
+      background: 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 40%, #F8FAFC 100%)',
+    },
+    accentColor: '#0284C7',
+    isDark: false,
+    previewBg: 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
+    description: 'Horizon lumineux et apaisant offrant une clarté visuelle reposante.',
+  },
+  {
+    id: 'soft-mesh',
+    name: 'Mesh Gradient Moderne',
+    category: 'gradient',
+    backgroundClass: 'bg-slate-100',
+    backgroundStyle: {
+      background: `radial-gradient(at 10% 10%, rgba(254, 215, 170, 0.4) 0px, transparent 50%),
+                   radial-gradient(at 90% 15%, rgba(186, 230, 253, 0.4) 0px, transparent 50%),
+                   radial-gradient(at 50% 90%, rgba(233, 213, 255, 0.3) 0px, transparent 50%),
+                   #F8FAFC`,
+    },
+    accentColor: '#F97316',
+    isDark: false,
+    previewBg: 'linear-gradient(135deg, #FED7AA 0%, #BAE6FD 50%, #E9D5FF 100%)',
+    description: 'Dégradé mesh multicouche contemporain aux reflets pastel subtils.',
+  },
+  {
+    id: 'mineral-slate',
+    name: 'Brume Minérale & Argent',
+    category: 'minimal',
+    backgroundClass: 'bg-gradient-to-br from-slate-100 via-gray-100 to-zinc-200',
+    backgroundStyle: {
+      background: 'linear-gradient(145deg, #F1F5F9 0%, #E2E8F0 50%, #CBD5E1 100%)',
+    },
+    accentColor: '#475569',
+    isDark: false,
+    previewBg: 'linear-gradient(135deg, #F1F5F9 0%, #CBD5E1 100%)',
+    description: 'Tons minéraux équilibrés pour une concentration sans distraction visuelle.',
+  },
+  {
     id: 'vast-skies',
-    name: 'Vastes Ciels',
+    name: 'Vastes Ciels Célestes',
     category: 'celestial',
-    gradient: 'from-sky-900/90 via-slate-900/95 to-neutral-950',
+    backgroundClass: 'bg-slate-900',
+    backgroundStyle: {
+      background: 'linear-gradient(135deg, #0F172A 0%, #0369A1 50%, #020617 100%)',
+    },
     accentColor: '#38BDF8',
-    overlay: 'bg-gradient-to-t from-[#0B0D11] via-[#0B0D11]/75 to-sky-950/40',
+    isDark: true,
     previewBg: 'linear-gradient(135deg, #0369A1 0%, #0F172A 60%, #020617 100%)',
     description: 'Ouverture contemplative sur les étendues célestes d\'azur et d\'infini.',
   },
   {
     id: 'downhill',
-    name: 'Downhill Horizon',
+    name: 'Downhill Crépuscule',
     category: 'nature',
-    gradient: 'from-amber-900/85 via-orange-950/90 to-neutral-950',
+    backgroundClass: 'bg-neutral-900',
+    backgroundStyle: {
+      background: 'linear-gradient(135deg, #78350F 0%, #451A03 50%, #0B0D11 100%)',
+    },
     accentColor: '#F97316',
-    overlay: 'bg-gradient-to-t from-[#0B0D11] via-[#0B0D11]/80 to-amber-950/40',
+    isDark: true,
     previewBg: 'linear-gradient(135deg, #78350F 0%, #451A03 50%, #0B0D11 100%)',
     description: 'Vigueur des crêtes rocheuses et perspectives au couchant.',
-  },
-  {
-    id: 'horizons',
-    name: 'Horizons Infinis',
-    category: 'cinematic',
-    gradient: 'from-orange-800/80 via-rose-950/90 to-neutral-950',
-    accentColor: '#FB923C',
-    overlay: 'bg-gradient-to-t from-[#0B0D11] via-[#0B0D11]/80 to-rose-950/40',
-    previewBg: 'linear-gradient(135deg, #EA580C 0%, #881337 60%, #0B0D11 100%)',
-    description: 'Ligne d\'horizon solaire à l\'aube d\'une ère nouvelle.',
-  },
-  {
-    id: 'futurism',
-    name: 'Futurisme Expansion',
-    category: 'futuristic',
-    gradient: 'from-violet-900/85 via-fuchsia-950/90 to-neutral-950',
-    accentColor: '#C084FC',
-    overlay: 'bg-gradient-to-t from-[#0B0D11] via-[#0B0D11]/85 to-violet-950/40',
-    previewBg: 'linear-gradient(135deg, #581C87 0%, #701A75 55%, #0B0D11 100%)',
-    description: 'Architectures et interfaces spatiales d\'avant-garde.',
-  },
-  {
-    id: 'lumiere',
-    name: 'Lumière Première',
-    category: 'celestial',
-    gradient: 'from-amber-600/75 via-yellow-950/90 to-neutral-950',
-    accentColor: '#FBBF24',
-    overlay: 'bg-gradient-to-t from-[#0B0D11] via-[#0B0D11]/80 to-amber-900/35',
-    previewBg: 'linear-gradient(135deg, #B45309 0%, #713F12 50%, #0B0D11 100%)',
-    description: 'Rayonnement divin traversant l\'immensité et éclairant chaque œuvre.',
-  },
-  {
-    id: 'exploration',
-    name: 'Exploration Épique',
-    category: 'cinematic',
-    gradient: 'from-teal-900/80 via-cyan-950/90 to-neutral-950',
-    accentColor: '#2DD4BF',
-    overlay: 'bg-gradient-to-t from-[#0B0D11] via-[#0B0D11]/80 to-teal-950/40',
-    previewBg: 'linear-gradient(135deg, #115E59 0%, #083344 60%, #0B0D11 100%)',
-    description: 'Traversée de paysages grandioses et territoires inexplorés.',
-  },
-  {
-    id: 'ascension',
-    name: 'Ascension Céleste',
-    category: 'celestial',
-    gradient: 'from-indigo-900/85 via-slate-900/90 to-neutral-950',
-    accentColor: '#818CF8',
-    overlay: 'bg-gradient-to-t from-[#0B0D11] via-[#0B0D11]/80 to-indigo-950/40',
-    previewBg: 'linear-gradient(135deg, #3730A3 0%, #1E1B4B 60%, #0B0D11 100%)',
-    description: 'Élévation majestueuse vers la splendeur des hauteurs éternelles.',
-  },
-  {
-    id: 'architecture',
-    name: 'Architecture Moderne',
-    category: 'minimal',
-    gradient: 'from-zinc-800/90 via-stone-900/95 to-neutral-950',
-    accentColor: '#E2E8F0',
-    overlay: 'bg-gradient-to-t from-[#0B0D11] via-[#0B0D11]/85 to-zinc-900/40',
-    previewBg: 'linear-gradient(135deg, #3F3F46 0%, #1C1917 60%, #0B0D11 100%)',
-    description: 'Lignes épurées, géométrie sobre et matériaux nobles.',
   },
 ];
 
 export function getThemeById(id?: string | null): ProjectTheme {
   const found = CINEMATIC_THEMES.find((t) => t.id === id);
-  return found || CINEMATIC_THEMES[0];
+  // Default to pure-white or silk-flow (clean non-black background)
+  return found || CINEMATIC_THEMES[1]; // Pure White Minimalist by default
 }

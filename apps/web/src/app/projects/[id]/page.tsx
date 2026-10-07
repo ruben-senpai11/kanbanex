@@ -2,38 +2,23 @@
 
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api';
 import { AppHeader } from '@/components/layout/AppHeader';
-import { AppSidebar } from '@/components/layout/AppSidebar';
+import { BoardSubHeader } from '@/components/kanban/BoardSubHeader';
+import { BottomNavigationDock, BoardActiveView } from '@/components/kanban/BottomNavigationDock';
+import { InboxDrawer } from '@/components/kanban/InboxDrawer';
+import { BoardFilterModal } from '@/components/kanban/BoardFilterModal';
 import { KanbanBoard } from '@/components/kanban/KanbanBoard';
 import { GanttChart } from '@/components/gantt/GanttChart';
 import { ProjectCalendar } from '@/components/calendar/ProjectCalendar';
 import { TaskDrawer } from '@/components/task/TaskDrawer';
 import { GlobalSearchModal } from '@/components/layout/GlobalSearchModal';
 import { ThemeSelectorModal } from '@/components/overview/ThemeSelectorModal';
-import {
-  Columns,
-  BarChart3,
-  Calendar,
-  ChevronLeft,
-  Palette,
-  Filter,
-  Plus,
-  ArrowLeft,
-} from 'lucide-react';
-import { StatusBadge, PriorityBadge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
+import { CreateProjectModal } from '@/components/overview/CreateProjectModal';
 import { getThemeById } from '@/lib/themes';
-import {
-  KanbanColumnSkeleton,
-  GanttChartSkeleton,
-  CalendarSkeleton,
-} from '@/components/ui/Skeleton';
+import { KanbanColumnSkeleton } from '@/components/ui/Skeleton';
 import { animateViewTransition } from '@/lib/animations';
-
-type ActiveView = 'kanban' | 'gantt' | 'calendar';
 
 export default function ProjectWorkspacePage() {
   const params = useParams();
@@ -42,26 +27,34 @@ export default function ProjectWorkspacePage() {
   const { user, currentWorkspace, isLoading: isAuthLoading } = useAuth();
 
   const [project, setProject] = useState<any>(null);
-  const [activeView, setActiveView] = useState<ActiveView>('kanban');
+  const [allProjects, setAllProjects] = useState<any[]>([]);
+  const [activeView, setActiveView] = useState<BoardActiveView>('kanban');
   const [isLoading, setIsLoading] = useState(true);
   const viewContainerRef = React.useRef<HTMLDivElement>(null);
 
   // Switch view with GSAP animation
-  const switchView = (newView: ActiveView) => {
+  const switchView = (newView: BoardActiveView) => {
     setActiveView(newView);
     if (viewContainerRef.current) {
       animateViewTransition(viewContainerRef.current);
     }
   };
 
-  // Task Drawer & Modals state
+  // Drawer & Modal States
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [isInboxOpen, setIsInboxOpen] = useState(false);
+  const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
 
-  // Filter state
+  // Filter States
   const [searchFilter, setSearchFilter] = useState('');
   const [priorityFilter, setPriorityFilter] = useState('');
+  const [labelFilter, setLabelFilter] = useState('');
+
+  // Active filter count
+  const activeFilterCount = (searchFilter ? 1 : 0) + (priorityFilter ? 1 : 0) + (labelFilter ? 1 : 0);
 
   const loadProject = async () => {
     if (!projectId) return;
@@ -75,13 +68,24 @@ export default function ProjectWorkspacePage() {
     }
   };
 
+  const loadAllProjects = async () => {
+    if (!currentWorkspace) return;
+    try {
+      const list = await api.getProjectsOverview(currentWorkspace.id);
+      setAllProjects(list);
+    } catch (err) {
+      console.error('Failed to load workspace projects', err);
+    }
+  };
+
   useEffect(() => {
     if (!isAuthLoading && !user) {
       router.push('/login');
       return;
     }
     loadProject();
-  }, [projectId, user, isAuthLoading]);
+    loadAllProjects();
+  }, [projectId, user, isAuthLoading, currentWorkspace]);
 
   // Extract lists and flat tasks for Kanban, Gantt, and Calendar
   const currentBoard = project?.boards?.[0];
@@ -99,6 +103,9 @@ export default function ProjectWorkspacePage() {
             return false;
           }
           if (priorityFilter && t.priority !== priorityFilter) {
+            return false;
+          }
+          if (labelFilter && !t.labels?.some((l: any) => l.labelId === labelFilter || l.label?.id === labelFilter)) {
             return false;
           }
           return true;
@@ -119,7 +126,7 @@ export default function ProjectWorkspacePage() {
           _count: t._count,
         })),
     }));
-  }, [currentBoard, searchFilter, priorityFilter]);
+  }, [currentBoard, searchFilter, priorityFilter, labelFilter]);
 
   // Flat tasks across all columns for Gantt & Calendar (Single Source of Truth)
   const allTasks = useMemo(() => {
@@ -131,6 +138,19 @@ export default function ProjectWorkspacePage() {
     });
     return arr;
   }, [lists]);
+
+  // Available labels in project
+  const projectLabels = useMemo(() => {
+    const map = new Map<string, any>();
+    currentBoard?.lists?.forEach((l: any) => {
+      l.tasks?.forEach((t: any) => {
+        t.labels?.forEach((lb: any) => {
+          if (lb.label) map.set(lb.label.id, lb.label);
+        });
+      });
+    });
+    return Array.from(map.values());
+  }, [currentBoard]);
 
   // Handlers for Kanban operations
   const handleTaskMove = async (taskId: string, targetListId: string, targetPosition: number) => {
@@ -185,138 +205,108 @@ export default function ProjectWorkspacePage() {
     await loadProject();
   };
 
+  const handleCreateProject = async (data: any) => {
+    if (!currentWorkspace) return;
+    const res = await api.createProject(currentWorkspace.id, data);
+    setIsNewProjectOpen(false);
+    if (res?.id) {
+      router.push(`/projects/${res.id}`);
+    }
+  };
+
   if (isLoading || !project) {
     return (
-      <div className="min-h-screen bg-[#0B0D11] text-slate-100 flex items-center justify-center text-xs text-slate-500">
-        Chargement du projet...
+      <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col">
+        <AppHeader />
+        <div className="h-12 bg-white/70 border-b border-slate-200 px-6 flex items-center">
+          <div className="w-32 h-5 rounded bg-slate-200 shimmer-effect" />
+        </div>
+        <div className="flex-1 p-6 flex gap-4 overflow-hidden">
+          <KanbanColumnSkeleton />
+          <KanbanColumnSkeleton />
+          <KanbanColumnSkeleton />
+        </div>
       </div>
     );
   }
 
   const theme = getThemeById(project.backgroundTheme);
-  const color = project.customColor || theme.accentColor;
+  const isDark = theme.isDark ?? false;
 
   return (
-    <div className="min-h-screen bg-[#0B0D11] text-slate-100 flex flex-col overflow-hidden">
-      <AppHeader onOpenSearch={() => setIsSearchOpen(true)} />
+    <div
+      className={`min-h-screen flex flex-col overflow-hidden relative transition-colors duration-300 ${
+        theme.backgroundClass
+      }`}
+      style={theme.backgroundStyle}
+    >
+      {/* 1. App Header (Trello-style top bar) */}
+      <AppHeader
+        onOpenSearch={() => setIsSearchOpen(true)}
+        onOpenNewProject={() => setIsNewProjectOpen(true)}
+        onOpenNotifications={() => setIsInboxOpen(true)}
+        unreadCount={project.activities?.length || 0}
+      />
 
-      <div className="flex-1 flex overflow-hidden">
-        <AppSidebar
-          projects={[{ id: project.id, name: project.name, customColor: color }]}
-        />
+      {/* 2. Board Sub-Header (Project title, switcher, avatars, filters, share, theme) */}
+      <BoardSubHeader
+        projectName={project.name}
+        projectId={project.id}
+        allProjects={allProjects}
+        onSelectProject={(id) => router.push(`/projects/${id}`)}
+        members={project.members?.map((m: any) => m.user) || []}
+        onOpenFilter={() => setIsFilterModalOpen(true)}
+        activeFilterCount={activeFilterCount}
+        onOpenThemeModal={() => setIsThemeModalOpen(true)}
+        onShare={() => alert(`Lien de partage du tableau copié : ${window.location.href}`)}
+        isDarkTheme={isDark}
+      />
 
-        <main className="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden bg-[#0B0D11]">
-          {/* Project Header Bar */}
-          <div className="h-16 px-6 border-b border-slate-800 bg-[#12151C] shrink-0 flex items-center justify-between">
-            {/* Left: Back & Project Identity */}
-            <div className="flex items-center gap-4">
-              <Link
-                href="/overview"
-                className="p-1.5 rounded-xl bg-[#1A1F29] hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
-                title="Retour à tous mes projets"
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </Link>
+      {/* 3. Main Workspace Area: Kanban, Gantt, or Calendar */}
+      <main className="flex-1 flex flex-col h-[calc(100vh-96px)] overflow-hidden relative">
+        <div ref={viewContainerRef} className="flex-1 flex overflow-hidden relative">
+          {activeView === 'kanban' && (
+            <KanbanBoard
+              lists={lists}
+              onTaskClick={(tId) => setActiveTaskId(tId)}
+              onTaskMove={handleTaskMove}
+              onCreateTask={handleCreateTask}
+              onCreateList={handleCreateList}
+              onRenameList={handleRenameList}
+              onDeleteList={handleDeleteList}
+              isDarkTheme={isDark}
+            />
+          )}
 
-              <div className="flex items-center gap-3">
-                <span
-                  className="w-3.5 h-3.5 rounded-full shrink-0 shadow-sm"
-                  style={{ backgroundColor: color }}
-                />
-                <div>
-                  <h1 className="text-base font-bold text-white tracking-tight leading-tight">
-                    {project.name}
-                  </h1>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    <StatusBadge status={project.status} />
-                    <PriorityBadge priority={project.priority} />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Center: View Switcher (Kanban, Gantt, Calendar) */}
-            <div className="flex items-center gap-1 bg-[#181D26] p-1 rounded-2xl border border-slate-800">
-              <button
-                onClick={() => switchView('kanban')}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all interactive-scale ${
-                  activeView === 'kanban'
-                    ? 'bg-gradient-warm text-white shadow-md shadow-orange-950/40'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <Columns className="w-3.5 h-3.5" />
-                <span>Kanban Classic</span>
-              </button>
-
-              <button
-                onClick={() => switchView('gantt')}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all interactive-scale ${
-                  activeView === 'gantt'
-                    ? 'bg-gradient-warm text-white shadow-md shadow-orange-950/40'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <BarChart3 className="w-3.5 h-3.5" />
-                <span>Gantt</span>
-              </button>
-
-              <button
-                onClick={() => switchView('calendar')}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all interactive-scale ${
-                  activeView === 'calendar'
-                    ? 'bg-gradient-warm text-white shadow-md shadow-orange-950/40'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <Calendar className="w-3.5 h-3.5" />
-                <span>Calendrier</span>
-              </button>
-            </div>
-
-            {/* Right: Theme button & Filters */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setIsThemeModalOpen(true)}
-                className="p-2 rounded-xl bg-[#1A1F29] hover:bg-slate-800 text-slate-400 hover:text-orange-400 border border-slate-800 transition-colors interactive-scale"
-                title="Personnaliser l'identité du projet"
-              >
-                <Palette className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Render Active Synchronized View with GSAP animation container */}
-          <div ref={viewContainerRef} className="flex-1 overflow-hidden relative">
-            {activeView === 'kanban' && (
-              <KanbanBoard
-                lists={lists}
-                onTaskClick={(tId) => setActiveTaskId(tId)}
-                onTaskMove={handleTaskMove}
-                onCreateTask={handleCreateTask}
-                onCreateList={handleCreateList}
-                onRenameList={handleRenameList}
-                onDeleteList={handleDeleteList}
-              />
-            )}
-
-            {activeView === 'gantt' && (
+          {activeView === 'gantt' && (
+            <div className="flex-1 p-4 md:p-6 overflow-hidden">
               <GanttChart
                 tasks={allTasks}
                 onTaskClick={(tId) => setActiveTaskId(tId)}
                 onUpdateDates={handleUpdateGanttDates}
               />
-            )}
+            </div>
+          )}
 
-            {activeView === 'calendar' && (
+          {activeView === 'calendar' && (
+            <div className="flex-1 p-4 md:p-6 overflow-hidden">
               <ProjectCalendar
                 tasks={allTasks}
                 onTaskClick={(tId) => setActiveTaskId(tId)}
               />
-            )}
-          </div>
-        </main>
-      </div>
+            </div>
+          )}
+        </div>
+
+        {/* 4. Bottom Floating Navigation Dock (Trello-style dock: Inbox, Agenda, Tableau, Gantt, Switcher) */}
+        <BottomNavigationDock
+          activeView={activeView}
+          onSelectView={switchView}
+          onOpenInbox={() => setIsInboxOpen(true)}
+          onOpenBoardSwitcher={() => router.push('/overview')}
+          inboxBadgeCount={project.activities?.length || 0}
+        />
+      </main>
 
       {/* Task Drawer */}
       <TaskDrawer
@@ -326,7 +316,37 @@ export default function ProjectWorkspacePage() {
         availableMembers={project.members?.map((m: any) => m.user) || []}
       />
 
-      {/* Theme Selector Modal */}
+      {/* Slide-out Inbox / Activity Drawer */}
+      <InboxDrawer
+        isOpen={isInboxOpen}
+        onClose={() => setIsInboxOpen(false)}
+        activities={project.activities || []}
+        projectId={project.id}
+        onNavigateToTask={(tId) => {
+          setIsInboxOpen(false);
+          setActiveTaskId(tId);
+        }}
+      />
+
+      {/* Filter Popover Modal */}
+      <BoardFilterModal
+        isOpen={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+        searchQuery={searchFilter}
+        onSearchChange={setSearchFilter}
+        selectedPriority={priorityFilter}
+        onPriorityChange={setPriorityFilter}
+        labels={projectLabels}
+        selectedLabelId={labelFilter}
+        onLabelChange={setLabelFilter}
+        onReset={() => {
+          setSearchFilter('');
+          setPriorityFilter('');
+          setLabelFilter('');
+        }}
+      />
+
+      {/* Theme Selector Modal (White, Gradients, Silk Waves...) */}
       <ThemeSelectorModal
         isOpen={isThemeModalOpen}
         onClose={() => setIsThemeModalOpen(false)}
@@ -336,7 +356,14 @@ export default function ProjectWorkspacePage() {
         onSaveTheme={handleSaveTheme}
       />
 
-      {/* Global Search */}
+      {/* Create New Project Modal */}
+      <CreateProjectModal
+        isOpen={isNewProjectOpen}
+        onClose={() => setIsNewProjectOpen(false)}
+        onSubmit={handleCreateProject}
+      />
+
+      {/* Global Search (Ctrl+K) */}
       <GlobalSearchModal
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}

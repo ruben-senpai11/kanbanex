@@ -54,23 +54,31 @@ interface ProjectCardProps {
 export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) {
   const theme = getThemeById(project.backgroundTheme);
   const color = project.customColor || theme.accentColor;
+  const isDark = theme.isDark ?? false;
 
   return (
     <div
-      className="w-[320px] md:w-[350px] lg:w-[370px] shrink-0 h-full flex flex-col rounded-3xl border border-slate-800/90 relative overflow-hidden card-hover-effect group select-none shadow-2xl"
-      style={{
-        background: '#12151C',
-      }}
+      className={`w-[320px] md:w-[350px] lg:w-[370px] shrink-0 h-full flex flex-col rounded-3xl relative overflow-hidden card-hover-effect group select-none transition-all duration-300 ${
+        isDark
+          ? 'bg-[#12151C] border border-slate-800/90 text-white shadow-2xl'
+          : 'bg-white/95 border border-slate-200/90 text-slate-900 shadow-xl'
+      }`}
     >
-      {/* Cinematic Background Atmosphere */}
+      {/* Background Atmosphere */}
       <div
-        className="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity duration-500 pointer-events-none"
+        className="absolute inset-0 opacity-25 group-hover:opacity-40 transition-opacity duration-500 pointer-events-none"
         style={{
           background: theme.previewBg,
         }}
       />
-      {/* Dark Vignette Overlay for maximum text contrast and legibility */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D11] via-[#0E1117]/85 to-[#0B0D11]/60 pointer-events-none" />
+      {/* Light/Dark Vignette Overlay for maximum text contrast and legibility */}
+      <div
+        className={`absolute inset-0 pointer-events-none ${
+          isDark
+            ? 'bg-gradient-to-t from-[#0B0D11] via-[#0E1117]/85 to-[#0B0D11]/60'
+            : 'bg-gradient-to-t from-white via-white/80 to-transparent'
+        }`}
+      />
 
       {/* Top Banner Accent Stripe */}
       <div
@@ -91,7 +99,11 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
           {onOpenThemeSelector && (
             <button
               onClick={() => onOpenThemeSelector(project.id)}
-              className="p-1.5 rounded-xl bg-black/40 hover:bg-black/60 text-slate-400 hover:text-orange-400 transition-colors border border-white/5"
+              className={`p-1.5 rounded-xl transition-colors border ${
+                isDark
+                  ? 'bg-black/40 hover:bg-black/60 text-slate-400 hover:text-orange-400 border-white/5'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-orange-600 border-slate-200'
+              }`}
               title="Personnaliser l'identité visuelle (Thème cinématographique)"
             >
               <Palette className="w-3.5 h-3.5" />
@@ -100,15 +112,25 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
         </div>
 
         <div>
-          <h3 className="text-xl font-bold text-white tracking-tight leading-snug line-clamp-2 group-hover:text-orange-300 transition-colors">
+          <h3
+            className={`text-xl font-bold tracking-tight leading-snug line-clamp-2 transition-colors ${
+              isDark
+                ? 'text-white group-hover:text-orange-300'
+                : 'text-slate-900 group-hover:text-orange-600'
+            }`}
+          >
             {project.name}
           </h3>
           {project.description ? (
-            <p className="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+            <p
+              className={`text-xs mt-1 line-clamp-2 leading-relaxed ${
+                isDark ? 'text-slate-400' : 'text-slate-600'
+              }`}
+            >
               {project.description}
             </p>
           ) : (
-            <p className="text-xs text-slate-600 mt-1 italic">
+            <p className="text-xs text-slate-400 mt-1 italic">
               Aucune description renseignée.
             </p>
           )}
@@ -118,25 +140,35 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
       {/* Body: Dates, Metrics, Progress */}
       <div className="px-5 py-2 flex-1 flex flex-col justify-between space-y-4 relative z-10">
         {/* Planned and Actual Dates */}
-        <div className="bg-black/35 rounded-2xl p-3 border border-white/5 space-y-1.5">
-          <div className="flex items-center justify-between text-[11px] text-slate-400">
-            <span className="flex items-center gap-1.5 text-slate-300">
-              <Calendar className="w-3.5 h-3.5 text-orange-400" />
+        <div
+          className={`rounded-2xl p-3 border space-y-1.5 ${
+            isDark
+              ? 'bg-black/35 border-white/5 text-slate-300'
+              : 'bg-slate-50/90 border-slate-200/80 text-slate-700'
+          }`}
+        >
+          <div className="flex items-center justify-between text-[11px]">
+            <span className="flex items-center gap-1.5 font-medium">
+              <Calendar className="w-3.5 h-3.5 text-orange-500" />
               Période planifiée :
             </span>
-            <span className="font-medium text-slate-200">
+            <span className="font-semibold">
               {project.plannedStartDate ? formatDate(project.plannedStartDate) : 'Non définie'}
               {project.plannedEndDate ? ` → ${formatDate(project.plannedEndDate)}` : ''}
             </span>
           </div>
 
           {(project.actualStartDate || project.actualEndDate) && (
-            <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-white/5">
-              <span className="flex items-center gap-1.5 text-slate-400">
-                <Clock className="w-3 h-3 text-emerald-400" />
+            <div
+              className={`flex items-center justify-between text-[11px] pt-1 border-t ${
+                isDark ? 'border-white/5' : 'border-slate-200/60'
+              }`}
+            >
+              <span className="flex items-center gap-1.5 text-slate-500">
+                <Clock className="w-3 h-3 text-emerald-500" />
                 Réel :
               </span>
-              <span className="font-medium text-emerald-400">
+              <span className="font-semibold text-emerald-600">
                 {project.actualStartDate ? formatDate(project.actualStartDate) : ''}
                 {project.actualEndDate ? ` → ${formatDate(project.actualEndDate)}` : ' (en cours)'}
               </span>
@@ -146,23 +178,45 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
 
         {/* Real Task Metrics Grid */}
         <div className="grid grid-cols-3 gap-2">
-          <div className="bg-black/30 rounded-xl p-2.5 border border-white/5 flex flex-col items-center justify-center text-center">
-            <span className="text-[10px] text-slate-400 uppercase font-semibold">Tâches</span>
-            <span className="text-base font-bold text-white mt-0.5">
+          <div
+            className={`rounded-xl p-2.5 border flex flex-col items-center justify-center text-center ${
+              isDark
+                ? 'bg-black/30 border-white/5'
+                : 'bg-slate-50/90 border-slate-200/80'
+            }`}
+          >
+            <span className="text-[10px] text-slate-500 uppercase font-bold">Tâches</span>
+            <span
+              className={`text-base font-extrabold mt-0.5 ${
+                isDark ? 'text-white' : 'text-slate-900'
+              }`}
+            >
               {project.metrics.totalTasks}
             </span>
           </div>
 
-          <div className="bg-black/30 rounded-xl p-2.5 border border-white/5 flex flex-col items-center justify-center text-center">
-            <span className="text-[10px] text-emerald-400 uppercase font-semibold">Faites</span>
-            <span className="text-base font-bold text-emerald-300 mt-0.5">
+          <div
+            className={`rounded-xl p-2.5 border flex flex-col items-center justify-center text-center ${
+              isDark
+                ? 'bg-black/30 border-white/5'
+                : 'bg-slate-50/90 border-slate-200/80'
+            }`}
+          >
+            <span className="text-[10px] text-emerald-600 uppercase font-bold">Faites</span>
+            <span className="text-base font-extrabold text-emerald-600 mt-0.5">
               {project.metrics.completedTasks}
             </span>
           </div>
 
-          <div className="bg-black/30 rounded-xl p-2.5 border border-white/5 flex flex-col items-center justify-center text-center">
-            <span className="text-[10px] text-orange-400 uppercase font-semibold">En cours</span>
-            <span className="text-base font-bold text-orange-300 mt-0.5">
+          <div
+            className={`rounded-xl p-2.5 border flex flex-col items-center justify-center text-center ${
+              isDark
+                ? 'bg-black/30 border-white/5'
+                : 'bg-slate-50/90 border-slate-200/80'
+            }`}
+          >
+            <span className="text-[10px] text-orange-600 uppercase font-bold">En cours</span>
+            <span className="text-base font-extrabold text-orange-600 mt-0.5">
               {project.metrics.inProgressTasks}
             </span>
           </div>
@@ -170,8 +224,8 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
 
         {/* Overdue Alert Pill if tasks are late */}
         {project.metrics.overdueTasks > 0 && (
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-rose-950/60 border border-rose-800/60 text-rose-300 text-xs font-medium">
-            <AlertTriangle className="w-3.5 h-3.5 shrink-0 text-rose-400" />
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold">
+            <AlertTriangle className="w-3.5 h-3.5 shrink-0 text-rose-600" />
             <span>{project.metrics.overdueTasks} tâche{project.metrics.overdueTasks > 1 ? 's' : ''} en retard</span>
           </div>
         )}
@@ -179,10 +233,20 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
         {/* Global Progression Bar */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-slate-400 font-medium">Progression globale</span>
-            <span className="font-bold text-white">{project.metrics.progressPercentage}%</span>
+            <span className="text-slate-500 font-semibold">Progression globale</span>
+            <span
+              className={`font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}
+            >
+              {project.metrics.progressPercentage}%
+            </span>
           </div>
-          <div className="h-2 w-full bg-black/50 rounded-full overflow-hidden p-0.5 border border-white/5">
+          <div
+            className={`h-2.5 w-full rounded-full overflow-hidden p-0.5 border ${
+              isDark
+                ? 'bg-black/50 border-white/5'
+                : 'bg-slate-100 border-slate-200'
+            }`}
+          >
             <div
               className="h-full rounded-full transition-all duration-700 ease-out"
               style={{
@@ -194,12 +258,16 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
         </div>
 
         {/* Team Avatars & Next Deadline */}
-        <div className="flex items-center justify-between pt-2 border-t border-white/5 text-xs">
+        <div
+          className={`flex items-center justify-between pt-2 border-t text-xs ${
+            isDark ? 'border-white/5' : 'border-slate-100'
+          }`}
+        >
           {/* Members Avatars Stack */}
           <div className="flex items-center -space-x-2">
             {project.initiator && (
               <div
-                className="w-7 h-7 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 border-2 border-[#12151C] flex items-center justify-center text-[10px] font-bold text-white shadow"
+                className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-orange-500 border-2 border-white flex items-center justify-center text-[10px] font-bold text-white shadow-xs"
                 title={`Initiateur : ${project.initiator.fullName}`}
               >
                 {project.initiator.fullName.slice(0, 2).toUpperCase()}
@@ -208,14 +276,14 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
             {project.members.slice(0, 3).map((m) => (
               <div
                 key={m.id}
-                className="w-7 h-7 rounded-full bg-slate-700 border-2 border-[#12151C] flex items-center justify-center text-[10px] font-semibold text-slate-200 shadow"
+                className="w-7 h-7 rounded-full bg-slate-200 border-2 border-white flex items-center justify-center text-[10px] font-bold text-slate-700 shadow-xs"
                 title={m.fullName}
               >
                 {m.fullName.slice(0, 2).toUpperCase()}
               </div>
             ))}
             {project.members.length > 3 && (
-              <div className="w-7 h-7 rounded-full bg-slate-800 border-2 border-[#12151C] flex items-center justify-center text-[9px] font-semibold text-slate-300">
+              <div className="w-7 h-7 rounded-full bg-slate-300 border-2 border-white flex items-center justify-center text-[9px] font-bold text-slate-700">
                 +{project.members.length - 3}
               </div>
             )}
@@ -224,13 +292,13 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
           {/* Next upcoming deadline */}
           {project.nextDeadline ? (
             <div className="text-right">
-              <span className="text-[10px] text-slate-500 block">Prochaine échéance</span>
-              <span className="text-xs font-medium text-orange-300">
+              <span className="text-[10px] text-slate-400 block font-medium">Prochaine échéance</span>
+              <span className="text-xs font-bold text-orange-600">
                 {formatDate(project.nextDeadline)}
               </span>
             </div>
           ) : (
-            <span className="text-[10px] text-slate-500 italic">Aucune échéance</span>
+            <span className="text-[10px] text-slate-400 italic">Aucune échéance</span>
           )}
         </div>
 
@@ -240,7 +308,7 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
             {project.labels.slice(0, 4).map((l) => (
               <span
                 key={l.id}
-                className="px-2 py-0.5 rounded-md text-[10px] font-medium border"
+                className="px-2 py-0.5 rounded-md text-[10px] font-bold border"
                 style={{
                   backgroundColor: `${l.color}15`,
                   borderColor: `${l.color}40`,
@@ -251,7 +319,7 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
               </span>
             ))}
             {project.labels.length > 4 && (
-              <span className="px-1.5 py-0.5 rounded-md text-[10px] bg-slate-800 text-slate-400">
+              <span className="px-1.5 py-0.5 rounded-md text-[10px] bg-slate-100 text-slate-600 font-bold">
                 +{project.labels.length - 4}
               </span>
             )}
@@ -260,12 +328,22 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
       </div>
 
       {/* Footer / Direct Enter Project Action */}
-      <div className="p-4 pt-3 border-t border-slate-800/80 bg-black/40 relative z-10">
+      <div
+        className={`p-4 pt-3 border-t relative z-10 ${
+          isDark
+            ? 'border-slate-800/80 bg-black/40'
+            : 'border-slate-100 bg-slate-50/80'
+        }`}
+      >
         <Link
           href={`/projects/${project.id}`}
-          className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl bg-[#1A1F29] hover:bg-gradient-warm text-slate-200 hover:text-white text-xs font-semibold tracking-wide transition-all duration-300 group/btn border border-white/5 hover:border-transparent hover:shadow-lg hover:shadow-orange-950/40"
+          className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all duration-300 group/btn border shadow-xs ${
+            isDark
+              ? 'bg-[#1A1F29] hover:bg-gradient-warm text-slate-200 hover:text-white border-white/5'
+              : 'bg-white hover:bg-gradient-warm text-slate-900 hover:text-white border-slate-200 hover:border-transparent'
+          }`}
         >
-          <span>Entrer dans le projet</span>
+          <span>Ouvrir l'espace Kanban</span>
           <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
         </Link>
       </div>
