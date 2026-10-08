@@ -1,6 +1,15 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL 
-  ? `${process.env.NEXT_PUBLIC_API_URL}/api/v1`
-  : '/api/v1';
+const getApiBase = () => {
+  if (typeof window === 'undefined' && process.env.INTERNAL_API_URL) {
+    return `${process.env.INTERNAL_API_URL}/api/v1`;
+  }
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return `${process.env.NEXT_PUBLIC_API_URL}/api/v1`;
+  }
+  return '/api/v1';
+};
+
+const API_BASE = getApiBase();
+
 
 class ApiError extends Error {
   status: number;

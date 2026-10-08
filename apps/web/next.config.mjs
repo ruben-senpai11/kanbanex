@@ -10,12 +10,14 @@ const nextConfig = {
     ],
   },
   async rewrites() {
+    const apiTarget = process.env.INTERNAL_API_URL
+      || process.env.NEXT_PUBLIC_API_URL
+      || 'http://localhost:4000';
+
     return [
       {
         source: '/api/:path*',
-        destination: process.env.NEXT_PUBLIC_API_URL 
-          ? `${process.env.NEXT_PUBLIC_API_URL}/api/:path*` 
-          : 'http://localhost:4000/api/:path*',
+        destination: `${apiTarget}/api/:path*`,
       },
     ];
   },
