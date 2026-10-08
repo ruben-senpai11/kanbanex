@@ -1,13 +1,13 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": [
-    {
-      "name": "api",
-      "root": "apps/api"
+  "services": {
+    "api": {
+      "root": "apps/api",
+      "framework": "nestjs"
     },
-    {
-      "name": "web",
+    "web": {
       "root": "apps/web",
+      "framework": "nextjs",
       "bindings": [
         {
           "type": "service",
@@ -17,7 +17,7 @@
         }
       ]
     }
-  ],
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
