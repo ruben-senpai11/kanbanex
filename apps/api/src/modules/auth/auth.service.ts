@@ -100,13 +100,17 @@ export class AuthService {
     const passwordHash = await argon2.hash(dto.password);
     const normalizedEmail = dto.email.toLowerCase().trim();
 
+    // The first user to register becomes the SUPER_ADMIN as per specifications
+    const existingUsersCount = await this.prisma.user.count();
+    const role = existingUsersCount === 0 ? SystemRole.SUPER_ADMIN : SystemRole.USER;
+
     // Create user in database
     const user = await this.prisma.user.create({
       data: {
         email: normalizedEmail,
         passwordHash,
         fullName: dto.fullName.trim(),
-        role: SystemRole.USER,
+        role,
         isEmailVerified: true, // Immediate start as specified
       },
     });

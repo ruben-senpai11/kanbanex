@@ -84,32 +84,7 @@ async function main() {
     console.log(`Plan vérifié: ${plan.name} (${plan.price} ${plan.currency})`);
   }
 
-  // 2. Seed Super Admin (Single initial system administrator)
-  const superAdminEmail = process.env.SUPERADMIN_EMAIL || 'admin@kanbanex.expansion.io';
-  const superAdminPassword = process.env.SUPERADMIN_PASSWORD || 'SuperAdmin123!Secure';
-  const superAdminName = process.env.SUPERADMIN_NAME || 'Expansion SuperAdmin';
-
-  const existingSuperAdmin = await prisma.user.findUnique({
-    where: { email: superAdminEmail },
-  });
-
-  if (!existingSuperAdmin) {
-    const passwordHash = await argon2.hash(superAdminPassword);
-    await prisma.user.create({
-      data: {
-        email: superAdminEmail,
-        passwordHash,
-        fullName: superAdminName,
-        role: SystemRole.SUPER_ADMIN,
-        isEmailVerified: true,
-      },
-    });
-    console.log(`Compte Super Admin système créé: ${superAdminEmail}`);
-  } else {
-    console.log(`Compte Super Admin existant: ${superAdminEmail}`);
-  }
-
-  // 3. Seed System Settings
+  // 2. Seed System Settings
   const defaultSettings = [
     {
       key: 'FEDAPAY_ENABLED',
