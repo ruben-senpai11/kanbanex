@@ -20,7 +20,7 @@ export function CreateProjectModal({ isOpen, onClose, onSubmit }: CreateProjectM
   const [plannedStartDate, setPlannedStartDate] = useState('');
   const [plannedEndDate, setPlannedEndDate] = useState('');
   const [selectedTheme, setSelectedTheme] = useState(CINEMATIC_THEMES[0].id);
-  const [customColor, setCustomColor] = useState('#F97316');
+  const [customColor, setCustomColor] = useState('#FF7A00');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api';
 import { AppHeader } from '@/components/layout/AppHeader';
-import { AppSidebar } from '@/components/layout/AppSidebar';
 import { Button } from '@/components/ui/Button';
 import { formatFCFA, formatDate } from '@/lib/utils';
 import { Check, Shield, Sparkles, CreditCard, ExternalLink, AlertCircle } from 'lucide-react';
@@ -81,8 +80,6 @@ export default function BillingPage() {
       <AppHeader />
 
       <div className="flex-1 flex overflow-hidden">
-        <AppSidebar />
-
         <main className="flex-1 overflow-y-auto p-6 md:p-10 space-y-8 bg-[#0B0D11]">
           {/* Header */}
           <div className="max-w-5xl mx-auto space-y-2">

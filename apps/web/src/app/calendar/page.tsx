@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api';
 import { AppHeader } from '@/components/layout/AppHeader';
-import { AppSidebar } from '@/components/layout/AppSidebar';
 import { ProjectCalendar } from '@/components/calendar/ProjectCalendar';
 import { TaskDrawer } from '@/components/task/TaskDrawer';
 import { GlobalSearchModal } from '@/components/layout/GlobalSearchModal';
@@ -55,9 +54,6 @@ export default function WorkspaceCalendarPage() {
       <AppHeader onOpenSearch={() => setIsSearchOpen(true)} />
 
       <div className="flex-1 flex overflow-hidden">
-        <AppSidebar
-          projects={projects.map((p) => ({ id: p.id, name: p.name, customColor: p.customColor }))}
-        />
 
         <main className="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden bg-[#0B0D11]">
           {/* Calendar Header with Project Filter */}

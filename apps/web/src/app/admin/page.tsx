@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api';
 import { AppHeader } from '@/components/layout/AppHeader';
-import { AppSidebar } from '@/components/layout/AppSidebar';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { formatFCFA, formatDate } from '@/lib/utils';
@@ -111,7 +110,6 @@ export default function SuperAdminPage() {
       <div className="min-h-screen bg-[#0B0D11] text-slate-100 flex flex-col overflow-hidden">
         <AppHeader />
         <div className="flex-1 flex overflow-hidden">
-          <AppSidebar />
           <main className="flex-1 overflow-y-auto p-6 md:p-10 space-y-8 bg-[#0B0D11]">
             <div className="max-w-6xl mx-auto space-y-3">
               <Skeleton className="h-6 w-48 rounded-full" />
@@ -147,8 +145,6 @@ export default function SuperAdminPage() {
       <AppHeader />
 
       <div className="flex-1 flex overflow-hidden">
-        <AppSidebar />
-
         <main className="flex-1 overflow-y-auto p-6 md:p-10 space-y-8 bg-[#0B0D11]">
           {/* Super Admin Banner */}
           <div className="max-w-6xl mx-auto space-y-2">

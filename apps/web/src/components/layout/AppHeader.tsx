@@ -16,6 +16,7 @@ import {
   Shield,
   CreditCard,
   User as UserIcon,
+  Megaphone,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
@@ -37,12 +38,12 @@ export function AppHeader({
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   return (
-    <header className="h-12 border-b border-slate-200/80 bg-white/95 backdrop-blur-md sticky top-0 z-40 px-3 md:px-4 flex items-center justify-between shadow-xs">
+    <header className="h-12 border-b border-slate-200/80 dark:border-white/10 bg-white/95 dark:bg-[#1D2125]/90 backdrop-blur-md sticky top-0 z-40 px-3 md:px-4 flex items-center justify-between shadow-xs">
       {/* Left: 9-dots App Launcher, Logo & Workspace Switcher */}
       <div className="flex items-center gap-2 md:gap-3">
         {/* 9-dots app grid launcher */}
         <button
-          className="p-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+          className="p-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
           title="Écosystème Expansion"
         >
           <Grid className="w-4 h-4" />
@@ -60,7 +61,7 @@ export function AppHeader({
               priority
             />
           </div>
-          <span className="font-extrabold text-sm tracking-tight text-slate-900 flex items-center">
+          <span className="font-extrabold text-sm tracking-tight text-slate-900 dark:text-white flex items-center">
             Kaban<span className="text-orange-500">Ex</span>
           </span>
         </Link>
@@ -70,15 +71,15 @@ export function AppHeader({
           <div className="relative ml-1">
             <button
               onClick={() => setIsWsOpen(!isWsOpen)}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md hover:bg-slate-100 text-xs font-semibold text-slate-700 transition-colors"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-white/10 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors"
             >
               <span className="max-w-[120px] truncate">{currentWorkspace.name}</span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
+              <ChevronDown className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
             </button>
 
             {isWsOpen && (
               <div
-                className="absolute left-0 mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl py-1 z-50 animate-fade-in"
+                className="absolute left-0 mt-2 w-56 bg-white dark:bg-[#1D2125] border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl py-1 z-50 animate-fade-in text-slate-800 dark:text-slate-200"
                 onClick={() => setIsWsOpen(false)}
               >
                 <div className="px-3 py-1.5 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
@@ -88,7 +89,7 @@ export function AppHeader({
                   <button
                     key={ws.id}
                     onClick={() => setCurrentWorkspace(ws)}
-                    className="w-full text-left px-3 py-2 text-xs text-slate-800 hover:bg-slate-100 flex items-center justify-between"
+                    className="w-full text-left px-3 py-2 text-xs text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 flex items-center justify-between"
                   >
                     <span className="truncate">{ws.name}</span>
                     {ws.id === currentWorkspace.id && (
@@ -106,11 +107,11 @@ export function AppHeader({
       <div className="flex-1 max-w-md mx-4 hidden sm:block">
         <div
           onClick={onOpenSearch}
-          className="flex items-center gap-2.5 px-3 py-1.5 w-full rounded-lg bg-slate-100/90 hover:bg-slate-200/80 border border-slate-200/60 hover:border-slate-300 text-xs text-slate-500 cursor-pointer transition-all"
+          className="flex items-center gap-2.5 px-3 py-1.5 w-full rounded-lg bg-slate-100/90 dark:bg-[#22272B] hover:bg-slate-200/80 dark:hover:bg-[#282E33] border border-slate-200/60 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 text-xs text-slate-500 dark:text-slate-400 cursor-pointer transition-all"
         >
-          <Search className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+          <Search className="w-3.5 h-3.5 text-slate-400 dark:text-slate-400 shrink-0" />
           <span className="flex-1 truncate">Rechercher</span>
-          <kbd className="hidden md:inline-block px-1.5 py-0.5 rounded bg-white text-[10px] text-slate-400 border border-slate-200 shadow-2xs font-mono">
+          <kbd className="hidden md:inline-block px-1.5 py-0.5 rounded bg-white dark:bg-[#1D2125] text-[10px] text-slate-400 dark:text-slate-400 border border-slate-200 dark:border-slate-700 shadow-2xs font-mono">
             Ctrl+K
           </kbd>
         </div>
@@ -129,10 +130,18 @@ export function AppHeader({
           </button>
         )}
 
+        {/* Megaphone / Announcements (Trello style) */}
+        <button
+          className="p-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors hidden sm:block"
+          title="Nouveautés & Annonces"
+        >
+          <Megaphone className="w-4 h-4" />
+        </button>
+
         {/* Notifications Icon with Badge */}
         <button
           onClick={onOpenNotifications}
-          className="relative p-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+          className="relative p-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
           title="Notifications & Activité"
         >
           <Bell className="w-4 h-4" />
@@ -143,13 +152,13 @@ export function AppHeader({
 
         {/* Help Icon */}
         <button
-          className="p-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+          className="p-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
           title="Aide & Raccourcis"
         >
           <HelpCircle className="w-4 h-4" />
         </button>
 
-        {/* User Avatar (Circle with initials) */}
+        {/* User Avatar (Circle with initials & online indicator) */}
         {user && (
           <div className="relative ml-1">
             <button
@@ -157,21 +166,24 @@ export function AppHeader({
               className="flex items-center focus:outline-none"
               title={user.fullName}
             >
-              <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-orange-500 text-white font-bold text-xs flex items-center justify-center shadow-xs border-2 border-white hover:scale-105 transition-transform">
-                {user.fullName.slice(0, 2).toUpperCase()}
+              <div className="relative">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-rose-600 to-orange-500 text-white font-bold text-xs flex items-center justify-center shadow-xs border-2 border-white hover:scale-105 transition-transform">
+                  {user.fullName.slice(0, 2).toUpperCase()}
+                </div>
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white absolute -bottom-0.5 -right-0.5 shadow-2xs" />
               </div>
             </button>
 
             {isUserMenuOpen && (
               <div
-                className="absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl py-1 z-50 animate-fade-in"
+                className="absolute right-0 mt-2 w-56 bg-white dark:bg-[#1D2125] border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl py-1 z-50 animate-fade-in text-slate-800 dark:text-slate-200"
                 onClick={() => setIsUserMenuOpen(false)}
               >
-                <div className="px-3.5 py-2.5 border-b border-slate-100">
-                  <p className="text-xs font-bold text-slate-900 truncate">{user.fullName}</p>
-                  <p className="text-[11px] text-slate-500 truncate">{user.email}</p>
+                <div className="px-3.5 py-2.5 border-b border-slate-100 dark:border-slate-800">
+                  <p className="text-xs font-bold text-slate-900 dark:text-white truncate">{user.fullName}</p>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">{user.email}</p>
                   {user.role === 'SUPER_ADMIN' && (
-                    <span className="inline-block mt-1 px-1.5 py-0.5 rounded text-[10px] bg-amber-100 text-amber-800 border border-amber-200 font-bold">
+                    <span className="inline-block mt-1 px-1.5 py-0.5 rounded text-[10px] bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 font-bold">
                       Super Admin
                     </span>
                   )}
@@ -179,7 +191,7 @@ export function AppHeader({
 
                 <Link
                   href="/overview"
-                  className="flex items-center gap-2 px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-100"
+                  className="flex items-center gap-2 px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10"
                 >
                   <Layers className="w-4 h-4 text-slate-500" />
                   Tous mes projets
@@ -187,7 +199,7 @@ export function AppHeader({
 
                 <Link
                   href="/billing"
-                  className="flex items-center gap-2 px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-100"
+                  className="flex items-center gap-2 px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10"
                 >
                   <CreditCard className="w-4 h-4 text-slate-500" />
                   Abonnement & Facturation
@@ -196,18 +208,18 @@ export function AppHeader({
                 {user.role === 'SUPER_ADMIN' && (
                   <Link
                     href="/admin"
-                    className="flex items-center gap-2 px-3.5 py-2 text-xs text-amber-700 hover:bg-amber-50 font-medium"
+                    className="flex items-center gap-2 px-3.5 py-2 text-xs text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/40 font-medium"
                   >
                     <Shield className="w-4 h-4 text-amber-600" />
                     Console Super Admin
                   </Link>
                 )}
 
-                <div className="border-t border-slate-100 my-1" />
+                <div className="border-t border-slate-100 dark:border-slate-800 my-1" />
 
                 <button
                   onClick={logout}
-                  className="w-full text-left flex items-center gap-2 px-3.5 py-2 text-xs text-rose-600 hover:bg-rose-50"
+                  className="w-full text-left flex items-center gap-2 px-3.5 py-2 text-xs text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40"
                 >
                   <LogOut className="w-4 h-4" />
                   Déconnexion

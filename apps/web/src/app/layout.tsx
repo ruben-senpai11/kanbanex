@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { AuthProvider } from '@/lib/auth-context';
+import { PreferencesProvider } from '@/lib/preferences-context';
 import { SplashScreen } from '@/components/ui/SplashScreen';
 
 export const metadata: Metadata = {
@@ -19,10 +20,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className="dark">
+    <html lang="fr" suppressHydrationWarning>
       <body className="min-h-screen bg-[#0B0D11] text-slate-100 antialiased selection:bg-brand-500 selection:text-white">
-        <SplashScreen />
-        <AuthProvider>{children}</AuthProvider>
+        <PreferencesProvider>
+          <SplashScreen />
+          <AuthProvider>{children}</AuthProvider>
+        </PreferencesProvider>
       </body>
     </html>
   );

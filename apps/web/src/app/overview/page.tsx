@@ -2,20 +2,32 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api';
-import { AppHeader } from '@/components/layout/AppHeader';
-import { AppSidebar } from '@/components/layout/AppSidebar';
+import { usePreferences } from '@/lib/preferences-context';
 import { HorizontalProjectList } from '@/components/overview/HorizontalProjectList';
 import { CreateProjectModal } from '@/components/overview/CreateProjectModal';
 import { ThemeSelectorModal } from '@/components/overview/ThemeSelectorModal';
+import { OverviewCustomizationModal } from '@/components/overview/OverviewCustomizationModal';
+import { PlanModal } from '@/components/overview/PlanModal';
 import { GlobalSearchModal } from '@/components/layout/GlobalSearchModal';
-import { Plus, Sparkles, FolderKanban } from 'lucide-react';
+import {
+  Plus,
+  Search,
+  ChevronDown,
+  LogOut,
+  CreditCard,
+  Palette,
+  Sparkles,
+  Layers,
+} from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export default function OverviewPage() {
   const router = useRouter();
-  const { user, currentWorkspace, isLoading: isAuthLoading } = useAuth();
+  const { user, currentWorkspace, workspaces, setCurrentWorkspace, logout, isLoading: isAuthLoading } = useAuth();
+  const { currentOverviewTheme, overviewBackground } = usePreferences();
 
   const [projects, setProjects] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +35,10 @@ export default function OverviewPage() {
   // Modals state
   const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isCustomizationOpen, setIsCustomizationOpen] = useState(false);
+  const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
   const [themeModalProjectId, setThemeModalProjectId] = useState<string | null>(null);
+  const [isWsDropdownOpen, setIsWsDropdownOpen] = useState(false);
 
   // Keyboard shortcut Ctrl+K
   useEffect(() => {
@@ -42,7 +57,7 @@ export default function OverviewPage() {
     setIsLoading(true);
     try {
       const data = await api.getProjectsOverview(currentWorkspace.id);
-      setProjects(data);
+      setProjects(data || []);
     } catch (err) {
       console.error('Failed to load projects overview', err);
     } finally {
@@ -62,8 +77,11 @@ export default function OverviewPage() {
 
   const handleCreateProject = async (data: any) => {
     if (!currentWorkspace) return;
-    await api.createProject(currentWorkspace.id, data);
+    const res = await api.createProject(currentWorkspace.id, data);
     await loadProjects();
+    if (res?.id) {
+      router.push(`/projects/${res.id}`);
+    }
   };
 
   const handleSaveTheme = async (projectId: string, themeId: string, customColor: string) => {
@@ -75,59 +93,160 @@ export default function OverviewPage() {
   };
 
   const currentThemeProject = projects.find((p) => p.id === themeModalProjectId);
+  const workspaceTitle = currentWorkspace?.name || "Ma Vision de l'Avenir";
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col overflow-hidden">
-      <AppHeader
-        onOpenSearch={() => setIsSearchOpen(true)}
-        onOpenNewProject={() => setIsNewProjectOpen(true)}
-      />
+    <div
+      className={`min-h-screen flex flex-col justify-between overflow-hidden relative select-none transition-colors duration-300 ${
+        currentOverviewTheme.backgroundClass
+      }`}
+      style={currentOverviewTheme.backgroundStyle}
+    >
+      {/* 1. Responsive Wallpaper Layer (Desktop: Img 3 / Mobile: Img 2 by default) */}
+      {currentOverviewTheme.isWallpaper && (
+        <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none select-none">
+          {/* Mobile Wallpaper: 9:16 Portrait */}
+          <div
+            className="block md:hidden absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url('/images/kabanex-mobile.jpg')` }}
+          />
+          {/* Desktop Wallpaper: 16:9 Landscape */}
+          <div
+            className="hidden md:block absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url('/images/kabanex-desktop.jpg')` }}
+          />
+          {/* Atmospheric Contrast Overlay */}
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-[0.5px]" />
+        </div>
+      )}
 
-      <div className="flex-1 flex overflow-hidden">
-        <AppSidebar
-          onOpenNewProject={() => setIsNewProjectOpen(true)}
-          projects={projects.map((p) => ({ id: p.id, name: p.name, customColor: p.customColor }))}
-        />
-
-        {/* Main Overview Canvas (Gradient & Light Background) */}
-        <main className="flex-1 flex flex-col h-[calc(100vh-48px)] overflow-hidden bg-gradient-to-br from-slate-100 via-white to-orange-50/20 relative">
-          {/* Subtle Ambient Warm Glow */}
-          <div className="absolute top-0 right-1/4 w-[500px] h-40 bg-orange-500/5 blur-3xl pointer-events-none" />
-
-          {/* Panoramic Page Header */}
-          <div className="px-6 md:px-10 pt-6 pb-2 shrink-0 flex items-center justify-between">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold text-orange-600 uppercase tracking-widest flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  Univers de Projets
-                </span>
-              </div>
-              <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-0.5">
-                Tous mes projets
-              </h1>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Button
-                onClick={() => setIsNewProjectOpen(true)}
-                className="brand-glow shadow-sm"
-              >
-                <Plus className="w-4 h-4 mr-1.5" />
-                Nouveau Projet
-              </Button>
-            </div>
+      {/* 2. Top Header (Minimalist & Clean: Workspace Title on Left, Add Project on Right) */}
+      <header className="h-16 px-4 md:px-8 flex items-center justify-between shrink-0 relative z-30">
+        {/* Top-Left: Workspace Title with KabanEx Emblem & Switcher */}
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-xl overflow-hidden border border-amber-500/40 shadow-md bg-black shrink-0">
+            <Image
+              src="/images/kabanex-logo.jpg"
+              alt="KabanEx"
+              width={32}
+              height={32}
+              className="w-full h-full object-cover"
+              priority
+            />
           </div>
 
-          {/* Panoramic Horizontal Projects List with Inertia, GSAP & Shimmer Skeletons */}
-          <HorizontalProjectList
-            projects={projects}
-            isLoading={isLoading}
-            onOpenNewProject={() => setIsNewProjectOpen(true)}
-            onOpenThemeSelector={(pId) => setThemeModalProjectId(pId)}
-          />
-        </main>
-      </div>
+          <div className="relative">
+            <button
+              onClick={() => workspaces.length > 1 && setIsWsDropdownOpen(!isWsDropdownOpen)}
+              className="flex items-center gap-2 group text-left"
+            >
+              <h1 className="text-xl md:text-2xl font-black text-white tracking-tight drop-shadow-md truncate max-w-[280px] md:max-w-md">
+                {workspaceTitle}
+              </h1>
+              {workspaces.length > 1 && (
+                <ChevronDown className="w-4 h-4 text-white/70 group-hover:text-white transition-transform" />
+              )}
+            </button>
+
+            {/* Dropdown if multiple workspaces */}
+            {isWsDropdownOpen && workspaces.length > 1 && (
+              <div
+                className="absolute left-0 mt-2 w-60 bg-white dark:bg-[#12151C] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl py-1.5 z-50 animate-fade-in text-slate-800 dark:text-slate-200"
+                onClick={() => setIsWsDropdownOpen(false)}
+              >
+                <div className="px-3 py-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                  Mes espaces de travail
+                </div>
+                {workspaces.map((ws) => (
+                  <button
+                    key={ws.id}
+                    onClick={() => setCurrentWorkspace(ws)}
+                    className="w-full text-left px-3 py-2 text-xs hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between"
+                  >
+                    <span className="truncate">{ws.name}</span>
+                    {ws.id === currentWorkspace?.id && (
+                      <span className="w-2 h-2 rounded-full bg-orange-500" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Top-Right: Quick Search & "+ Créer un projet" Primary Button */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsSearchOpen(true)}
+            className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white/80 hover:text-white backdrop-blur-md transition-colors hidden sm:flex items-center gap-2 text-xs font-medium border border-white/10"
+            title="Recherche rapide (Ctrl+K)"
+          >
+            <Search className="w-4 h-4" />
+            <span className="hidden md:inline">Rechercher</span>
+            <kbd className="hidden md:inline px-1.5 py-0.5 rounded text-[10px] bg-white/20 text-white/90 font-mono">
+              Ctrl K
+            </kbd>
+          </button>
+
+          <Button
+            onClick={() => setIsNewProjectOpen(true)}
+            size="md"
+            className="brand-glow bg-gradient-warm hover:brightness-105 text-white font-bold shadow-lg text-xs md:text-sm px-4 md:px-5 rounded-xl border border-white/20 active:scale-95 transition-all"
+          >
+            <Plus className="w-4 h-4 mr-1.5" />
+            <span>Créer un projet</span>
+          </Button>
+        </div>
+      </header>
+
+      {/* 3. Main Body (~90% Screen Height): Panoramic Project Cards (Zero Dummy Data) */}
+      <main className="flex-1 flex flex-col justify-center overflow-hidden relative z-20 py-2">
+        <HorizontalProjectList
+          projects={projects}
+          isLoading={isLoading}
+          onOpenNewProject={() => setIsNewProjectOpen(true)}
+          onOpenThemeSelector={(pId) => setThemeModalProjectId(pId)}
+        />
+      </main>
+
+      {/* 4. Mini Footer: Me déconnecter, Mon Plan/Abonnement, Personnalisation */}
+      <footer className="h-16 px-4 md:px-8 pb-3 flex items-center justify-center shrink-0 relative z-30">
+        <div className="flex items-center gap-1.5 md:gap-3 p-1.5 rounded-full bg-black/50 hover:bg-black/60 backdrop-blur-xl border border-white/15 shadow-2xl transition-all text-white/90">
+          {/* Action 1: Me déconnecter */}
+          <button
+            onClick={() => logout()}
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold hover:bg-white/15 text-slate-300 hover:text-rose-400 transition-colors"
+            title="Se déconnecter"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span>Me déconnecter</span>
+          </button>
+
+          <div className="w-px h-4 bg-white/20" />
+
+          {/* Action 2: Mon Plan / Abonnement */}
+          <button
+            onClick={() => setIsPlanModalOpen(true)}
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold hover:bg-white/15 text-slate-300 hover:text-white transition-colors"
+            title="Consulter mon abonnement et mes formules"
+          >
+            <CreditCard className="w-3.5 h-3.5 text-amber-400" />
+            <span>Mon Plan / Abonnement</span>
+          </button>
+
+          <div className="w-px h-4 bg-white/20" />
+
+          {/* Action 3: Personnalisation */}
+          <button
+            onClick={() => setIsCustomizationOpen(true)}
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold hover:bg-white/15 text-slate-300 hover:text-orange-400 transition-colors"
+            title="Changer l'arrière-plan de l'overview, la couleur primaire et le thème"
+          >
+            <Palette className="w-3.5 h-3.5 text-orange-400" />
+            <span>Personnalisation</span>
+          </button>
+        </div>
+      </footer>
 
       {/* Modals */}
       <CreateProjectModal
@@ -143,6 +262,16 @@ export default function OverviewPage() {
         initialThemeId={currentThemeProject?.backgroundTheme}
         initialColor={currentThemeProject?.customColor}
         onSaveTheme={handleSaveTheme}
+      />
+
+      <OverviewCustomizationModal
+        isOpen={isCustomizationOpen}
+        onClose={() => setIsCustomizationOpen(false)}
+      />
+
+      <PlanModal
+        isOpen={isPlanModalOpen}
+        onClose={() => setIsPlanModalOpen(false)}
       />
 
       <GlobalSearchModal
