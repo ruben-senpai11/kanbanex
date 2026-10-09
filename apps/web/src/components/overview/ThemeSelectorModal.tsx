@@ -58,26 +58,26 @@ export function ThemeSelectorModal({
         )}
 
         {/* Color picker */}
-        <div className="flex items-center justify-between p-3.5 rounded-xl bg-[#15181F] border border-slate-800">
+        <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-100 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-2.5">
-            <Palette className="w-4 h-4 text-orange-400" />
-            <span className="text-xs font-medium text-slate-200">Couleur d'accent personnalisée</span>
+            <Palette className="w-4 h-4 text-orange-500" />
+            <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">Couleur d'accent personnalisée</span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-slate-400 font-mono">{customColor}</span>
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-bold">{customColor}</span>
             <input
               type="color"
               value={customColor}
               onChange={(e) => setCustomColor(e.target.value)}
-              className="w-8 h-8 rounded-lg bg-transparent cursor-pointer"
+              className="w-8 h-8 rounded-lg bg-transparent cursor-pointer border-0"
             />
           </div>
         </div>
 
         {/* Themes presets */}
         <div className="space-y-2">
-          <label className="text-xs font-semibold text-white flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-orange-400" />
+          <label className="text-xs font-semibold text-slate-800 dark:text-white flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-orange-500" />
             Bibliothèque d'univers cinématographiques
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
@@ -93,7 +93,7 @@ export function ThemeSelectorModal({
                   className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col justify-between h-24 relative overflow-hidden group ${
                     isSelected
                       ? 'border-orange-500 ring-2 ring-orange-500/40 shadow-lg'
-                      : 'border-slate-800 hover:border-slate-700'
+                      : 'border-slate-300 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-700'
                   }`}
                   style={{
                     background: theme.previewBg,
@@ -105,8 +105,8 @@ export function ThemeSelectorModal({
                       {theme.name}
                     </span>
                     {isSelected && (
-                      <span className="w-4 h-4 rounded-full bg-orange-500 flex items-center justify-center text-white shrink-0">
-                        <Check className="w-2.5 h-2.5" />
+                      <span className="w-4 h-4 rounded-full bg-orange-500 flex items-center justify-center text-white shrink-0 shadow-xs">
+                        <Check className="w-2.5 h-2.5 stroke-[3]" />
                       </span>
                     )}
                   </div>
@@ -120,11 +120,11 @@ export function ThemeSelectorModal({
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
           <Button variant="ghost" onClick={onClose}>
             Annuler
           </Button>
-          <Button onClick={handleSave} isLoading={isLoading}>
+          <Button onClick={handleSave} isLoading={isLoading} className="brand-glow">
             Appliquer le thème
           </Button>
         </div>

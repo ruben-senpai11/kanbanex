@@ -48,22 +48,22 @@ export function InboxDrawer({
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-white border-l border-slate-200 shadow-2xl flex flex-col">
+        <div className="w-screen max-w-md bg-white dark:bg-[#12151C] border-l border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col text-slate-900 dark:text-slate-100">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/80">
+          <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/80 dark:bg-[#0E1117]">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center">
                 <Inbox className="w-4 h-4" />
               </div>
               <div>
-                <h2 className="text-sm font-bold text-slate-900">Boîte de réception & Activité</h2>
-                <p className="text-[11px] text-slate-500">Flux d'activité récent sur ce tableau</p>
+                <h2 className="text-sm font-bold text-slate-900 dark:text-white">Boîte de réception & Activité</h2>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">Flux d'activité récent sur ce tableau</p>
               </div>
             </div>
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -73,10 +73,10 @@ export function InboxDrawer({
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {activities.length === 0 ? (
               <div className="py-16 text-center space-y-2">
-                <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 mx-auto flex items-center justify-center">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
-                <p className="text-xs font-semibold text-slate-700">Tout est à jour !</p>
+                <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">Tout est à jour !</p>
                 <p className="text-[11px] text-slate-400 max-w-xs mx-auto">
                   Les modifications de cartes, commentaires et assignations apparaîtront ici en direct.
                 </p>
@@ -85,10 +85,10 @@ export function InboxDrawer({
               activities.map((act) => (
                 <div
                   key={act.id}
-                  className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/80 transition-colors space-y-1.5"
+                  className="p-3 rounded-xl bg-slate-50 dark:bg-[#15181F] hover:bg-slate-100/80 dark:hover:bg-[#1A1F29] border border-slate-200/80 dark:border-slate-800 transition-colors space-y-1.5"
                 >
                   <div className="flex items-center justify-between text-[11px]">
-                    <span className="font-semibold text-slate-900 flex items-center gap-1.5">
+                    <span className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5">
                       <User className="w-3 h-3 text-orange-500" />
                       {act.user?.fullName || 'Utilisateur'}
                     </span>
@@ -98,10 +98,10 @@ export function InboxDrawer({
                     </span>
                   </div>
 
-                  <p className="text-xs text-slate-700">
-                    <span className="font-medium text-slate-900">{act.action}</span>
+                  <p className="text-xs text-slate-700 dark:text-slate-300">
+                    <span className="font-medium text-slate-900 dark:text-white">{act.action}</span>
                     {act.entityTitle && (
-                      <span className="ml-1 font-semibold text-orange-600">
+                      <span className="ml-1 font-semibold text-orange-600 dark:text-orange-400">
                         « {act.entityTitle} »
                       </span>
                     )}

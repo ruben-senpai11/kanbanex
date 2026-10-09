@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className="min-h-screen bg-[#0B0D11] text-slate-100 antialiased selection:bg-brand-500 selection:text-white">
+      <body className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0B0D11] dark:text-slate-100 antialiased selection:bg-brand-500 selection:text-white">
         <PreferencesProvider>
           <SplashScreen />
           <AuthProvider>{children}</AuthProvider>

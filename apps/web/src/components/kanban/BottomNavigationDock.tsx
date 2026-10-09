@@ -28,11 +28,11 @@ export function BottomNavigationDock({
 }: BottomNavigationDockProps) {
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 select-none animate-fade-in">
-      <nav className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-lg border border-slate-200/90 shadow-lg shadow-slate-900/10 text-slate-700">
+      <nav className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/95 dark:bg-[#1D2125]/95 backdrop-blur-lg border border-slate-200/90 dark:border-white/10 shadow-lg shadow-slate-900/10 text-slate-700 dark:text-slate-200">
         {/* 1. Boîte de réception (Inbox) */}
         <button
           onClick={onOpenInbox}
-          className="relative flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all"
+          className="relative flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-all"
           title="Boîte de réception & Activités"
         >
           <Inbox className="w-3.5 h-3.5" />
@@ -47,8 +47,8 @@ export function BottomNavigationDock({
           onClick={() => onSelectView('calendar')}
           className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
             activeView === 'calendar'
-              ? 'bg-slate-900 text-white shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              ? 'bg-slate-900 dark:bg-orange-500 text-white shadow-xs'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10'
           }`}
           title="Vue Calendrier"
         >
@@ -61,15 +61,15 @@ export function BottomNavigationDock({
           onClick={() => onSelectView('kanban')}
           className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition-all relative ${
             activeView === 'kanban'
-              ? 'bg-slate-900 text-white shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              ? 'bg-slate-900 dark:bg-orange-500 text-white shadow-xs'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10'
           }`}
           title="Vue Tableau Kanban"
         >
           <Columns className="w-3.5 h-3.5" />
           <span>Tableau</span>
           {activeView === 'kanban' && (
-            <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-orange-500 rounded-full" />
+            <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-orange-500 dark:bg-white rounded-full" />
           )}
         </button>
 
@@ -78,8 +78,8 @@ export function BottomNavigationDock({
           onClick={() => onSelectView('gantt')}
           className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
             activeView === 'gantt'
-              ? 'bg-slate-900 text-white shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              ? 'bg-slate-900 dark:bg-orange-500 text-white shadow-xs'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10'
           }`}
           title="Vue Gantt & Dépendances"
         >
@@ -87,12 +87,12 @@ export function BottomNavigationDock({
           <span className="hidden sm:inline">Gantt</span>
         </button>
 
-        <div className="h-4 w-px bg-slate-200 mx-1" />
+        <div className="h-4 w-px bg-slate-200 dark:bg-white/10 mx-1" />
 
         {/* 5. Changer de tableau (Overview / Switcher) */}
         <button
           onClick={onOpenBoardSwitcher}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:text-orange-600 hover:bg-orange-50/80 transition-all"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-50/80 dark:hover:bg-orange-950/40 transition-all"
           title="Changer de tableau (Tous mes projets)"
         >
           <Layers className="w-3.5 h-3.5 text-orange-500" />

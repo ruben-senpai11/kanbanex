@@ -30,14 +30,17 @@ export class SearchService {
           ],
         }),
       },
-      take: 10,
+      take: 15,
       select: {
         id: true,
         name: true,
         slug: true,
+        description: true,
         status: true,
         priority: true,
         customColor: true,
+        customGradient: true,
+        backgroundTheme: true,
       },
     });
 
@@ -58,11 +61,14 @@ export class SearchService {
       ];
     }
 
-    if (params.status) {
+    const validStatuses = ['TODO', 'IN_PROGRESS', 'IN_REVIEW', 'DONE'];
+    const validPriorities = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'];
+
+    if (params.status && validStatuses.includes(params.status)) {
       taskWhere.status = params.status;
     }
 
-    if (params.priority) {
+    if (params.priority && validPriorities.includes(params.priority)) {
       taskWhere.priority = params.priority;
     }
 

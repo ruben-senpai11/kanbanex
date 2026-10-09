@@ -46,23 +46,23 @@ export function BoardFilterModal({
         onClick={onClose}
       />
 
-      <div className="relative bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-sm p-4 space-y-4 z-10 text-slate-800">
-        <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+      <div className="relative bg-white dark:bg-[#12151C] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-sm p-4 space-y-4 z-10 text-slate-800 dark:text-slate-100">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-orange-500" />
-            <h3 className="text-sm font-bold text-slate-900">Filtrer les cartes</h3>
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white">Filtrer les cartes</h3>
           </div>
           <div className="flex items-center gap-1">
             <button
               onClick={onReset}
-              className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+              className="p-1 rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               title="Réinitialiser les filtres"
             >
               <RotateCcw className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={onClose}
-              className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+              className="p-1 rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -71,7 +71,7 @@ export function BoardFilterModal({
 
         {/* Mot-clé */}
         <div className="space-y-1.5">
-          <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+          <label className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             Recherche par titre
           </label>
           <input
@@ -79,13 +79,13 @@ export function BoardFilterModal({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Filtrer par mot-clé..."
-            className="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-orange-500 shadow-2xs"
+            className="w-full px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-[#1A1F29] text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:border-orange-500 shadow-2xs"
           />
         </div>
 
         {/* Priorité */}
         <div className="space-y-1.5">
-          <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+          <label className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             Priorité
           </label>
           <div className="grid grid-cols-2 gap-1.5">
@@ -96,7 +96,7 @@ export function BoardFilterModal({
                 className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold text-left transition-colors flex items-center justify-between ${
                   selectedPriority === p.id
                     ? 'bg-orange-500 text-white shadow-2xs'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200/80'
+                    : 'bg-slate-100 dark:bg-[#1A1F29] text-slate-700 dark:text-slate-300 hover:bg-slate-200/80 dark:hover:bg-[#202633]'
                 }`}
               >
                 <span>{p.label}</span>
@@ -109,7 +109,7 @@ export function BoardFilterModal({
         {/* Labels */}
         {labels.length > 0 && (
           <div className="space-y-1.5">
-            <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+            <label className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Étiquettes
             </label>
             <div className="flex flex-wrap gap-1.5">
@@ -117,8 +117,8 @@ export function BoardFilterModal({
                 onClick={() => onLabelChange('')}
                 className={`px-2 py-1 rounded-md text-[11px] font-bold transition-colors ${
                   !selectedLabelId
-                    ? 'bg-slate-900 text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-slate-900 dark:bg-orange-500 text-white'
+                    : 'bg-slate-100 dark:bg-[#1A1F29] text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800'
                 }`}
               >
                 Toutes
@@ -144,10 +144,10 @@ export function BoardFilterModal({
           </div>
         )}
 
-        <div className="pt-2 border-t border-slate-100 flex items-center justify-end">
+        <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end">
           <button
             onClick={onClose}
-            className="px-3.5 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-bold hover:bg-slate-800"
+            className="px-3.5 py-1.5 rounded-lg bg-gradient-warm text-white text-xs font-bold hover:brightness-105 shadow-xs"
           >
             Appliquer
           </button>

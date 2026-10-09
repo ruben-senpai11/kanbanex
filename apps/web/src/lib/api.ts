@@ -21,6 +21,18 @@ class ApiError extends Error {
   }
 }
 
+export function toQueryString(params?: Record<string, any>): string {
+  if (!params) return '';
+  const searchParams = new URLSearchParams();
+  for (const [key, val] of Object.entries(params)) {
+    if (val !== undefined && val !== null && val !== '' && val !== 'undefined' && val !== 'null') {
+      searchParams.append(key, String(val));
+    }
+  }
+  const str = searchParams.toString();
+  return str ? `?${str}` : '';
+}
+
 let authToken: string | null = null;
 let refreshToken: string | null = null;
 
@@ -179,8 +191,7 @@ export const api = {
   // Activity & Search
   getProjectActivity: (projectId: string) => apiRequest(`/activity/project/${projectId}`),
   globalSearch: (workspaceId: string, params: any) => {
-    const q = new URLSearchParams(params).toString();
-    return apiRequest(`/search/workspace/${workspaceId}?${q}`);
+    return apiRequest(`/search/workspace/${workspaceId}${toQueryString(params)}`);
   },
 
   // Billing
@@ -192,15 +203,13 @@ export const api = {
   // Super Admin
   getAdminStats: () => apiRequest('/admin/stats'),
   getAdminUsers: (params?: any) => {
-    const q = new URLSearchParams(params).toString();
-    return apiRequest(`/admin/users?${q}`);
+    return apiRequest(`/admin/users${toQueryString(params)}`);
   },
   updateUserRole: (userId: string, role: string) => apiRequest(`/admin/users/${userId}/role`, { method: 'PATCH', body: JSON.stringify({ role }) }),
   getAdminPlans: () => apiRequest('/admin/plans'),
   updateAdminPlan: (planId: string, dto: any) => apiRequest(`/admin/plans/${planId}`, { method: 'PATCH', body: JSON.stringify(dto) }),
   getAdminTransactions: (params?: any) => {
-    const q = new URLSearchParams(params).toString();
-    return apiRequest(`/admin/transactions?${q}`);
+    return apiRequest(`/admin/transactions${toQueryString(params)}`);
   },
   getAdminSettings: () => apiRequest('/admin/settings'),
   updateAdminSetting: (dto: any) => apiRequest('/admin/settings', { method: 'POST', body: JSON.stringify(dto) }),

@@ -50,30 +50,30 @@ export default function WorkspaceCalendarPage() {
   }, [selectedProjectId]);
 
   return (
-    <div className="min-h-screen bg-[#0B0D11] text-slate-100 flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0B0D11] dark:text-slate-100 flex flex-col overflow-hidden">
       <AppHeader onOpenSearch={() => setIsSearchOpen(true)} />
 
       <div className="flex-1 flex overflow-hidden">
 
-        <main className="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden bg-[#0B0D11]">
+        <main className="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden bg-slate-50 dark:bg-[#0B0D11]">
           {/* Calendar Header with Project Filter */}
-          <div className="h-16 px-6 border-b border-slate-800 bg-[#12151C] shrink-0 flex items-center justify-between">
+          <div className="h-16 px-6 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#12151C] shrink-0 flex items-center justify-between">
             <div>
-              <h1 className="text-base font-bold text-white tracking-tight">
+              <h1 className="text-base font-bold text-slate-900 dark:text-white tracking-tight">
                 Calendrier global
               </h1>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Visualisez et anticipez les échéances de vos projets
               </p>
             </div>
 
             {projects.length > 0 && (
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-400">Projet :</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">Projet :</span>
                 <select
                   value={selectedProjectId}
                   onChange={(e) => setSelectedProjectId(e.target.value)}
-                  className="bg-[#181D26] border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-orange-500"
+                  className="bg-slate-100 dark:bg-[#181D26] border border-slate-200 dark:border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-orange-500"
                 >
                   {projects.map((p) => (
                     <option key={p.id} value={p.id}>

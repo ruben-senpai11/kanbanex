@@ -73,18 +73,20 @@ export function BoardSubHeader({
 
           {isProjectDropdownOpen && (
             <div
-              className="absolute left-0 mt-1.5 w-64 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 z-50 animate-fade-in text-slate-800"
+              className="absolute left-0 mt-1.5 w-64 bg-white dark:bg-[#12151C] border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl py-1.5 z-50 animate-fade-in text-slate-800 dark:text-slate-200"
               onClick={() => setIsProjectDropdownOpen(false)}
             >
-              <div className="px-3 py-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+              <div className="px-3 py-1 text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider">
                 Changer de tableau
               </div>
               {allProjects.map((p) => (
                 <button
                   key={p.id}
                   onClick={() => onSelectProject?.(p.id)}
-                  className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-slate-100 ${
-                    p.id === projectId ? 'font-bold text-orange-600 bg-orange-50/50' : 'text-slate-700'
+                  className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors ${
+                    p.id === projectId
+                      ? 'font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-950/30'
+                      : 'text-slate-700 dark:text-slate-300'
                   }`}
                 >
                   <div className="flex items-center gap-2 truncate">
@@ -94,7 +96,7 @@ export function BoardSubHeader({
                     />
                     <span className="truncate">{p.name}</span>
                   </div>
-                  {p.id === projectId && <Check className="w-3.5 h-3.5 text-orange-600 shrink-0" />}
+                  {p.id === projectId && <Check className="w-3.5 h-3.5 text-orange-600 dark:text-orange-400 shrink-0" />}
                 </button>
               ))}
             </div>

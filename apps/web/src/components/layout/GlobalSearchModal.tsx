@@ -63,26 +63,26 @@ export function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModalProps) {
       <div className="space-y-4">
         {/* Search Input Bar */}
         <div className="relative">
-          <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+          <Search className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3.5" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Rechercher par titre, description, mot-clé..."
-            className="w-full pl-10 pr-4 py-2.5 bg-[#15181F] border border-slate-700 rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-orange-500/80 focus:ring-1 focus:ring-orange-500/80"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-100 dark:bg-[#15181F] border border-slate-300 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-orange-500/80 focus:ring-1 focus:ring-orange-500/80"
             autoFocus
           />
         </div>
 
         {/* Quick Filter Badges */}
-        <div className="flex flex-wrap items-center gap-2 pt-1 border-b border-slate-800 pb-3 text-xs">
-          <span className="text-slate-400 text-[11px] uppercase font-semibold">Filtres :</span>
+        <div className="flex flex-wrap items-center gap-2 pt-1 border-b border-slate-200 dark:border-slate-800 pb-3 text-xs">
+          <span className="text-slate-500 dark:text-slate-400 text-[11px] uppercase font-semibold">Filtres :</span>
 
           {/* Priority filter */}
           <select
             value={priorityFilter}
             onChange={(e) => setPriorityFilter(e.target.value)}
-            className="bg-[#181D26] border border-slate-700/80 text-slate-300 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-orange-500"
+            className="bg-slate-100 dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 text-slate-700 dark:text-slate-300 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-orange-500"
           >
             <option value="">Toute priorité</option>
             <option value="URGENT">Urgent</option>
@@ -95,7 +95,7 @@ export function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModalProps) {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-[#181D26] border border-slate-700/80 text-slate-300 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-orange-500"
+            className="bg-slate-100 dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 text-slate-700 dark:text-slate-300 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-orange-500"
           >
             <option value="">Tous statuts</option>
             <option value="TODO">À faire</option>
@@ -109,8 +109,8 @@ export function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModalProps) {
             onClick={() => setIsOverdueOnly(!isOverdueOnly)}
             className={`px-2.5 py-1 rounded-lg border text-xs font-medium transition-colors ${
               isOverdueOnly
-                ? 'bg-rose-950/60 text-rose-300 border-rose-700/70'
-                : 'bg-[#181D26] text-slate-400 border-slate-700/80 hover:text-slate-200'
+                ? 'bg-rose-100 text-rose-700 border-rose-300 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-700/70'
+                : 'bg-slate-100 dark:bg-[#181D26] text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700/80 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             Tâches en retard
@@ -128,7 +128,7 @@ export function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModalProps) {
               {/* Projects Matches */}
               {results.projects.length > 0 && (
                 <div className="space-y-1.5">
-                  <h4 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-1">
+                  <h4 className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider px-1">
                     Projets ({results.projects.length})
                   </h4>
                   {results.projects.map((proj) => (
@@ -138,18 +138,18 @@ export function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModalProps) {
                         router.push(`/projects/${proj.id}`);
                         onClose();
                       }}
-                      className="w-full text-left p-2.5 rounded-xl bg-[#15181F] hover:bg-[#1A1F29] border border-slate-800 transition-colors flex items-center justify-between group"
+                      className="w-full text-left p-2.5 rounded-xl bg-slate-50 dark:bg-[#15181F] hover:bg-slate-100 dark:hover:bg-[#1A1F29] border border-slate-200 dark:border-slate-800 transition-colors flex items-center justify-between group"
                     >
                       <div className="flex items-center gap-2.5">
                         <span
-                          className="w-3 h-3 rounded-full shrink-0"
+                          className="w-3 h-3 rounded-full shrink-0 shadow-2xs"
                           style={{ backgroundColor: proj.customColor || '#F97316' }}
                         />
-                        <span className="text-sm font-medium text-white group-hover:text-orange-400 transition-colors">
+                        <span className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors">
                           {proj.name}
                         </span>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-orange-400 group-hover:translate-x-0.5 transition-all" />
+                      <ArrowRight className="w-4 h-4 text-slate-400 dark:text-slate-600 group-hover:text-orange-500 group-hover:translate-x-0.5 transition-all" />
                     </button>
                   ))}
                 </div>
@@ -158,7 +158,7 @@ export function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModalProps) {
               {/* Tasks Matches */}
               {results.tasks.length > 0 && (
                 <div className="space-y-1.5">
-                  <h4 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-1">
+                  <h4 className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider px-1">
                     Tâches ({results.tasks.length})
                   </h4>
                   {results.tasks.map((task) => (
@@ -168,10 +168,10 @@ export function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModalProps) {
                         router.push(`/projects/${task.project.id}`);
                         onClose();
                       }}
-                      className="w-full text-left p-3 rounded-xl bg-[#15181F] hover:bg-[#1A1F29] border border-slate-800 transition-colors flex flex-col gap-1.5 group"
+                      className="w-full text-left p-3 rounded-xl bg-slate-50 dark:bg-[#15181F] hover:bg-slate-100 dark:hover:bg-[#1A1F29] border border-slate-200 dark:border-slate-800 transition-colors flex flex-col gap-1.5 group"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-medium text-white group-hover:text-orange-400 transition-colors">
+                        <span className="text-xs font-semibold text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors">
                           {task.title}
                         </span>
                         <div className="flex items-center gap-2">
@@ -180,13 +180,13 @@ export function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModalProps) {
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-3 text-[11px] text-slate-400">
-                        <span className="flex items-center gap-1 text-slate-300 font-medium">
-                          <FolderKanban className="w-3 h-3 text-orange-400" />
+                      <div className="flex items-center gap-3 text-[11px] text-slate-500 dark:text-slate-400">
+                        <span className="flex items-center gap-1 font-medium text-slate-700 dark:text-slate-300">
+                          <FolderKanban className="w-3 h-3 text-orange-500" />
                           {task.project.name}
                         </span>
                         {task.dueDate && (
-                          <span className="flex items-center gap-1 text-slate-400">
+                          <span className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
                             {formatDate(task.dueDate)}
                           </span>

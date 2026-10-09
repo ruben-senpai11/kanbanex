@@ -86,17 +86,17 @@ export function ProjectCalendar({ tasks, onTaskClick }: ProjectCalendarProps) {
   const daysOfWeek = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#0B0D11] overflow-hidden select-none">
+    <div className="flex-1 flex flex-col h-full bg-slate-50 dark:bg-[#0B0D11] overflow-hidden select-none">
       {/* Calendar Toolbar */}
-      <div className="h-14 px-6 border-b border-slate-800 bg-[#12151C] flex items-center justify-between shrink-0">
+      <div className="h-14 px-6 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#12151C] flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
           <button
             onClick={prevPeriod}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <span className="text-sm font-bold text-white capitalize min-w-[160px] text-center">
+          <span className="text-sm font-bold text-slate-900 dark:text-white capitalize min-w-[160px] text-center">
             {currentDate.toLocaleDateString('fr-FR', {
               month: 'long',
               year: 'numeric',
@@ -104,26 +104,26 @@ export function ProjectCalendar({ tasks, onTaskClick }: ProjectCalendarProps) {
           </span>
           <button
             onClick={nextPeriod}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition-colors"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
           <button
             onClick={() => setCurrentDate(new Date())}
-            className="px-3 py-1 rounded-lg bg-[#1A1F29] hover:bg-slate-800 text-xs font-semibold text-orange-400 border border-slate-700 ml-2"
+            className="px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-[#1A1F29] dark:hover:bg-slate-800 text-xs font-semibold text-orange-600 dark:text-orange-400 border border-slate-200 dark:border-slate-700 ml-2"
           >
             Aujourd'hui
           </button>
         </div>
 
         {/* View Mode Switcher */}
-        <div className="flex items-center gap-1 bg-[#181D26] p-1 rounded-xl border border-slate-800 text-xs">
+        <div className="flex items-center gap-1 bg-slate-100 dark:bg-[#181D26] p-1 rounded-xl border border-slate-200 dark:border-slate-800 text-xs">
           <button
             onClick={() => setViewMode('month')}
             className={`px-3 py-1 rounded-lg font-medium transition-all ${
               viewMode === 'month'
                 ? 'bg-gradient-warm text-white shadow-sm font-semibold'
-                : 'text-slate-400 hover:text-white'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
           >
             Mois
@@ -133,7 +133,7 @@ export function ProjectCalendar({ tasks, onTaskClick }: ProjectCalendarProps) {
             className={`px-3 py-1 rounded-lg font-medium transition-all ${
               viewMode === 'week'
                 ? 'bg-gradient-warm text-white shadow-sm font-semibold'
-                : 'text-slate-400 hover:text-white'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
           >
             Semaine
@@ -143,7 +143,7 @@ export function ProjectCalendar({ tasks, onTaskClick }: ProjectCalendarProps) {
             className={`px-3 py-1 rounded-lg font-medium transition-all ${
               viewMode === 'day'
                 ? 'bg-gradient-warm text-white shadow-sm font-semibold'
-                : 'text-slate-400 hover:text-white'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
           >
             Jour
@@ -152,11 +152,11 @@ export function ProjectCalendar({ tasks, onTaskClick }: ProjectCalendarProps) {
       </div>
 
       {/* Weekday Labels Header */}
-      <div className="grid grid-cols-7 border-b border-slate-800 bg-[#15181F] shrink-0">
+      <div className="grid grid-cols-7 border-b border-slate-200 dark:border-slate-800 bg-slate-100/90 dark:bg-[#15181F] shrink-0">
         {daysOfWeek.map((day, i) => (
           <div
             key={i}
-            className="py-2.5 text-center text-xs font-bold text-slate-400 uppercase tracking-wider border-r border-slate-800/80 last:border-r-0"
+            className="py-2.5 text-center text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-r border-slate-200/80 dark:border-slate-800/80 last:border-r-0"
           >
             {day}
           </div>
@@ -164,7 +164,7 @@ export function ProjectCalendar({ tasks, onTaskClick }: ProjectCalendarProps) {
       </div>
 
       {/* Month Days Grid */}
-      <div className="flex-1 grid grid-cols-7 grid-rows-5 md:grid-rows-6 overflow-y-auto divide-x divide-y divide-slate-800/60 bg-[#0B0D11]">
+      <div className="flex-1 grid grid-cols-7 grid-rows-5 md:grid-rows-6 overflow-y-auto divide-x divide-y divide-slate-200/80 dark:divide-slate-800/60 bg-slate-200/40 dark:bg-[#0B0D11]">
         {monthDays.map((d, index) => {
           const isToday =
             d.date.toDateString() === new Date().toDateString();
@@ -180,23 +180,25 @@ export function ProjectCalendar({ tasks, onTaskClick }: ProjectCalendarProps) {
             <div
               key={index}
               className={`p-2 flex flex-col justify-between min-h-[90px] transition-colors ${
-                d.isCurrentMonth ? 'bg-[#0E1117]' : 'bg-[#08090C]/80 opacity-40'
-              } hover:bg-[#12151C]`}
+                d.isCurrentMonth
+                  ? 'bg-white dark:bg-[#0E1117]'
+                  : 'bg-slate-50/80 dark:bg-[#08090C]/80 opacity-60 dark:opacity-40'
+              } hover:bg-slate-50 dark:hover:bg-[#12151C]`}
             >
               <div className="flex items-center justify-between mb-1.5">
                 <span
                   className={`text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center ${
                     isToday
-                      ? 'bg-gradient-warm text-white shadow-md shadow-orange-950/60'
+                      ? 'bg-gradient-warm text-white shadow-md shadow-orange-500/30'
                       : d.isCurrentMonth
-                      ? 'text-slate-300'
-                      : 'text-slate-600'
+                      ? 'text-slate-700 dark:text-slate-300'
+                      : 'text-slate-400 dark:text-slate-600'
                   }`}
                 >
                   {d.date.getDate()}
                 </span>
                 {dayTasks.length > 0 && (
-                  <span className="text-[10px] font-semibold text-orange-400 bg-orange-950/40 px-1.5 py-0.2 rounded-md">
+                  <span className="text-[10px] font-semibold text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-950/40 px-1.5 py-0.2 rounded-md">
                     {dayTasks.length}
                   </span>
                 )}
@@ -208,18 +210,18 @@ export function ProjectCalendar({ tasks, onTaskClick }: ProjectCalendarProps) {
                   <div
                     key={task.id}
                     onClick={() => onTaskClick(task.id)}
-                    className="px-2 py-1 rounded-lg bg-[#181D26] hover:bg-orange-500/20 border border-slate-800 hover:border-orange-500/50 text-[11px] font-medium text-slate-200 hover:text-white cursor-pointer truncate transition-all shadow-sm flex items-center gap-1.5"
+                    className="px-2 py-1 rounded-lg bg-slate-100 hover:bg-orange-50 border border-slate-200 hover:border-orange-300 text-slate-800 hover:text-orange-950 dark:bg-[#181D26] dark:hover:bg-orange-500/20 dark:border-slate-800 dark:hover:border-orange-500/50 dark:text-slate-200 dark:hover:text-white text-[11px] font-medium cursor-pointer truncate transition-all shadow-sm flex items-center gap-1.5"
                   >
                     <span
                       className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                        task.status === 'DONE' ? 'bg-emerald-400' : 'bg-orange-400'
+                        task.status === 'DONE' ? 'bg-emerald-500 dark:bg-emerald-400' : 'bg-orange-500 dark:bg-orange-400'
                       }`}
                     />
                     <span className="truncate">{task.title}</span>
                   </div>
                 ))}
                 {dayTasks.length > 3 && (
-                  <span className="text-[10px] text-slate-500 pl-1 block">
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 pl-1 block">
                     +{dayTasks.length - 3} autres
                   </span>
                 )}

@@ -29,13 +29,16 @@ export class SearchController {
     @Query('priority') priority?: any,
     @Query('isOverdue') isOverdue?: string,
   ) {
+    const cleanStr = (v?: string) =>
+      v && v !== 'undefined' && v !== 'null' && v.trim() !== '' ? v.trim() : undefined;
+
     return this.searchService.globalSearch(workspaceId, {
-      query: q,
-      projectId,
-      assigneeId,
-      labelId,
-      status,
-      priority,
+      query: cleanStr(q),
+      projectId: cleanStr(projectId),
+      assigneeId: cleanStr(assigneeId),
+      labelId: cleanStr(labelId),
+      status: cleanStr(status),
+      priority: cleanStr(priority),
       isOverdue: isOverdue === 'true',
     });
   }

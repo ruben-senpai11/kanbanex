@@ -206,15 +206,15 @@ export function HorizontalProjectList({
         {/* Append "+ Créer un projet" End Card */}
         <div
           onClick={onOpenNewProject}
-          className="w-[280px] shrink-0 h-full flex flex-col items-center justify-center rounded-3xl border border-dashed border-slate-800 hover:border-orange-500/50 bg-[#12151C]/40 hover:bg-[#15181F]/80 transition-all cursor-pointer p-8 text-center group interactive-scale"
+          className="w-[280px] shrink-0 h-full flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-white/20 hover:border-orange-500/70 bg-black/25 hover:bg-black/40 backdrop-blur-md transition-all cursor-pointer p-8 text-center group interactive-scale select-none shadow-xl"
         >
-          <div className="w-14 h-14 rounded-2xl bg-[#1A1F29] border border-slate-700/80 group-hover:bg-gradient-warm flex items-center justify-center text-slate-400 group-hover:text-white transition-all shadow-md group-hover:scale-110 mb-4">
-            <Plus className="w-7 h-7" />
+          <div className="w-14 h-14 rounded-2xl bg-white/15 border border-white/25 group-hover:bg-gradient-warm flex items-center justify-center text-white transition-all shadow-md group-hover:scale-110 mb-4">
+            <Plus className="w-7 h-7 stroke-[2.5]" />
           </div>
-          <h4 className="text-base font-semibold text-white group-hover:text-orange-400 transition-colors">
+          <h4 className="text-base font-bold text-white group-hover:text-orange-400 transition-colors drop-shadow-sm">
             Nouveau Projet
           </h4>
-          <p className="text-xs text-slate-500 mt-1 max-w-[200px]">
+          <p className="text-xs text-slate-300 mt-1 max-w-[200px] leading-relaxed">
             Développez votre univers avec un nouveau projet
           </p>
         </div>

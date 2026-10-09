@@ -206,19 +206,19 @@ export function TaskDrawer({
       />
 
       {/* Slide-out Drawer Panel with GSAP */}
-      <div ref={drawerRef} className="relative w-full max-w-xl bg-[#12151C] border-l border-slate-800/90 shadow-2xl h-full flex flex-col z-10 text-slate-100">
+      <div ref={drawerRef} className="relative w-full max-w-xl bg-white dark:bg-[#12151C] border-l border-slate-200 dark:border-slate-800/90 shadow-2xl h-full flex flex-col z-10 text-slate-900 dark:text-slate-100">
         {/* Header Bar */}
-        <div className="h-14 px-6 border-b border-slate-800 flex items-center justify-between shrink-0 bg-[#0E1117]">
-          <div className="flex items-center gap-2 text-xs text-slate-400">
+        <div className="h-14 px-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0 bg-slate-50 dark:bg-[#0E1117]">
+          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
             <span>Colonne :</span>
-            <span className="font-semibold text-orange-400">
+            <span className="font-semibold text-orange-500 dark:text-orange-400">
               {task?.list?.name || 'Tableau'}
             </span>
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -238,15 +238,15 @@ export function TaskDrawer({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 onBlur={() => handleSaveFields()}
-                className="w-full text-xl font-bold bg-transparent border-0 border-b border-transparent focus:border-orange-500 text-white placeholder-slate-500 focus:outline-none pb-1"
+                className="w-full text-xl font-bold bg-transparent border-0 border-b border-transparent focus:border-orange-500 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none pb-1"
                 placeholder="Titre de la tâche..."
               />
             </div>
 
             {/* Quick Status / Priority Selector Badges */}
-            <div className="grid grid-cols-2 gap-3 p-3.5 rounded-2xl bg-[#15181F] border border-slate-800">
+            <div className="grid grid-cols-2 gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800">
               <div>
-                <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                <label className="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
                   Statut
                 </label>
                 <select
@@ -255,7 +255,7 @@ export function TaskDrawer({
                     setStatus(e.target.value);
                     handleSaveFields({ status: e.target.value });
                   }}
-                  className="w-full bg-[#1A1F29] border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-orange-500"
+                  className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
                 >
                   <option value="TODO">À faire</option>
                   <option value="IN_PROGRESS">En cours</option>
@@ -266,7 +266,7 @@ export function TaskDrawer({
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                <label className="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
                   Priorité
                 </label>
                 <select
@@ -275,7 +275,7 @@ export function TaskDrawer({
                     setPriority(e.target.value);
                     handleSaveFields({ priority: e.target.value });
                   }}
-                  className="w-full bg-[#1A1F29] border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-orange-500"
+                  className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
                 >
                   <option value="LOW">Basse</option>
                   <option value="MEDIUM">Moyenne</option>
@@ -286,15 +286,15 @@ export function TaskDrawer({
             </div>
 
             {/* Dates & Estimation (Essential for Gantt synchronization) */}
-            <div className="space-y-3 p-4 rounded-2xl bg-[#15181F] border border-slate-800">
-              <h4 className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-orange-400" />
+            <div className="space-y-3 p-4 rounded-2xl bg-slate-50 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800">
+              <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-orange-500" />
                 Planification temporelle & Gantt
               </h4>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[10px] font-medium text-slate-400 mb-1">
+                  <label className="block text-[10px] font-medium text-slate-500 dark:text-slate-400 mb-1">
                     Date de début
                   </label>
                   <input
@@ -306,12 +306,12 @@ export function TaskDrawer({
                         startDate: e.target.value ? new Date(e.target.value).toISOString() : null,
                       });
                     }}
-                    className="w-full bg-[#1A1F29] border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-orange-500"
+                    className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-medium text-slate-400 mb-1">
+                  <label className="block text-[10px] font-medium text-slate-500 dark:text-slate-400 mb-1">
                     Date d'échéance
                   </label>
                   <input
@@ -323,7 +323,7 @@ export function TaskDrawer({
                         dueDate: e.target.value ? new Date(e.target.value).toISOString() : null,
                       });
                     }}
-                    className="w-full bg-[#1A1F29] border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-orange-500"
+                    className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
                   />
                 </div>
               </div>
@@ -331,8 +331,8 @@ export function TaskDrawer({
               {/* Progress Slider */}
               <div className="pt-2">
                 <div className="flex items-center justify-between text-xs mb-1">
-                  <span className="text-slate-400">Progression</span>
-                  <span className="font-bold text-orange-400">{progressPercentage}%</span>
+                  <span className="text-slate-500 dark:text-slate-400">Progression</span>
+                  <span className="font-bold text-orange-500 dark:text-orange-400">{progressPercentage}%</span>
                 </div>
                 <input
                   type="range"
@@ -349,8 +349,8 @@ export function TaskDrawer({
 
             {/* Assignees Selector */}
             <div className="space-y-2">
-              <h4 className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5 text-orange-400" />
+              <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <Users className="w-3.5 h-3.5 text-orange-500" />
                 Collaborateurs assignés
               </h4>
 
@@ -363,15 +363,15 @@ export function TaskDrawer({
                       onClick={() => handleToggleAssignee(member.id)}
                       className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium border transition-colors ${
                         isAssigned
-                          ? 'bg-orange-950/60 border-orange-600 text-orange-300'
-                          : 'bg-[#15181F] border-slate-800 text-slate-400 hover:text-slate-200'
+                          ? 'bg-orange-50 dark:bg-orange-950/60 border-orange-500 text-orange-600 dark:text-orange-300 shadow-xs'
+                          : 'bg-slate-50 dark:bg-[#15181F] border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                       }`}
                     >
-                      <div className="w-4 h-4 rounded-full bg-slate-700 flex items-center justify-center text-[8px] font-bold text-white">
+                      <div className="w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-700 flex items-center justify-center text-[8px] font-bold text-slate-700 dark:text-white">
                         {member.fullName.slice(0, 2).toUpperCase()}
                       </div>
                       <span>{member.fullName}</span>
-                      {isAssigned && <Check className="w-3 h-3 text-orange-400" />}
+                      {isAssigned && <Check className="w-3 h-3 text-orange-500" />}
                     </button>
                   );
                 })}
@@ -380,22 +380,22 @@ export function TaskDrawer({
 
             {/* Description (Markdown) */}
             <div className="space-y-2">
-              <h4 className="text-xs font-bold text-slate-300">Description</h4>
+              <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300">Description</h4>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 onBlur={() => handleSaveFields()}
                 rows={4}
                 placeholder="Ajoutez une description détaillée de la tâche..."
-                className="w-full p-3 bg-[#15181F] border border-slate-800 rounded-xl text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-orange-500/80 leading-relaxed resize-none"
+                className="w-full p-3 bg-slate-50 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-orange-500/80 leading-relaxed resize-none"
               />
             </div>
 
             {/* Checklists Section */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h4 className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-                  <CheckSquare className="w-3.5 h-3.5 text-orange-400" />
+                <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                  <CheckSquare className="w-3.5 h-3.5 text-orange-500" />
                   Listes de contrôle
                 </h4>
               </div>
@@ -406,14 +406,14 @@ export function TaskDrawer({
                 const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
                 return (
-                  <div key={cl.id} className="p-4 rounded-2xl bg-[#15181F] border border-slate-800 space-y-3">
+                  <div key={cl.id} className="p-4 rounded-2xl bg-slate-50 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800 space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-white">{cl.title}</span>
-                      <span className="text-[11px] text-slate-400">{completed}/{total} ({pct}%)</span>
+                      <span className="text-xs font-bold text-slate-900 dark:text-white">{cl.title}</span>
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400">{completed}/{total} ({pct}%)</span>
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                    <div className="h-1.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-orange-500 rounded-full transition-all"
                         style={{ width: `${pct}%` }}
@@ -432,13 +432,13 @@ export function TaskDrawer({
                             className={`w-4 h-4 rounded-md border flex items-center justify-center transition-colors ${
                               item.isCompleted
                                 ? 'bg-orange-500 border-orange-500 text-white'
-                                : 'border-slate-600 bg-transparent'
+                                : 'border-slate-300 dark:border-slate-600 bg-white dark:bg-transparent'
                             }`}
                           >
                             {item.isCompleted && <Check className="w-3 h-3" />}
                           </div>
                           <span
-                            className={item.isCompleted ? 'line-through text-slate-500' : 'text-slate-200'}
+                            className={item.isCompleted ? 'line-through text-slate-400' : 'text-slate-800 dark:text-slate-200'}
                           >
                             {item.content}
                           </span>
@@ -454,7 +454,7 @@ export function TaskDrawer({
                           value={newItemText}
                           onChange={(e) => setNewItemText(e.target.value)}
                           placeholder="Nouvel élément..."
-                          className="flex-1 bg-[#1A1F29] border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-orange-500"
+                          className="flex-1 bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-orange-500"
                           autoFocus
                           onKeyDown={(e) => e.key === 'Enter' && handleAddChecklistItem(cl.id)}
                         />
@@ -468,7 +468,7 @@ export function TaskDrawer({
                           setActiveChecklistInput(cl.id);
                           setNewItemText('');
                         }}
-                        className="text-xs text-orange-400 hover:text-orange-300 font-medium flex items-center gap-1 pt-1"
+                        className="text-xs text-orange-600 dark:text-orange-400 hover:text-orange-500 font-medium flex items-center gap-1 pt-1"
                       >
                         <Plus className="w-3 h-3" />
                         Ajouter un élément
@@ -485,7 +485,7 @@ export function TaskDrawer({
                   value={newChecklistTitle}
                   onChange={(e) => setNewChecklistTitle(e.target.value)}
                   placeholder="Titre de la nouvelle checklist..."
-                  className="flex-1 bg-[#15181F] border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-orange-500"
+                  className="flex-1 bg-slate-50 dark:bg-[#15181F] border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-orange-500"
                   onKeyDown={(e) => e.key === 'Enter' && handleAddChecklist()}
                 />
                 <Button size="sm" variant="secondary" onClick={handleAddChecklist}>
@@ -496,9 +496,9 @@ export function TaskDrawer({
             </div>
 
             {/* Comments Thread */}
-            <div className="space-y-3 pt-3 border-t border-slate-800">
-              <h4 className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-                <MessageSquare className="w-3.5 h-3.5 text-orange-400" />
+            <div className="space-y-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+              <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <MessageSquare className="w-3.5 h-3.5 text-orange-500" />
                 Discussion & Commentaires
               </h4>
 
@@ -509,7 +509,7 @@ export function TaskDrawer({
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder="Écrire un commentaire..."
-                  className="flex-1 bg-[#15181F] border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-orange-500"
+                  className="flex-1 bg-slate-50 dark:bg-[#15181F] border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-orange-500"
                 />
                 <Button size="sm" type="submit" isLoading={isSubmittingComment}>
                   <Send className="w-3.5 h-3.5" />
@@ -519,15 +519,15 @@ export function TaskDrawer({
               {/* Comments list */}
               <div className="space-y-2.5 pt-2">
                 {task.comments?.length === 0 ? (
-                  <p className="text-xs text-slate-600 italic">Aucun commentaire pour le moment.</p>
+                  <p className="text-xs text-slate-400 italic">Aucun commentaire pour le moment.</p>
                 ) : (
                   task.comments?.map((c: any) => (
-                    <div key={c.id} className="p-3 rounded-xl bg-[#15181F] border border-slate-800/80 space-y-1">
+                    <div key={c.id} className="p-3 rounded-xl bg-slate-100 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800/80 space-y-1">
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="font-semibold text-white">{c.user?.fullName}</span>
-                        <span className="text-slate-500">{formatDateTime(c.createdAt)}</span>
+                        <span className="font-semibold text-slate-900 dark:text-white">{c.user?.fullName}</span>
+                        <span className="text-slate-400 dark:text-slate-500">{formatDateTime(c.createdAt)}</span>
                       </div>
-                      <p className="text-xs text-slate-300">{c.content}</p>
+                      <p className="text-xs text-slate-700 dark:text-slate-300">{c.content}</p>
                     </div>
                   ))
                 )}
@@ -535,7 +535,7 @@ export function TaskDrawer({
             </div>
 
             {/* Footer / Delete Task */}
-            <div className="pt-6 border-t border-slate-800 flex justify-end">
+            <div className="pt-6 border-t border-slate-200 dark:border-slate-800 flex justify-end">
               <button
                 onClick={async () => {
                   if (confirm('Voulez-vous vraiment supprimer cette tâche ?')) {

@@ -29,7 +29,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0D11] flex flex-col items-center justify-center p-4 relative overflow-hidden select-none">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0B0D11] flex flex-col items-center justify-center p-4 relative overflow-hidden select-none">
       {/* Responsive Wallpaper Backdrop (Mobile Img 2 vs Desktop Img 3) */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none select-none">
         <div
@@ -40,7 +40,7 @@ export default function LoginPage() {
           className="hidden md:block absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url('/images/kabanex-desktop.jpg')` }}
         />
-        <div className="absolute inset-0 bg-black/75 backdrop-blur-md" />
+        <div className="absolute inset-0 bg-slate-900/40 dark:bg-black/75 backdrop-blur-md" />
       </div>
 
       <div className="w-full max-w-md relative z-10 space-y-6">
@@ -56,18 +56,18 @@ export default function LoginPage() {
               priority
             />
           </div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl font-extrabold text-white tracking-tight drop-shadow-sm">
             Connexion à Kaban<span className="text-orange-500">Ex</span>
           </h1>
-          <p className="text-xs text-amber-200/80 font-medium">
+          <p className="text-xs text-amber-100 font-medium drop-shadow-sm">
             Vos projets. Une seule vision.
           </p>
         </div>
 
         {/* Card Form */}
-        <div className="p-8 rounded-3xl bg-[#12151C]/90 border border-slate-800 shadow-2xl backdrop-blur-xl space-y-5">
+        <div className="p-8 rounded-3xl bg-white/95 dark:bg-[#12151C]/90 border border-slate-200 dark:border-slate-800 shadow-2xl backdrop-blur-xl space-y-5">
           {error && (
-            <div className="p-3.5 rounded-xl bg-rose-950/70 border border-rose-800 text-rose-300 text-xs font-medium">
+            <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 dark:bg-rose-950/70 dark:border-rose-800 dark:text-rose-300 text-xs font-medium">
               {error}
             </div>
           )}
@@ -103,12 +103,12 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="pt-4 border-t border-slate-800/80 text-center">
-            <p className="text-xs text-slate-400">
+          <div className="pt-4 border-t border-slate-200 dark:border-slate-800/80 text-center">
+            <p className="text-xs text-slate-600 dark:text-slate-400">
               Pas encore de compte ?{' '}
               <Link
                 href="/signup"
-                className="text-orange-400 hover:text-orange-300 font-semibold underline underline-offset-4"
+                className="text-orange-500 hover:text-orange-600 dark:text-orange-400 dark:hover:text-orange-300 font-semibold underline underline-offset-4"
               >
                 Créer un compte
               </Link>

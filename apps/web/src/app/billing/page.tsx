@@ -76,23 +76,23 @@ export default function BillingPage() {
   const activePlanSlug = subscriptionData?.subscription?.plan?.slug || 'basic';
 
   return (
-    <div className="min-h-screen bg-[#0B0D11] text-slate-100 flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0B0D11] dark:text-slate-100 flex flex-col overflow-hidden">
       <AppHeader />
 
       <div className="flex-1 flex overflow-hidden">
-        <main className="flex-1 overflow-y-auto p-6 md:p-10 space-y-8 bg-[#0B0D11]">
+        <main className="flex-1 overflow-y-auto p-6 md:p-10 space-y-8 bg-slate-50 dark:bg-[#0B0D11]">
           {/* Header */}
           <div className="max-w-5xl mx-auto space-y-2">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-orange-950/70 text-orange-400 border border-orange-800/60 flex items-center gap-1.5">
+              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-orange-100 dark:bg-orange-950/70 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-800/60 flex items-center gap-1.5">
                 <CreditCard className="w-3.5 h-3.5" />
                 Paiements Sécurisés (Carte & Mobile Money)
               </span>
             </div>
-            <h1 className="text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               Abonnements & Plans KanbanEX
             </h1>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
               Choisissez le niveau de puissance adapté à vos projets et débloquez la personnalisation cinématographique.
             </p>
           </div>
@@ -102,14 +102,14 @@ export default function BillingPage() {
               <div
                 className={`p-4 rounded-2xl border text-xs font-medium flex items-center gap-3 ${
                   notification.type === 'success'
-                    ? 'bg-emerald-950/60 border-emerald-800 text-emerald-300'
-                    : 'bg-rose-950/60 border-rose-800 text-rose-300'
+                    ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300'
+                    : 'bg-rose-50 dark:bg-rose-950/60 border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-300'
                 }`}
               >
                 {notification.type === 'success' ? (
-                  <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 ) : (
-                  <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                  <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
                 )}
                 <span>{notification.message}</span>
               </div>
@@ -118,16 +118,16 @@ export default function BillingPage() {
 
           {/* Current Subscription Info */}
           {subscriptionData && (
-            <div className="max-w-5xl mx-auto p-6 rounded-3xl bg-[#12151C] border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="max-w-5xl mx-auto p-6 rounded-3xl bg-white dark:bg-[#12151C] border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
               <div>
-                <span className="text-xs text-slate-400">Abonnement actuel</span>
-                <h3 className="text-xl font-bold text-white mt-0.5 flex items-center gap-2">
+                <span className="text-xs text-slate-500 dark:text-slate-400">Abonnement actuel</span>
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-0.5 flex items-center gap-2">
                   Plan {subscriptionData.subscription?.plan?.name || 'Basic'}
-                  <span className="px-2 py-0.5 rounded-md text-xs font-semibold bg-emerald-950/70 text-emerald-300 border border-emerald-800/60">
+                  <span className="px-2 py-0.5 rounded-md text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
                     Actif
                   </span>
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   Projets actifs : {subscriptionData.usage.projectsCount} / {subscriptionData.usage.maxProjects === -1 ? 'Illimité' : subscriptionData.usage.maxProjects} •
                   Membres : {subscriptionData.usage.membersCount} / {subscriptionData.usage.maxMembers === -1 ? 'Illimité' : subscriptionData.usage.maxMembers}
                 </p>
@@ -135,8 +135,8 @@ export default function BillingPage() {
 
               {subscriptionData.subscription?.currentPeriodEnd && (
                 <div className="text-right">
-                  <span className="text-xs text-slate-400 block">Renouvellement le</span>
-                  <span className="text-sm font-semibold text-slate-200">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 block">Renouvellement le</span>
+                  <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">
                     {formatDate(subscriptionData.subscription.currentPeriodEnd)}
                   </span>
                 </div>
@@ -148,11 +148,11 @@ export default function BillingPage() {
           {isLoading ? (
             <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="p-6 rounded-3xl bg-[#12151C] border border-slate-800 space-y-4">
+                <div key={i} className="p-6 rounded-3xl bg-white dark:bg-[#12151C] border border-slate-200 dark:border-slate-800 space-y-4">
                   <Skeleton className="h-6 w-24 rounded-lg" />
                   <Skeleton className="h-4 w-full rounded" />
                   <Skeleton className="h-8 w-36 rounded-xl my-4" />
-                  <div className="space-y-2 pt-4 border-t border-slate-800">
+                  <div className="space-y-2 pt-4 border-t border-slate-200 dark:border-slate-800">
                     <Skeleton className="h-4 w-full rounded" />
                     <Skeleton className="h-4 w-4/5 rounded" />
                     <Skeleton className="h-4 w-3/4 rounded" />
@@ -170,10 +170,10 @@ export default function BillingPage() {
               return (
                 <div
                   key={plan.id}
-                  className={`p-6 rounded-3xl border flex flex-col justify-between relative transition-all ${
+                  className={`p-6 rounded-3xl border flex flex-col justify-between relative transition-all shadow-sm ${
                     isEclosion
-                      ? 'bg-gradient-to-b from-[#181D26] to-[#12151C] border-orange-500/80 shadow-2xl brand-glow'
-                      : 'bg-[#12151C] border-slate-800 hover:border-slate-700'
+                      ? 'bg-gradient-to-b from-orange-50/60 to-white dark:from-[#181D26] dark:to-[#12151C] border-orange-400 dark:border-orange-500/80 shadow-xl brand-glow'
+                      : 'bg-white dark:bg-[#12151C] border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
                   }`}
                 >
                   {isEclosion && (
@@ -184,8 +184,8 @@ export default function BillingPage() {
 
                   <div className="space-y-4">
                     <div>
-                      <h4 className="text-lg font-bold text-white">{plan.name}</h4>
-                      <p className="text-xs text-slate-400 mt-1 min-h-[32px]">
+                      <h4 className="text-lg font-bold text-slate-900 dark:text-white">{plan.name}</h4>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 min-h-[32px]">
                         {plan.description}
                       </p>
                     </div>
@@ -193,54 +193,54 @@ export default function BillingPage() {
                     {/* Price in FCFA directly from DB */}
                     <div className="pt-2">
                       <div className="flex items-baseline gap-1">
-                        <span className="text-3xl font-extrabold text-white">
+                        <span className="text-3xl font-extrabold text-slate-900 dark:text-white">
                           {plan.price === 0 ? 'Gratuit' : formatFCFA(plan.price)}
                         </span>
                         {plan.price > 0 && (
-                          <span className="text-xs text-slate-400">/ mois</span>
+                          <span className="text-xs text-slate-500 dark:text-slate-400">/ mois</span>
                         )}
                       </div>
                     </div>
 
                     {/* Features list */}
-                    <div className="space-y-2.5 pt-4 border-t border-slate-800 text-xs">
-                      <div className="flex items-center gap-2 text-slate-300">
-                        <Check className="w-4 h-4 text-orange-400 shrink-0" />
+                    <div className="space-y-2.5 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs">
+                      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                        <Check className="w-4 h-4 text-orange-500 dark:text-orange-400 shrink-0" />
                         <span>
                           {plan.maxProjects === -1 ? 'Projets illimités' : `Jusqu'à ${plan.maxProjects} projets`}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2 text-slate-300">
-                        <Check className="w-4 h-4 text-orange-400 shrink-0" />
+                      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                        <Check className="w-4 h-4 text-orange-500 dark:text-orange-400 shrink-0" />
                         <span>
                           {plan.maxMembersPerProject === -1 ? 'Collaborateurs illimités' : `Jusqu'à ${plan.maxMembersPerProject} membres par projet`}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2 text-slate-300">
-                        <Check className="w-4 h-4 text-orange-400 shrink-0" />
+                      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                        <Check className="w-4 h-4 text-orange-500 dark:text-orange-400 shrink-0" />
                         <span>Vue Projects Overview panoramique</span>
                       </div>
 
-                      <div className="flex items-center gap-2 text-slate-300">
+                      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
                         <Check
                           className={`w-4 h-4 shrink-0 ${
-                            plan.features?.customThemes ? 'text-orange-400' : 'text-slate-600'
+                            plan.features?.customThemes ? 'text-orange-500 dark:text-orange-400' : 'text-slate-400 dark:text-slate-600'
                           }`}
                         />
-                        <span className={plan.features?.customThemes ? '' : 'text-slate-500'}>
+                        <span className={plan.features?.customThemes ? '' : 'text-slate-400 dark:text-slate-500'}>
                           Univers et thèmes cinématographiques
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2 text-slate-300">
+                      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
                         <Check
                           className={`w-4 h-4 shrink-0 ${
-                            plan.features?.ganttExport ? 'text-orange-400' : 'text-slate-600'
+                            plan.features?.ganttExport ? 'text-orange-500 dark:text-orange-400' : 'text-slate-400 dark:text-slate-600'
                           }`}
                         />
-                        <span className={plan.features?.ganttExport ? '' : 'text-slate-500'}>
+                        <span className={plan.features?.ganttExport ? '' : 'text-slate-400 dark:text-slate-500'}>
                           Diagramme de Gantt interactif complet
                         </span>
                       </div>
@@ -272,27 +272,27 @@ export default function BillingPage() {
 
           {/* Transactions History */}
           {subscriptionData?.transactions?.length > 0 && (
-            <div className="max-w-5xl mx-auto space-y-3 pt-6 border-t border-slate-800">
-              <h3 className="text-base font-bold text-white">
+            <div className="max-w-5xl mx-auto space-y-3 pt-6 border-t border-slate-200 dark:border-slate-800">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">
                 Historique des transactions
               </h3>
-              <div className="rounded-2xl border border-slate-800 bg-[#12151C] divide-y divide-slate-800 overflow-hidden">
+              <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#12151C] divide-y divide-slate-100 dark:divide-slate-800 overflow-hidden shadow-sm">
                 {subscriptionData.transactions.map((tx: any) => (
                   <div key={tx.id} className="p-4 flex items-center justify-between text-xs">
                     <div>
-                      <p className="font-semibold text-white">{tx.plan?.name}</p>
-                      <p className="text-[11px] text-slate-500">
+                      <p className="font-semibold text-slate-900 dark:text-white">{tx.plan?.name}</p>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400">
                         Réf : {tx.providerTxId || tx.id} • {formatDate(tx.createdAt)}
                       </p>
                     </div>
 
                     <div className="flex items-center gap-4">
-                      <span className="font-bold text-white">{formatFCFA(tx.amount)}</span>
+                      <span className="font-bold text-slate-900 dark:text-white">{formatFCFA(tx.amount)}</span>
                       <span
                         className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
                           tx.status === 'APPROVED'
-                            ? 'bg-emerald-950/70 text-emerald-300 border border-emerald-800/60'
-                            : 'bg-amber-950/70 text-amber-300 border border-amber-800/60'
+                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-200 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800/60'
+                            : 'bg-amber-100 text-amber-800 border border-amber-200 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-800/60'
                         }`}
                       >
                         {tx.status === 'APPROVED' ? 'Payé' : 'En attente'}

@@ -8,11 +8,23 @@
     --foreground: 222 47% 11%;
   }
 
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+  }
+
   body {
     background-color: #F8FAFC;
     color: #0F172A;
     font-feature-settings: "rlig" 1, "calt" 1;
     overflow-x: hidden;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  .dark body,
+  html.dark body {
+    background-color: #0B0D11;
+    color: #F8FAFC;
   }
 }
 
@@ -105,12 +117,25 @@
   box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(255, 122, 0, 0.35);
 }
 
+.dark .trello-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(51, 65, 85, 0.6);
+}
+
+.dark .trello-card:hover {
+  box-shadow: 0 6px 16px -2px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 122, 0, 0.5);
+}
+
 /* Glass & dock accents */
 .cinematic-glass {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.dark .cinematic-glass {
+  background: rgba(18, 21, 28, 0.85);
+  border: 1px solid rgba(51, 65, 85, 0.6);
 }
 
 /* KabanEx Official Responsive Wallpaper */
