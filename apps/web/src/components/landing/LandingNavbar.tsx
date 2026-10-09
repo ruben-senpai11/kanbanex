@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/auth-context';
 import { ArrowRight, Menu, X, Sparkles, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { AppLogo } from '@/components/ui/AppLogo';
+import { getAppUrl, getLandingUrl } from '@/lib/urls';
 
 export function LandingNavbar() {
   const { user } = useAuth();
@@ -39,7 +40,7 @@ export function LandingNavbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group">
+        <Link href={getLandingUrl('/')} className="flex items-center gap-2.5 group">
           <AppLogo size="md" withText textClassName="font-black text-lg text-white group-hover:opacity-90 transition-opacity" priority />
         </Link>
 
@@ -74,7 +75,7 @@ export function LandingNavbar() {
         {/* Right CTA Actions */}
         <div className="hidden sm:flex items-center gap-3">
           {user ? (
-            <Link href="/overview">
+            <Link href={getAppUrl('/overview')}>
               <Button size="sm" className="brand-glow bg-gradient-warm text-white font-bold">
                 <LayoutDashboard className="w-3.5 h-3.5 mr-1.5" />
                 <span>Mon Espace de travail</span>
@@ -82,12 +83,12 @@ export function LandingNavbar() {
             </Link>
           ) : (
             <>
-              <Link href="/login">
+              <Link href={getAppUrl('/login')}>
                 <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white">
                   Se connecter
                 </Button>
               </Link>
-              <Link href="/signup">
+              <Link href={getAppUrl('/signup')}>
                 <Button size="sm" className="brand-glow bg-gradient-warm text-white font-bold shadow-md">
                   <span>Démarrer gratuitement</span>
                   <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
@@ -100,7 +101,7 @@ export function LandingNavbar() {
         {/* Mobile Menu Toggle */}
         <div className="md:hidden flex items-center gap-2">
           {user ? (
-            <Link href="/overview">
+            <Link href={getAppUrl('/overview')}>
               <Button size="sm" className="bg-gradient-warm text-white text-xs px-2.5 py-1">
                 Espace
               </Button>
@@ -148,19 +149,19 @@ export function LandingNavbar() {
 
           <div className="pt-4 border-t border-white/10 flex flex-col gap-2.5">
             {user ? (
-              <Link href="/overview" className="w-full">
+              <Link href={getAppUrl('/overview')} className="w-full">
                 <Button className="w-full bg-gradient-warm text-white font-bold">
                   Accéder à mon espace
                 </Button>
               </Link>
             ) : (
               <>
-                <Link href="/login" className="w-full">
+                <Link href={getAppUrl('/login')} className="w-full">
                   <Button variant="ghost" className="w-full text-slate-300">
                     Se connecter
                   </Button>
                 </Link>
-                <Link href="/signup" className="w-full">
+                <Link href={getAppUrl('/signup')} className="w-full">
                   <Button className="w-full bg-gradient-warm text-white font-bold">
                     Démarrer gratuitement
                   </Button>

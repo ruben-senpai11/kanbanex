@@ -5,6 +5,7 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { ArrowRight, Sparkles, Shield, Zap, CheckCircle2, Play } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { getAppUrl } from '@/lib/urls';
 
 export function LandingHero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -86,7 +87,7 @@ export function LandingHero() {
           ref={ctaRef}
           className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <Link href="/signup">
+          <Link href={getAppUrl('/signup')}>
             <Button
               size="lg"
               className="brand-glow bg-gradient-warm text-white font-black text-sm px-7 py-3.5 rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition-all w-full sm:w-auto"

@@ -6,8 +6,9 @@ import Image from 'next/image';
 import { useAuth } from '@/lib/auth-context';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { AppLogo } from '@/components/ui/AppLogo';
+import { getLandingUrl } from '@/lib/urls';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -95,7 +96,7 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="pt-4 border-t border-slate-200 dark:border-slate-800/80 text-center">
+          <div className="pt-4 border-t border-slate-200 dark:border-slate-800/80 text-center space-y-2">
             <p className="text-xs text-slate-600 dark:text-slate-400">
               Pas encore de compte ?{' '}
               <Link
@@ -105,6 +106,15 @@ export default function LoginPage() {
                 Créer un compte
               </Link>
             </p>
+            <div>
+              <Link
+                href={getLandingUrl('/')}
+                className="inline-flex items-center gap-1 text-[11px] text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+              >
+                <ArrowLeft className="w-3 h-3" />
+                <span>Retour au site</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

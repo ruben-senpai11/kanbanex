@@ -6,17 +6,18 @@ import Image from 'next/image';
 import { ArrowLeft, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { AppLogo } from '@/components/ui/AppLogo';
+import { getLandingUrl } from '@/lib/urls';
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-[#0B0D11] text-slate-100 selection:bg-orange-500 selection:text-white">
       {/* Top Navbar */}
       <header className="h-16 border-b border-white/10 bg-black/60 backdrop-blur-xl sticky top-0 z-50 px-4 md:px-8 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link href={getLandingUrl('/')} className="flex items-center gap-2.5">
           <AppLogo size="md" withText textClassName="font-extrabold text-base text-white" />
         </Link>
 
-        <Link href="/">
+        <Link href={getLandingUrl('/')}>
           <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white">
             <ArrowLeft className="w-4 h-4 mr-1.5" />
             Retour à l&apos;accueil

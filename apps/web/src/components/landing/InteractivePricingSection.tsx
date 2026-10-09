@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Check, Sparkles, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { getAppUrl } from '@/lib/urls';
 
 export function InteractivePricingSection() {
   const [isAnnual, setIsAnnual] = useState(true);
@@ -87,7 +88,7 @@ export function InteractivePricingSection() {
             </div>
           </div>
 
-          <Link href="/signup" className="w-full">
+          <Link href={getAppUrl('/signup')} className="w-full">
             <Button variant="secondary" className="w-full font-bold">
               Démarrer gratuitement
             </Button>
@@ -137,7 +138,7 @@ export function InteractivePricingSection() {
             </div>
           </div>
 
-          <Link href="/signup" className="w-full">
+          <Link href={getAppUrl('/signup')} className="w-full">
             <Button className="w-full brand-glow bg-gradient-warm text-white font-black shadow-lg">
               <span>Passer à la formule Pro</span>
               <ArrowRight className="w-4 h-4 ml-1.5" />
@@ -189,7 +190,7 @@ export function InteractivePricingSection() {
             </div>
           </div>
 
-          <Link href="/signup" className="w-full">
+          <Link href={getAppUrl('/signup')} className="w-full">
             <Button variant="secondary" className="w-full font-bold">
               Rejoindre l&apos;Écosystème
             </Button>
