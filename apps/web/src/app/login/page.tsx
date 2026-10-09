@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/auth-context';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { ArrowRight } from 'lucide-react';
+import { AppLogo } from '@/components/ui/AppLogo';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -46,16 +47,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md relative z-10 space-y-6">
         {/* Brand Header with Official KabanEx Logo */}
         <div className="flex flex-col items-center text-center space-y-2">
-          <div className="w-16 h-16 rounded-2xl overflow-hidden border border-amber-500/40 shadow-xl shadow-orange-950/60 mb-2 bg-black">
-            <Image
-              src="/images/kabanex-logo.jpg"
-              alt="KabanEx"
-              width={64}
-              height={64}
-              className="w-full h-full object-cover"
-              priority
-            />
-          </div>
+          <AppLogo size="xl" priority className="mb-2" />
           <h1 className="text-2xl font-extrabold text-white tracking-tight drop-shadow-sm">
             Connexion à Kaban<span className="text-orange-500">Ex</span>
           </h1>

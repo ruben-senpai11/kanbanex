@@ -9,8 +9,14 @@ export const metadata: Metadata = {
   description:
     'Plateforme collaborative premium KabanEx. Vue panoramique signature Projects Overview, Kanban agile, Gantt interactif et calendrier unifié.',
   icons: {
-    icon: '/images/kabanex-logo.jpg',
-    apple: '/images/kabanex-logo.jpg',
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/images/kabanex-logo-small.png', sizes: '32x32', type: 'image/png' },
+      { url: '/images/kabanex-logo.png', sizes: '256x256', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
 };
 

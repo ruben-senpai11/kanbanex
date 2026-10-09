@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/lib/auth-context';
+import { AppLogo } from '@/components/ui/AppLogo';
 import {
   Search,
   Bell,
@@ -51,19 +52,7 @@ export function AppHeader({
 
         {/* Brand */}
         <Link href="/projects/current" className="flex items-center gap-2 group">
-          <div className="w-7 h-7 rounded-lg overflow-hidden border border-orange-500/30 shadow-xs group-hover:scale-105 transition-transform bg-black flex items-center justify-center shrink-0">
-            <Image
-              src="/images/kabanex-logo.jpg"
-              alt="KabanEx"
-              width={28}
-              height={28}
-              className="w-full h-full object-cover"
-              priority
-            />
-          </div>
-          <span className="font-extrabold text-sm tracking-tight text-slate-900 dark:text-white flex items-center">
-            Kaban<span className="text-orange-500">Ex</span>
-          </span>
+          <AppLogo size="sm" withText textClassName="group-hover:opacity-90 transition-opacity" />
         </Link>
 
         {/* Workspace Dropdown */}

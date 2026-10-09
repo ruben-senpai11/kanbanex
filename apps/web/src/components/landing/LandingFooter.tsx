@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowUp, Heart } from 'lucide-react';
+import { AppLogo } from '@/components/ui/AppLogo';
 
 export function LandingFooter() {
   const scrollToTop = () => {
@@ -16,15 +17,7 @@ export function LandingFooter() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Brand */}
           <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
-            <div className="w-9 h-9 rounded-xl overflow-hidden border border-amber-500/40 shadow-sm bg-black shrink-0">
-              <Image
-                src="/images/kabanex-logo.jpg"
-                alt="KabanEx"
-                width={36}
-                height={36}
-                className="w-full h-full object-cover"
-              />
-            </div>
+            <AppLogo size="md" />
             <div>
               <span className="font-black text-base text-white tracking-tight flex items-center justify-center sm:justify-start">
                 Kaban<span className="text-orange-500">Ex</span>

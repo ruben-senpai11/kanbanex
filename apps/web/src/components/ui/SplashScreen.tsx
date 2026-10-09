@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { AppLogo } from '@/components/ui/AppLogo';
 
 interface SplashScreenProps {
   forceShow?: boolean;
@@ -94,20 +95,7 @@ export function SplashScreen({
 
       {/* Top Header with Skip Button */}
       <div className="relative z-10 p-4 md:p-6 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg overflow-hidden border border-amber-500/40 shadow-md bg-black shrink-0">
-            <Image
-              src="/images/kabanex-logo.jpg"
-              alt="Logo KabanEx"
-              width={32}
-              height={32}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <span className="text-white font-extrabold tracking-tight text-sm drop-shadow-md">
-            Kaban<span className="text-orange-500">Ex</span>
-          </span>
-        </div>
+        <AppLogo size="md" withText textClassName="text-white drop-shadow-md font-extrabold text-sm" />
 
         <button
           onClick={handleDismiss}
@@ -119,16 +107,7 @@ export function SplashScreen({
 
       {/* Center Desktop Brand Callout (Mobile already has tagline in the artwork, desktop highlights brand) */}
       <div className="hidden md:flex relative z-10 flex-col items-center text-center px-6 my-auto">
-        <div className="w-20 h-20 rounded-2xl overflow-hidden border border-amber-500/50 shadow-2xl shadow-orange-950/80 mb-4 bg-black animate-fade-in">
-          <Image
-            src="/images/kabanex-logo.jpg"
-            alt="KabanEx Official Brand"
-            width={80}
-            height={80}
-            className="w-full h-full object-cover"
-            priority
-          />
-        </div>
+        <AppLogo size={80} priority className="mb-4 animate-fade-in" />
         <h1 className="text-3xl lg:text-4xl font-black text-white tracking-tight drop-shadow-lg">
           Bienvenue sur Kaban<span className="text-orange-500">Ex</span>
         </h1>

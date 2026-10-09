@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useAuth } from '@/lib/auth-context';
 import { ArrowRight, Menu, X, Sparkles, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { AppLogo } from '@/components/ui/AppLogo';
 
 export function LandingNavbar() {
   const { user } = useAuth();
@@ -39,19 +40,7 @@ export function LandingNavbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-xl overflow-hidden border border-amber-500/40 shadow-lg group-hover:scale-105 transition-transform bg-black shrink-0">
-            <Image
-              src="/images/kabanex-logo.jpg"
-              alt="KabanEx"
-              width={36}
-              height={36}
-              className="w-full h-full object-cover"
-              priority
-            />
-          </div>
-          <span className="font-black text-lg tracking-tight text-white flex items-center">
-            Kaban<span className="text-orange-500">Ex</span>
-          </span>
+          <AppLogo size="md" withText textClassName="font-black text-lg text-white group-hover:opacity-90 transition-opacity" priority />
         </Link>
 
         {/* Center Desktop Navigation Links */}

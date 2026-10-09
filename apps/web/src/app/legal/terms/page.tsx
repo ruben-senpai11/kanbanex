@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { AppLogo } from '@/components/ui/AppLogo';
 
 export default function TermsPage() {
   return (
@@ -12,18 +13,7 @@ export default function TermsPage() {
       {/* Top Navbar */}
       <header className="h-16 border-b border-white/10 bg-black/60 backdrop-blur-xl sticky top-0 z-50 px-4 md:px-8 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl overflow-hidden border border-amber-500/40 shadow-sm bg-black shrink-0">
-            <Image
-              src="/images/kabanex-logo.jpg"
-              alt="KabanEx"
-              width={32}
-              height={32}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <span className="font-extrabold text-base tracking-tight text-white">
-            Kaban<span className="text-orange-500">Ex</span>
-          </span>
+          <AppLogo size="md" withText textClassName="font-extrabold text-base text-white" />
         </Link>
 
         <Link href="/">

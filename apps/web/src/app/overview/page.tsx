@@ -12,6 +12,7 @@ import { ThemeSelectorModal } from '@/components/overview/ThemeSelectorModal';
 import { OverviewCustomizationModal } from '@/components/overview/OverviewCustomizationModal';
 import { PlanModal } from '@/components/overview/PlanModal';
 import { GlobalSearchModal } from '@/components/layout/GlobalSearchModal';
+import { AppLogo } from '@/components/ui/AppLogo';
 import {
   Plus,
   Search,
@@ -124,16 +125,7 @@ export default function OverviewPage() {
       <header className="h-16 px-4 md:px-8 flex items-center justify-between shrink-0 relative z-30">
         {/* Top-Left: Workspace Title with KabanEx Emblem & Switcher */}
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl overflow-hidden border border-amber-500/40 shadow-md bg-black shrink-0">
-            <Image
-              src="/images/kabanex-logo.jpg"
-              alt="KabanEx"
-              width={32}
-              height={32}
-              className="w-full h-full object-cover"
-              priority
-            />
-          </div>
+          <AppLogo size="md" priority />
 
           <div className="relative">
             <button
