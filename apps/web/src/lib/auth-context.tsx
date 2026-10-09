@@ -34,7 +34,8 @@ interface AuthContextType {
   currentWorkspace: Workspace | null;
   isLoading: boolean;
   login: (dto: any) => Promise<void>;
-  signup: (dto: any) => Promise<void>;
+  signup: (dto: any) => Promise<any>;
+  completeVerification: (data: any) => Promise<void>;
   logout: () => Promise<void>;
   setCurrentWorkspace: (workspace: Workspace) => void;
   refreshUserData: () => Promise<void>;
@@ -121,6 +122,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     try {
       const res = await api.signup(dto);
+      if (res.requiresEmailVerification) {
+        return res;
+      }
+      if (res.accessToken) {
+        setTokens(res.accessToken, res.refreshToken);
+        setUser(res.user);
+        if (res.currentWorkspace) {
+          setCurrentWorkspaceState(res.currentWorkspace);
+          localStorage.setItem('kanbanex_active_ws', res.currentWorkspace.id);
+        }
+        await loadUserData();
+        router.push('/overview');
+      }
+      return res;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const completeVerification = async (res: any) => {
+    if (res.accessToken) {
       setTokens(res.accessToken, res.refreshToken);
       setUser(res.user);
       if (res.currentWorkspace) {
@@ -128,9 +150,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('kanbanex_active_ws', res.currentWorkspace.id);
       }
       await loadUserData();
-      router.push('/overview');
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -165,6 +184,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isLoading,
         login,
         signup,
+        completeVerification,
         logout,
         setCurrentWorkspace,
         refreshUserData,

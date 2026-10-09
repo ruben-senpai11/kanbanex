@@ -7,10 +7,19 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import * as crypto from 'crypto';
 import * as argon2 from 'argon2';
 import { PrismaService } from '../prisma/prisma.service';
-import { SignupDto, LoginDto, RefreshTokenDto, ChangePasswordDto } from './dto/auth.dto';
+import {
+  SignupDto,
+  LoginDto,
+  RefreshTokenDto,
+  ChangePasswordDto,
+  VerifyEmailDto,
+  ResendVerificationDto,
+} from './dto/auth.dto';
 import { SystemRole, WorkspaceRole } from '@prisma/client';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +27,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly mailService: MailService,
   ) {}
 
   private get accessSecret(): string {
@@ -104,14 +114,20 @@ export class AuthService {
     const existingUsersCount = await this.prisma.user.count();
     const role = existingUsersCount === 0 ? SystemRole.SUPER_ADMIN : SystemRole.USER;
 
-    // Create user in database
+    // Generate secure email verification token (valid 24h)
+    const rawToken = crypto.randomBytes(32).toString('hex');
+    const expiresAt = Date.now() + 24 * 60 * 60 * 1000;
+    const verificationToken = `${rawToken}:${expiresAt}`;
+
+    // Create user in database with unverified status
     const user = await this.prisma.user.create({
       data: {
         email: normalizedEmail,
         passwordHash,
         fullName: dto.fullName.trim(),
         role,
-        isEmailVerified: true, // Immediate start as specified
+        isEmailVerified: false,
+        emailVerificationToken: verificationToken,
       },
     });
 
@@ -154,22 +170,14 @@ export class AuthService {
       });
     }
 
-    const tokens = await this.generateTokens(user);
+    // Send email verification asynchronously
+    await this.mailService.sendVerificationEmail(user.email, user.fullName, rawToken);
 
     return {
-      user: {
-        id: user.id,
-        email: user.email,
-        fullName: user.fullName,
-        role: user.role,
-        avatarUrl: user.avatarUrl,
-      },
-      currentWorkspace: {
-        id: workspace.id,
-        name: workspace.name,
-        slug: workspace.slug,
-      },
-      ...tokens,
+      success: true,
+      requiresEmailVerification: true,
+      message: 'Compte créé avec succès ! Un email de confirmation vous a été envoyé. Veuillez cliquer sur le lien pour valider votre compte.',
+      email: user.email,
     };
   }
 
@@ -197,6 +205,13 @@ export class AuthService {
       throw new UnauthorizedException('Identifiants invalides (email ou mot de passe incorrect).');
     }
 
+    // Check email verification status
+    if (!user.isEmailVerified) {
+      throw new UnauthorizedException(
+        'Veuillez valider votre adresse email avant de vous connecter. Vérifiez vos emails ou demandez un nouveau lien.',
+      );
+    }
+
     const tokens = await this.generateTokens(user);
 
     const primaryWorkspace = user.workspaceMembers[0]?.workspace;
@@ -217,6 +232,127 @@ export class AuthService {
           }
         : null,
       ...tokens,
+    };
+  }
+
+  /**
+   * Valide l'adresse email d'un utilisateur à l'aide de son jeton unique
+   */
+  async verifyEmail(dto: VerifyEmailDto) {
+    const rawToken = dto.token?.trim();
+    if (!rawToken) {
+      throw new BadRequestException('Le jeton de validation est obligatoire.');
+    }
+
+    const users = await this.prisma.user.findMany({
+      where: {
+        isEmailVerified: false,
+        emailVerificationToken: {
+          not: null,
+        },
+      },
+      include: {
+        workspaceMembers: {
+          include: {
+            workspace: true,
+          },
+        },
+      },
+    });
+
+    const user = users.find((u) => {
+      if (!u.emailVerificationToken) return false;
+      const [tokenPart] = u.emailVerificationToken.split(':');
+      return tokenPart === rawToken;
+    });
+
+    if (!user || !user.emailVerificationToken) {
+      throw new BadRequestException('Lien de validation invalide ou déjà utilisé.');
+    }
+
+    const [, expStr] = user.emailVerificationToken.split(':');
+    if (expStr) {
+      const expiresAt = Number(expStr);
+      if (Date.now() > expiresAt) {
+        throw new BadRequestException(
+          'Ce lien de validation a expiré. Veuillez demander un nouvel email de confirmation.',
+        );
+      }
+    }
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        isEmailVerified: true,
+        emailVerificationToken: null,
+      },
+    });
+
+    // Auto-login upon successful email verification
+    const tokens = await this.generateTokens(updatedUser);
+    const primaryWorkspace = user.workspaceMembers[0]?.workspace;
+
+    return {
+      success: true,
+      message: 'Votre adresse email a été validée avec succès ! Bienvenue sur KabanEx.',
+      user: {
+        id: updatedUser.id,
+        email: updatedUser.email,
+        fullName: updatedUser.fullName,
+        role: updatedUser.role,
+        avatarUrl: updatedUser.avatarUrl,
+      },
+      currentWorkspace: primaryWorkspace
+        ? {
+            id: primaryWorkspace.id,
+            name: primaryWorkspace.name,
+            slug: primaryWorkspace.slug,
+          }
+        : null,
+      ...tokens,
+    };
+  }
+
+  /**
+   * Renvoie un nouvel email de validation de compte
+   */
+  async resendVerification(dto: ResendVerificationDto) {
+    const normalizedEmail = dto.email.toLowerCase().trim();
+    const user = await this.prisma.user.findUnique({
+      where: { email: normalizedEmail },
+    });
+
+    if (!user) {
+      return {
+        success: true,
+        message: 'Si un compte existe avec cette adresse email et n\'est pas encore validé, un nouvel email de confirmation a été envoyé.',
+      };
+    }
+
+    if (user.isEmailVerified) {
+      return {
+        success: true,
+        message: 'Ce compte est déjà validé. Vous pouvez vous connecter directement.',
+        alreadyVerified: true,
+      };
+    }
+
+    const rawToken = crypto.randomBytes(32).toString('hex');
+    const expiresAt = Date.now() + 24 * 60 * 60 * 1000;
+    const verificationToken = `${rawToken}:${expiresAt}`;
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        emailVerificationToken: verificationToken,
+      },
+    });
+
+    await this.mailService.sendVerificationEmail(user.email, user.fullName, rawToken);
+
+    return {
+      success: true,
+      message: 'Un nouvel email de confirmation vous a été envoyé. Vérifiez votre boîte de réception et vos spams.',
     };
   }
 

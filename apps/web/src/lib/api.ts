@@ -142,6 +142,8 @@ export async function apiRequest<T = any>(
 export const api = {
   // Auth
   signup: (dto: any) => apiRequest('/auth/signup', { method: 'POST', body: JSON.stringify(dto) }),
+  verifyEmail: (token: string) => apiRequest('/auth/verify-email', { method: 'POST', body: JSON.stringify({ token }) }),
+  resendVerification: (email: string) => apiRequest('/auth/resend-verification', { method: 'POST', body: JSON.stringify({ email }) }),
   login: (dto: any) => apiRequest('/auth/login', { method: 'POST', body: JSON.stringify(dto) }),
   getMe: () => apiRequest('/auth/me'),
   logout: () => apiRequest('/auth/logout', { method: 'POST' }),

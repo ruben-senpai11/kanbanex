@@ -60,8 +60,25 @@ export default function LoginPage() {
         {/* Card Form */}
         <div className="p-8 rounded-3xl bg-white/95 dark:bg-[#12151C]/90 border border-slate-200 dark:border-slate-800 shadow-2xl backdrop-blur-xl space-y-5">
           {error && (
-            <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 dark:bg-rose-950/70 dark:border-rose-800 dark:text-rose-300 text-xs font-medium">
-              {error}
+            <div
+              className={`p-3.5 rounded-2xl text-xs font-medium space-y-2 ${
+                error.toLowerCase().includes('valider votre adresse email')
+                  ? 'bg-amber-500/15 border border-amber-500/30 text-amber-200'
+                  : 'bg-rose-50 border border-rose-200 text-rose-800 dark:bg-rose-950/70 dark:border-rose-800 dark:text-rose-300'
+              }`}
+            >
+              <p>{error}</p>
+              {error.toLowerCase().includes('valider votre adresse email') && (
+                <div className="pt-1">
+                  <Link
+                    href={`/verify-email?email=${encodeURIComponent(email)}`}
+                    className="inline-flex items-center gap-1 text-orange-400 hover:text-orange-300 font-bold underline"
+                  >
+                    <span>Vérifier mon email / Renvoyer le lien</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
+              )}
             </div>
           )}
 

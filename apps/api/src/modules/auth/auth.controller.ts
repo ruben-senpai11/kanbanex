@@ -9,7 +9,14 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { SignupDto, LoginDto, RefreshTokenDto, ChangePasswordDto } from './dto/auth.dto';
+import {
+  SignupDto,
+  LoginDto,
+  RefreshTokenDto,
+  ChangePasswordDto,
+  VerifyEmailDto,
+  ResendVerificationDto,
+} from './dto/auth.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 
@@ -23,6 +30,22 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'Compte créé avec succès' })
   async signup(@Body() dto: SignupDto) {
     return this.authService.signup(dto);
+  }
+
+  @Post('verify-email')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Valider l\'adresse email d\'un compte utilisateur' })
+  @ApiResponse({ status: 200, description: 'Email validé avec succès' })
+  async verifyEmail(@Body() dto: VerifyEmailDto) {
+    return this.authService.verifyEmail(dto);
+  }
+
+  @Post('resend-verification')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Renvoyer l\'email de validation de compte' })
+  @ApiResponse({ status: 200, description: 'Email de validation renvoyé' })
+  async resendVerification(@Body() dto: ResendVerificationDto) {
+    return this.authService.resendVerification(dto);
   }
 
   @Post('login')

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
@@ -11,6 +12,7 @@ import { AppLogo } from '@/components/ui/AppLogo';
 import { getLandingUrl } from '@/lib/urls';
 
 export default function SignupPage() {
+  const router = useRouter();
   const { signup } = useAuth();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -24,12 +26,15 @@ export default function SignupPage() {
     setError(null);
     setIsLoading(true);
     try {
-      await signup({
+      const res = await signup({
         fullName,
         email,
         password,
         workspaceName: workspaceName.trim() || undefined,
       });
+      if (res?.requiresEmailVerification) {
+        router.push(`/verify-email?email=${encodeURIComponent(email)}`);
+      }
     } catch (err: any) {
       setError(err.message || 'Erreur lors de la création du compte');
     } finally {

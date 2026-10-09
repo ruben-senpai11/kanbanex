@@ -17,6 +17,7 @@ import { BillingModule } from './modules/billing/billing.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { SearchModule } from './modules/search/search.module';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { SearchModule } from './modules/search/search.module';
       isGlobal: true,
       envFilePath: ['.env', '../../.env'],
     }),
+    MailModule,
     PrismaModule,
     EntitlementsModule,
     AuthModule,

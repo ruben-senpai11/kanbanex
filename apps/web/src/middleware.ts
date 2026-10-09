@@ -30,6 +30,7 @@ export function middleware(request: NextRequest) {
   const isAppRoute =
     pathname === '/login' ||
     pathname === '/signup' ||
+    pathname.startsWith('/verify-email') ||
     pathname.startsWith('/overview') ||
     pathname.startsWith('/projects') ||
     pathname.startsWith('/calendar') ||

@@ -70,3 +70,18 @@ export class ResetPasswordDto {
   @MinLength(8)
   newPassword: string;
 }
+
+export class VerifyEmailDto {
+  @ApiProperty({ description: 'Jeton de vérification de compte' })
+  @IsString()
+  @IsNotEmpty({ message: 'Le jeton de validation est requis' })
+  token: string;
+}
+
+export class ResendVerificationDto {
+  @ApiProperty({ example: 'alban@expansion.io', description: 'Adresse email du compte' })
+  @IsEmail({}, { message: 'Format d\'adresse email invalide' })
+  @IsNotEmpty({ message: 'L\'email est obligatoire' })
+  email: string;
+}
+
