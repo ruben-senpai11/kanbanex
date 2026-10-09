@@ -45,7 +45,38 @@ export class BillingService {
       include: { plan: true },
     });
 
-    if (!subscription) {
+    const workspace = await this.prisma.workspace.findUnique({
+      where: { id: workspaceId },
+    });
+
+    let isSuperAdmin = false;
+    if (workspace?.ownerId) {
+      const owner = await this.prisma.user.findUnique({
+        where: { id: workspace.ownerId },
+      });
+      isSuperAdmin = owner?.role === 'SUPER_ADMIN';
+    }
+
+    if (isSuperAdmin) {
+      const enterprisePlan = await this.prisma.subscriptionPlan.findUnique({
+        where: { slug: 'enterprise' },
+      });
+      if (enterprisePlan && (!subscription || subscription.planId !== enterprisePlan.id)) {
+        subscription = await this.prisma.subscription.upsert({
+          where: { workspaceId },
+          create: {
+            workspaceId,
+            planId: enterprisePlan.id,
+            status: SubscriptionStatus.ACTIVE,
+          },
+          update: {
+            planId: enterprisePlan.id,
+            status: SubscriptionStatus.ACTIVE,
+          },
+          include: { plan: true },
+        });
+      }
+    } else if (!subscription) {
       const basicPlan = await this.prisma.subscriptionPlan.findUnique({
         where: { slug: 'basic' },
       });

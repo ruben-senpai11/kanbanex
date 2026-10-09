@@ -1,59 +1,44 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/auth-context';
-import { api } from '@/lib/api';
+import React from 'react';
+import { LandingNavbar } from '@/components/landing/LandingNavbar';
+import { LandingHero } from '@/components/landing/LandingHero';
+import { InteractiveDemoShowcase } from '@/components/landing/InteractiveDemoShowcase';
+import { InteractiveBentoGrid } from '@/components/landing/InteractiveBentoGrid';
+import { InteractivePricingSection } from '@/components/landing/InteractivePricingSection';
+import { InteractiveFAQ } from '@/components/landing/InteractiveFAQ';
+import { LandingFooter } from '@/components/landing/LandingFooter';
 
-import Image from 'next/image';
-
-export default function RootPage() {
-  const router = useRouter();
-  const { user, currentWorkspace, isLoading } = useAuth();
-
-  useEffect(() => {
-    if (isLoading) return;
-
-    if (!user) {
-      router.replace('/login');
-      return;
-    }
-
-    const redirectToActiveBoard = async () => {
-      if (currentWorkspace) {
-        try {
-          const projects = await api.getProjectsOverview(currentWorkspace.id);
-          if (projects && projects.length > 0) {
-            router.replace(`/projects/${projects[0].id}`);
-            return;
-          }
-        } catch {
-          // fallback
-        }
-      }
-      router.replace('/overview');
-    };
-
-    redirectToActiveBoard();
-  }, [user, currentWorkspace, isLoading, router]);
-
+export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#0B0D11] flex items-center justify-center">
-      <div className="flex flex-col items-center gap-3">
-        <div className="w-16 h-16 rounded-2xl overflow-hidden border border-amber-500/40 shadow-xl shadow-orange-950/60 bg-black animate-pulse">
-          <Image
-            src="/images/kabanex-logo.jpg"
-            alt="KabanEx"
-            width={64}
-            height={64}
-            className="w-full h-full object-cover"
-            priority
-          />
-        </div>
-        <p className="text-xs text-amber-200/90 font-bold tracking-wider uppercase">
-          Kaban<span className="text-orange-500">Ex</span>
-        </p>
+    <div className="min-h-screen bg-[#0B0D11] text-slate-100 selection:bg-orange-500 selection:text-white overflow-x-hidden relative">
+      {/* Background ambient lighting */}
+      <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-orange-600/10 blur-[140px] rounded-full" />
+        <div className="absolute top-[40%] right-[-10%] w-[600px] h-[600px] bg-amber-600/5 blur-[160px] rounded-full" />
+        <div className="absolute bottom-[20%] left-[-10%] w-[600px] h-[600px] bg-orange-500/5 blur-[160px] rounded-full" />
       </div>
+
+      {/* 1. Floating Top Navbar */}
+      <LandingNavbar />
+
+      {/* 2. Impactful Hero Section */}
+      <LandingHero />
+
+      {/* 3. Live Interactive Demonstrative Showcase (ClickUp Style) */}
+      <InteractiveDemoShowcase />
+
+      {/* 4. Feature Bento Grid */}
+      <InteractiveBentoGrid />
+
+      {/* 5. Transparent Pricing with Annual Discount Switch */}
+      <InteractivePricingSection />
+
+      {/* 6. Expandable Interactive FAQ */}
+      <InteractiveFAQ />
+
+      {/* 7. Comprehensive Footer with Legal Links */}
+      <LandingFooter />
     </div>
   );
 }

@@ -44,7 +44,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('KanbanEX API - Expansion Ecosystem')
     .setDescription(
-      'Spécification OpenAPI du SaaS de gestion de projets KanbanEX. Vues panoramiques Projects Overview, Kanban, Gantt, Calendar, FedaPay, et Super Admin.'
+      'Spécification OpenAPI du SaaS de gestion de projets KanbanEX. Vues panoramiques Projects Overview, Kanban, Gantt, Calendar, Facturation Sécurisée, et Super Admin.'
     )
     .setVersion('1.0.0')
     .addBearerAuth()

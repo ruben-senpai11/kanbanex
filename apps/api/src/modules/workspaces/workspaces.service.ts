@@ -114,16 +114,18 @@ export class WorkspacesService {
       },
     });
 
-    // Attach basic subscription plan
-    const basicPlan = await this.prisma.subscriptionPlan.findUnique({
-      where: { slug: 'basic' },
-    });
+    // Attach subscription plan (SUPER_ADMIN gets enterprise plan by default)
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    const targetPlanSlug = user?.role === 'SUPER_ADMIN' ? 'enterprise' : 'basic';
+    const plan = (await this.prisma.subscriptionPlan.findUnique({
+      where: { slug: targetPlanSlug },
+    })) || (await this.prisma.subscriptionPlan.findFirst());
 
-    if (basicPlan) {
+    if (plan) {
       await this.prisma.subscription.create({
         data: {
           workspaceId: workspace.id,
-          planId: basicPlan.id,
+          planId: plan.id,
           status: 'ACTIVE',
         },
       });

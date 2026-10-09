@@ -200,7 +200,7 @@ export default function SuperAdminPage() {
               <div className="p-5 rounded-2xl bg-[#12151C] border border-slate-800 space-y-1">
                 <span className="text-xs text-slate-400 flex items-center gap-1.5">
                   <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
-                  Revenu FedaPay collecté
+                  Revenu total collecté
                 </span>
                 <p className="text-2xl font-bold text-amber-300">
                   {formatFCFA(stats.totalRevenueCFA)}
@@ -239,7 +239,7 @@ export default function SuperAdminPage() {
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              Transactions FedaPay ({transactions.length})
+              Transactions ({transactions.length})
             </button>
           </div>
 

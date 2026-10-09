@@ -58,7 +58,7 @@ export default function BillingPage() {
         const verifyRes = await api.verifyPayment(res.transactionId);
         setNotification({
           type: 'success',
-          message: `Paiement FedaPay approuvé avec succès ! Votre abonnement est maintenant actif.`,
+          message: `Paiement approuvé avec succès ! Votre abonnement est maintenant actif.`,
         });
         await loadBillingData();
         await refreshUserData();
@@ -66,7 +66,7 @@ export default function BillingPage() {
     } catch (err: any) {
       setNotification({
         type: 'error',
-        message: err.message || 'Erreur lors de l\'initiation du paiement FedaPay',
+        message: err.message || 'Erreur lors de l\'initiation du paiement sécurisé',
       });
     } finally {
       setCheckoutLoading(null);
@@ -86,7 +86,7 @@ export default function BillingPage() {
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-orange-950/70 text-orange-400 border border-orange-800/60 flex items-center gap-1.5">
                 <CreditCard className="w-3.5 h-3.5" />
-                Paiements FedaPay Sécurisés
+                Paiements Sécurisés (Carte & Mobile Money)
               </span>
             </div>
             <h1 className="text-3xl font-extrabold text-white tracking-tight">
@@ -260,7 +260,7 @@ export default function BillingPage() {
                         isLoading={checkoutLoading === plan.slug}
                         onClick={() => handleSubscribe(plan.slug)}
                       >
-                        {plan.price === 0 ? 'Choisir ce plan' : `Payer avec FedaPay`}
+                        {plan.price === 0 ? 'Choisir ce plan' : `Paiement sécurisé`}
                       </Button>
                     )}
                   </div>
@@ -274,7 +274,7 @@ export default function BillingPage() {
           {subscriptionData?.transactions?.length > 0 && (
             <div className="max-w-5xl mx-auto space-y-3 pt-6 border-t border-slate-800">
               <h3 className="text-base font-bold text-white">
-                Historique des transactions FedaPay
+                Historique des transactions
               </h3>
               <div className="rounded-2xl border border-slate-800 bg-[#12151C] divide-y divide-slate-800 overflow-hidden">
                 {subscriptionData.transactions.map((tx: any) => (

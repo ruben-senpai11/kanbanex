@@ -37,7 +37,7 @@ export class BillingController {
   @Post('checkout/workspace/:workspaceId')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Initier un paiement FedaPay pour changer d\'abonnement' })
+  @ApiOperation({ summary: 'Initier un paiement sécurisé pour changer d\'abonnement' })
   async createCheckout(
     @Param('workspaceId') workspaceId: string,
     @CurrentUser('id') userId: string,
@@ -56,7 +56,7 @@ export class BillingController {
 
   @Post('webhook/fedapay')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Webhook sécurisé et idempotent FedaPay' })
+  @ApiOperation({ summary: 'Webhook sécurisé et idempotent de paiement' })
   async handleWebhook(
     @Headers('x-fedapay-event') event: string,
     @Body() payload: any,
