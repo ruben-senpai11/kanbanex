@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '@/lib/auth-context';
 import {
   Search,
@@ -49,11 +50,18 @@ export function AppHeader({
 
         {/* Brand */}
         <Link href="/projects/current" className="flex items-center gap-2 group">
-          <div className="w-7 h-7 rounded-lg bg-gradient-warm flex items-center justify-center font-black text-white text-xs tracking-wider shadow-sm group-hover:scale-105 transition-transform">
-            EX
+          <div className="w-7 h-7 rounded-lg overflow-hidden border border-orange-500/30 shadow-xs group-hover:scale-105 transition-transform bg-black flex items-center justify-center shrink-0">
+            <Image
+              src="/images/kabanex-logo.jpg"
+              alt="KabanEx"
+              width={28}
+              height={28}
+              className="w-full h-full object-cover"
+              priority
+            />
           </div>
-          <span className="font-bold text-sm tracking-tight text-slate-900 flex items-center gap-1">
-            Kanban<span className="text-orange-500">EX</span>
+          <span className="font-extrabold text-sm tracking-tight text-slate-900 flex items-center">
+            Kaban<span className="text-orange-500">Ex</span>
           </span>
         </Link>
 

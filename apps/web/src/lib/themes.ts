@@ -1,31 +1,31 @@
 export interface ProjectTheme {
   id: string;
   name: string;
-  category: 'silk' | 'minimal' | 'gradient' | 'celestial' | 'nature';
+  category: 'cinematic' | 'silk' | 'minimal' | 'gradient' | 'celestial' | 'nature';
   backgroundClass: string;
   backgroundStyle?: React.CSSProperties;
   accentColor: string;
   isDark?: boolean;
+  isWallpaper?: boolean;
+  desktopBg?: string;
+  mobileBg?: string;
   previewBg: string;
   description: string;
 }
 
 export const CINEMATIC_THEMES: ProjectTheme[] = [
   {
-    id: 'silk-flow',
-    name: 'Courbes de Soie Métallique',
-    category: 'silk',
-    backgroundClass: 'bg-silk-pattern',
-    backgroundStyle: {
-      backgroundColor: '#1E232A',
-      backgroundImage: `radial-gradient(at 0% 0%, rgba(55, 65, 81, 0.4) 0px, transparent 50%),
-                        radial-gradient(at 100% 100%, rgba(30, 41, 59, 0.7) 0px, transparent 50%),
-                        linear-gradient(135deg, #181C24 0%, #222834 40%, #151820 100%)`,
-    },
+    id: 'kabanex-horizon',
+    name: 'KabanEx Horizon (Officiel)',
+    category: 'cinematic',
+    backgroundClass: 'bg-kabanex-wallpaper',
     accentColor: '#FF7A00',
     isDark: true,
-    previewBg: 'linear-gradient(135deg, #2D3748 0%, #1A202C 100%)',
-    description: 'Courbes soyeuses et ondes métalliques contemporaines inspirées de l\'élégance Trello.',
+    isWallpaper: true,
+    desktopBg: '/images/kabanex-desktop.jpg',
+    mobileBg: '/images/kabanex-mobile.jpg',
+    previewBg: 'url(/images/kabanex-desktop.jpg) center/cover',
+    description: 'Arrière-plan signature KabanEx officiel : lever de soleil panoramique (responsive desktop & mobile).',
   },
   {
     id: 'pure-white',
@@ -41,6 +41,22 @@ export const CINEMATIC_THEMES: ProjectTheme[] = [
     isDark: false,
     previewBg: 'linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%)',
     description: 'Fond blanc épuré haute clarté, contraste maximal et focus absolu sur les tâches.',
+  },
+  {
+    id: 'silk-flow',
+    name: 'Courbes de Soie Métallique',
+    category: 'silk',
+    backgroundClass: 'bg-silk-pattern',
+    backgroundStyle: {
+      backgroundColor: '#1E232A',
+      backgroundImage: `radial-gradient(at 0% 0%, rgba(55, 65, 81, 0.4) 0px, transparent 50%),
+                        radial-gradient(at 100% 100%, rgba(30, 41, 59, 0.7) 0px, transparent 50%),
+                        linear-gradient(135deg, #181C24 0%, #222834 40%, #151820 100%)`,
+    },
+    accentColor: '#FF7A00',
+    isDark: true,
+    previewBg: 'linear-gradient(135deg, #2D3748 0%, #1A202C 100%)',
+    description: 'Courbes soyeuses et ondes métalliques contemporaines inspirées de l\'élégance Trello.',
   },
   {
     id: 'warm-sunrise',
@@ -127,6 +143,6 @@ export const CINEMATIC_THEMES: ProjectTheme[] = [
 
 export function getThemeById(id?: string | null): ProjectTheme {
   const found = CINEMATIC_THEMES.find((t) => t.id === id);
-  // Default to pure-white or silk-flow (clean non-black background)
-  return found || CINEMATIC_THEMES[1]; // Pure White Minimalist by default
+  // Default to KabanEx Horizon official brand wallpaper
+  return found || CINEMATIC_THEMES[0];
 }

@@ -2,10 +2,11 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '@/lib/auth-context';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { ArrowRight, Lock, Mail } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -29,21 +30,37 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-[#0B0D11] flex flex-col items-center justify-center p-4 relative overflow-hidden select-none">
-      {/* Background cinematic subtle glow */}
-      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-amber-600/10 rounded-full blur-3xl pointer-events-none" />
+      {/* Responsive Wallpaper Backdrop (Mobile Img 2 vs Desktop Img 3) */}
+      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none select-none">
+        <div
+          className="block md:hidden absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url('/images/kabanex-mobile.jpg')` }}
+        />
+        <div
+          className="hidden md:block absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url('/images/kabanex-desktop.jpg')` }}
+        />
+        <div className="absolute inset-0 bg-black/75 backdrop-blur-md" />
+      </div>
 
       <div className="w-full max-w-md relative z-10 space-y-6">
-        {/* Brand Header */}
+        {/* Brand Header with Official KabanEx Logo */}
         <div className="flex flex-col items-center text-center space-y-2">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-warm flex items-center justify-center font-black text-white text-2xl tracking-wider shadow-xl shadow-orange-950/60 mb-2">
-            EX
+          <div className="w-16 h-16 rounded-2xl overflow-hidden border border-amber-500/40 shadow-xl shadow-orange-950/60 mb-2 bg-black">
+            <Image
+              src="/images/kabanex-logo.jpg"
+              alt="KabanEx"
+              width={64}
+              height={64}
+              className="w-full h-full object-cover"
+              priority
+            />
           </div>
           <h1 className="text-2xl font-extrabold text-white tracking-tight">
-            Connexion à Kanban<span className="text-orange-500">EX</span>
+            Connexion à Kaban<span className="text-orange-500">Ex</span>
           </h1>
-          <p className="text-xs text-slate-400">
-            Écosystème Expansion • Plateforme de gestion de projets premium
+          <p className="text-xs text-amber-200/80 font-medium">
+            Vos projets. Une seule vision.
           </p>
         </div>
 
@@ -89,7 +106,10 @@ export default function LoginPage() {
           <div className="pt-4 border-t border-slate-800/80 text-center">
             <p className="text-xs text-slate-400">
               Pas encore de compte ?{' '}
-              <Link href="/signup" className="text-orange-400 hover:text-orange-300 font-semibold underline underline-offset-4">
+              <Link
+                href="/signup"
+                className="text-orange-400 hover:text-orange-300 font-semibold underline underline-offset-4"
+              >
                 Créer un compte
               </Link>
             </p>
