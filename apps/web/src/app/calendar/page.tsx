@@ -51,12 +51,12 @@ export default function WorkspaceCalendarPage() {
   }, [selectedProjectId]);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0B0D11] dark:text-slate-100 flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0E121A] dark:text-slate-100 flex flex-col overflow-hidden">
       <AppHeader onOpenSearch={() => setIsSearchOpen(true)} />
 
       <div className="flex-1 flex overflow-hidden">
 
-        <main className="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden bg-slate-50 dark:bg-[#0B0D11]">
+        <main className="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden bg-gradient-to-br from-slate-50 via-amber-50/20 to-slate-100 dark:from-[#0E121A] dark:via-[#131722] dark:to-[#0B0E14]">
           {/* Calendar Header with Project Filter */}
           <div className="h-16 px-6 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#12151C] shrink-0 flex items-center justify-between">
             <div>

@@ -141,11 +141,11 @@ export default function SuperAdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0B0D11] dark:text-slate-100 flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0E121A] dark:text-slate-100 flex flex-col overflow-hidden">
       <AppHeader />
 
       <div className="flex-1 flex overflow-hidden">
-        <main className="flex-1 overflow-y-auto p-6 md:p-10 space-y-8 bg-slate-50 dark:bg-[#0B0D11]">
+        <main className="flex-1 overflow-y-auto p-6 md:p-10 space-y-8 bg-gradient-to-br from-slate-50 via-amber-50/20 to-slate-100 dark:from-[#0E121A] dark:via-[#131722] dark:to-[#0B0E14]">
           {/* Super Admin Banner */}
           <div className="max-w-6xl mx-auto space-y-2">
             <div className="flex items-center gap-2">

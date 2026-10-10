@@ -36,9 +36,30 @@ export default function OfflinePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0B0D11] text-slate-900 dark:text-white flex flex-col items-center justify-center p-6 selection:bg-brand-500 selection:text-white relative overflow-hidden">
-      {/* Background Ambience */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-500/10 dark:bg-brand-500/5 rounded-full blur-[120px] pointer-events-none" />
+    <div className="min-h-screen text-slate-900 dark:text-white flex flex-col items-center justify-center p-6 selection:bg-brand-500 selection:text-white relative overflow-hidden select-none">
+      {/* 1. Responsive Cinematic Wallpaper Background */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none select-none">
+        <div
+          className="block md:hidden absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url('/images/kanbanex-mobile.jpg')` }}
+        />
+        <div
+          className="hidden md:block absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url('/images/kanbanex-desktop.jpg')` }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `radial-gradient(ellipse at 50% 15%, rgba(255, 122, 0, 0.40) 0%, transparent 65%),
+                         radial-gradient(ellipse at 50% 85%, rgba(15, 23, 42, 0.65) 0%, transparent 60%),
+                         linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, rgba(15, 23, 42, 0.75) 100%)`,
+          }}
+        />
+        <div className="absolute inset-0 backdrop-blur-[2px]" />
+      </div>
+
+      {/* Floating Solar Orbs */}
+      <div className="fixed -top-24 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-orange-500/25 blur-[120px] pointer-events-none z-0" />
 
       <div className="w-full max-w-md relative z-10 flex flex-col items-center text-center">
         {/* App Logo */}
@@ -61,7 +82,7 @@ export default function OfflinePage() {
         </p>
 
         {/* Status Checklist Card */}
-        <div className="w-full bg-white dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 rounded-2xl p-5 mb-8 text-left shadow-sm backdrop-blur-sm">
+        <div className="w-full bg-white/95 dark:bg-[#11151F]/90 border border-white/60 dark:border-white/10 rounded-2xl p-5 mb-8 text-left shadow-2xl backdrop-blur-xl">
           <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3.5">
             État des services locaux
           </h2>
