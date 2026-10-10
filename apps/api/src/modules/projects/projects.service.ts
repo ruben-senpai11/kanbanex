@@ -214,9 +214,9 @@ export class ProjectsService {
         priority: dto.priority,
         plannedStartDate: dto.plannedStartDate ? new Date(dto.plannedStartDate) : null,
         plannedEndDate: dto.plannedEndDate ? new Date(dto.plannedEndDate) : null,
-        customColor: dto.customColor || '#F97316',
+        customColor: dto.customColor || '#FF7A00',
         customGradient: dto.customGradient || 'from-amber-500 to-orange-600',
-        backgroundTheme: dto.backgroundTheme || 'vast-skies',
+        backgroundTheme: dto.backgroundTheme || 'gradient-orange-chaud',
         ownerId: userId,
         position,
         members: {

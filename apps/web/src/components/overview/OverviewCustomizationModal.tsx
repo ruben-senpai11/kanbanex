@@ -71,7 +71,7 @@ export function OverviewCustomizationModal({
   const handleResetDefaults = () => {
     setTempThemeMode('system');
     setTempColor('#FF7A00');
-    setTempBg('kanbanex-horizon');
+    setTempBg('gradient-orange-chaud');
   };
 
   const activeThemeObj = getThemeById(tempBg);

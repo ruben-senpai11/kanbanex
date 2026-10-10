@@ -105,7 +105,7 @@ export function AppLogo({
         <span
           className={`font-black tracking-tight text-slate-900 dark:text-white flex items-center select-none ${textClassName || 'text-base'}`}
         >
-          Kanban<span className="text-orange-500">Ex</span>
+          Kanban<span className="app-logo-accent text-[#FF7A00]">Ex</span>
         </span>
       )}
     </div>

@@ -159,6 +159,93 @@
   box-shadow: 0 0 25px -5px rgba(255, 122, 0, 0.35);
 }
 
+/* ==============================================================================
+   DYNAMIC BRAND PRIMARY COLOR OVERRIDES (Zero Residual Orange)
+   When the user picks a non-orange primary color, all orange classes across the site
+   adapt to the user's primary color, EXCEPT the official AppLogo accent.
+   ============================================================================== */
+
+:root {
+  --primary-color: #FF7A00;
+  --primary-hover: #E66A00;
+  --primary-light: rgba(255, 122, 0, 0.15);
+  --primary-border: rgba(255, 122, 0, 0.4);
+  --primary-contrast: #FFFFFF;
+}
+
+/* Ensure AppLogo brand text always stays official KanbanEx orange */
+.app-logo-accent {
+  color: #FF7A00 !important;
+}
+
+/* When custom primary is active: override all Tailwind orange classes */
+html[data-custom-primary="true"] .text-orange-300:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .text-orange-400:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .text-orange-500:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .text-orange-600:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .text-brand-500:not(.app-logo-accent):not(.app-logo-accent *) {
+  color: var(--primary-color) !important;
+}
+
+html[data-custom-primary="true"] .hover\:text-orange-400:hover:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .hover\:text-orange-500:hover:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .group:hover .group-hover\:text-orange-300:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .group:hover .group-hover\:text-orange-400:not(.app-logo-accent):not(.app-logo-accent *) {
+  color: var(--primary-hover) !important;
+}
+
+html[data-custom-primary="true"] .bg-orange-500:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .bg-orange-600:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .bg-brand-500:not(.app-logo-accent):not(.app-logo-accent *) {
+  background-color: var(--primary-color) !important;
+  color: var(--primary-contrast) !important;
+}
+
+html[data-custom-primary="true"] .hover\:bg-orange-500:hover:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .hover\:bg-orange-600:hover:not(.app-logo-accent):not(.app-logo-accent *) {
+  background-color: var(--primary-hover) !important;
+}
+
+html[data-custom-primary="true"] .bg-orange-50:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .bg-orange-100:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .bg-orange-500\/10:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .bg-orange-500\/20:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .dark .bg-orange-950:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .bg-orange-950:not(.app-logo-accent):not(.app-logo-accent *) {
+  background-color: var(--primary-light) !important;
+}
+
+html[data-custom-primary="true"] .border-orange-200:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .border-orange-300:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .border-orange-400:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .border-orange-500:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .border-orange-600:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .border-orange-800:not(.app-logo-accent):not(.app-logo-accent *) {
+  border-color: var(--primary-border) !important;
+}
+
+html[data-custom-primary="true"] .ring-orange-500:not(.app-logo-accent):not(.app-logo-accent *),
+html[data-custom-primary="true"] .focus\:ring-orange-500:focus:not(.app-logo-accent):not(.app-logo-accent *) {
+  --tw-ring-color: var(--primary-border) !important;
+}
+
+html[data-custom-primary="true"] .bg-gradient-warm,
+html[data-custom-primary="true"] .group:hover .group-hover\:bg-gradient-warm {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%) !important;
+}
+
+html[data-custom-primary="true"] .brand-glow {
+  box-shadow: 0 0 25px -5px var(--primary-light) !important;
+}
+
+html[data-custom-primary="true"] .to-orange-500 {
+  --tw-gradient-to: var(--primary-color) !important;
+}
+
+html[data-custom-primary="true"] .from-orange-500 {
+  --tw-gradient-from: var(--primary-color) !important;
+}
+
 /* Micro-animations & Interactive transitions */
 .interactive-scale {
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);

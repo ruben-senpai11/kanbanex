@@ -12,6 +12,7 @@ import { ThemeSelectorModal } from '@/components/overview/ThemeSelectorModal';
 import { OverviewCustomizationModal } from '@/components/overview/OverviewCustomizationModal';
 import { PlanModal } from '@/components/overview/PlanModal';
 import { GlobalSearchModal } from '@/components/layout/GlobalSearchModal';
+import { OnboardingWizardModal } from '@/components/onboarding/OnboardingWizardModal';
 import { AppLogo } from '@/components/ui/AppLogo';
 import {
   Plus,
@@ -28,13 +29,14 @@ import { Button } from '@/components/ui/Button';
 export default function OverviewPage() {
   const router = useRouter();
   const { user, currentWorkspace, workspaces, setCurrentWorkspace, logout, isLoading: isAuthLoading } = useAuth();
-  const { currentOverviewTheme, overviewBackground } = usePreferences();
+  const { currentOverviewTheme, overviewBackground, resolvedTheme, primaryColor, primaryContrast } = usePreferences();
 
   const [projects, setProjects] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // Modals state
   const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCustomizationOpen, setIsCustomizationOpen] = useState(false);
   const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
@@ -58,7 +60,16 @@ export default function OverviewPage() {
     setIsLoading(true);
     try {
       const data = await api.getProjectsOverview(currentWorkspace.id);
-      setProjects(data || []);
+      const list = data || [];
+      setProjects(list);
+      // Classic onboarding flow for new accounts without projects
+      if (
+        list.length === 0 &&
+        typeof window !== 'undefined' &&
+        !localStorage.getItem('kanbanex_onboarding_completed')
+      ) {
+        setIsOnboardingOpen(true);
+      }
     } catch (err) {
       console.error('Failed to load projects overview', err);
     } finally {
@@ -85,6 +96,15 @@ export default function OverviewPage() {
     }
   };
 
+  const handleOnboardingComplete = async (data: any) => {
+    if (!currentWorkspace) return;
+    const res = await api.createProject(currentWorkspace.id, data);
+    await loadProjects();
+    if (res?.id) {
+      router.push(`/projects/${res.id}`);
+    }
+  };
+
   const handleSaveTheme = async (projectId: string, themeId: string, customColor: string) => {
     await api.updateTheme(projectId, {
       backgroundTheme: themeId,
@@ -95,6 +115,9 @@ export default function OverviewPage() {
 
   const currentThemeProject = projects.find((p) => p.id === themeModalProjectId);
   const workspaceTitle = currentWorkspace?.name || "Ma Vision de l'Avenir";
+
+  const isOverviewDark = currentOverviewTheme.isDark ?? (resolvedTheme === 'dark');
+  const isCustomPrimary = primaryColor.toLowerCase() !== '#ff7a00';
 
   return (
     <div
@@ -132,11 +155,19 @@ export default function OverviewPage() {
               onClick={() => workspaces.length > 1 && setIsWsDropdownOpen(!isWsDropdownOpen)}
               className="flex items-center gap-2 group text-left"
             >
-              <h1 className="text-xl md:text-2xl font-black text-white tracking-tight drop-shadow-md truncate max-w-[280px] md:max-w-md">
+              <h1
+                className={`text-xl md:text-2xl font-black tracking-tight truncate max-w-[280px] md:max-w-md ${
+                  isOverviewDark ? 'text-white drop-shadow-md' : 'text-slate-950 drop-shadow-xs'
+                }`}
+              >
                 {workspaceTitle}
               </h1>
               {workspaces.length > 1 && (
-                <ChevronDown className="w-4 h-4 text-white/70 group-hover:text-white transition-transform" />
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform ${
+                    isOverviewDark ? 'text-white/70 group-hover:text-white' : 'text-slate-600 group-hover:text-slate-950'
+                  }`}
+                />
               )}
             </button>
 
@@ -157,7 +188,10 @@ export default function OverviewPage() {
                   >
                     <span className="truncate">{ws.name}</span>
                     {ws.id === currentWorkspace?.id && (
-                      <span className="w-2 h-2 rounded-full bg-orange-500" />
+                      <span
+                        className="w-2 h-2 rounded-full"
+                        style={{ backgroundColor: primaryColor }}
+                      />
                     )}
                   </button>
                 ))}
@@ -170,24 +204,55 @@ export default function OverviewPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setIsSearchOpen(true)}
-            className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white/80 hover:text-white backdrop-blur-md transition-colors hidden sm:flex items-center gap-2 text-xs font-medium border border-white/10"
+            className={`p-2 rounded-xl backdrop-blur-md transition-colors hidden sm:flex items-center gap-2 text-xs font-medium border ${
+              isOverviewDark
+                ? 'bg-white/10 hover:bg-white/20 text-white/90 hover:text-white border-white/10'
+                : 'bg-slate-900/10 hover:bg-slate-900/15 text-slate-900 border-slate-900/15'
+            }`}
             title="Recherche rapide (Ctrl+K)"
           >
             <Search className="w-4 h-4" />
             <span className="hidden md:inline">Rechercher</span>
-            <kbd className="hidden md:inline px-1.5 py-0.5 rounded text-[10px] bg-white/20 text-white/90 font-mono">
+            <kbd
+              className={`hidden md:inline px-1.5 py-0.5 rounded text-[10px] font-mono ${
+                isOverviewDark ? 'bg-white/20 text-white/90' : 'bg-slate-900/15 text-slate-900'
+              }`}
+            >
               Ctrl K
             </kbd>
           </button>
 
-          <Button
+          {/* Plus Button: Monochromatic White/Black based on light/dark theme, or custom primary if selected */}
+          <button
             onClick={() => setIsNewProjectOpen(true)}
-            size="md"
-            className="brand-glow bg-gradient-warm hover:brightness-105 text-white font-bold shadow-lg text-xs md:text-sm px-4 md:px-5 rounded-xl border border-white/20 active:scale-95 transition-all"
+            className={`flex items-center gap-1.5 px-4 md:px-5 py-2.5 rounded-xl font-bold shadow-lg text-xs md:text-sm active:scale-95 transition-all select-none border ${
+              isCustomPrimary
+                ? 'shadow-md border-transparent'
+                : isOverviewDark
+                ? 'bg-white text-slate-950 hover:bg-slate-100 border-white/30 shadow-white/10'
+                : 'bg-slate-950 text-white hover:bg-slate-900 border-slate-800 shadow-slate-900/20'
+            }`}
+            style={
+              isCustomPrimary
+                ? {
+                    backgroundColor: primaryColor,
+                    color: primaryContrast,
+                  }
+                : undefined
+            }
           >
-            <Plus className="w-4 h-4 mr-1.5" />
+            <Plus
+              className={`w-4 h-4 stroke-[2.5] ${
+                isCustomPrimary
+                  ? ''
+                  : isOverviewDark
+                  ? 'text-slate-950'
+                  : 'text-white'
+              }`}
+              style={isCustomPrimary ? { color: primaryContrast } : undefined}
+            />
             <span>Créer un projet</span>
-          </Button>
+          </button>
         </div>
       </header>
 
@@ -198,49 +263,78 @@ export default function OverviewPage() {
           isLoading={isLoading}
           onOpenNewProject={() => setIsNewProjectOpen(true)}
           onOpenThemeSelector={(pId) => setThemeModalProjectId(pId)}
+          onStartOnboarding={() => setIsOnboardingOpen(true)}
         />
       </main>
 
       {/* 4. Mini Footer: Me déconnecter, Mon Plan/Abonnement, Personnalisation */}
       <footer className="h-16 px-4 md:px-8 pb-3 flex items-center justify-center shrink-0 relative z-30">
-        <div className="flex items-center gap-1.5 md:gap-3 p-1.5 rounded-full bg-black/50 hover:bg-black/60 backdrop-blur-xl border border-white/15 shadow-2xl transition-all text-white/90">
+        <div
+          className={`flex items-center gap-1.5 md:gap-3 p-1.5 rounded-full backdrop-blur-xl shadow-2xl transition-all border ${
+            isOverviewDark
+              ? 'bg-black/60 hover:bg-black/75 border-white/15 text-white/90'
+              : 'bg-white/90 hover:bg-white border-slate-300 text-slate-900 shadow-xl'
+          }`}
+        >
           {/* Action 1: Me déconnecter */}
           <button
             onClick={() => logout()}
-            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold hover:bg-white/15 text-slate-300 hover:text-rose-400 transition-colors"
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+              isOverviewDark
+                ? 'text-slate-300 hover:text-rose-400 hover:bg-white/15'
+                : 'text-slate-700 hover:text-rose-600 hover:bg-slate-900/10'
+            }`}
             title="Se déconnecter"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span>Me déconnecter</span>
           </button>
 
-          <div className="w-px h-4 bg-white/20" />
+          <div className={`w-px h-4 ${isOverviewDark ? 'bg-white/20' : 'bg-slate-300'}`} />
 
           {/* Action 2: Mon Plan / Abonnement */}
           <button
             onClick={() => setIsPlanModalOpen(true)}
-            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold hover:bg-white/15 text-slate-300 hover:text-white transition-colors"
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+              isOverviewDark
+                ? 'text-slate-300 hover:text-white hover:bg-white/15'
+                : 'text-slate-700 hover:text-slate-950 hover:bg-slate-900/10'
+            }`}
             title="Consulter mon abonnement et mes formules"
           >
-            <CreditCard className="w-3.5 h-3.5 text-amber-400" />
+            <CreditCard className={`w-3.5 h-3.5 ${isOverviewDark ? 'text-amber-400' : 'text-amber-600'}`} />
             <span>Mon Plan / Abonnement</span>
           </button>
 
-          <div className="w-px h-4 bg-white/20" />
+          <div className={`w-px h-4 ${isOverviewDark ? 'bg-white/20' : 'bg-slate-300'}`} />
 
           {/* Action 3: Personnalisation */}
           <button
             onClick={() => setIsCustomizationOpen(true)}
-            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold hover:bg-white/15 text-slate-300 hover:text-orange-400 transition-colors"
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+              isOverviewDark
+                ? 'text-slate-300 hover:text-white hover:bg-white/15'
+                : 'text-slate-700 hover:text-slate-950 hover:bg-slate-900/10'
+            }`}
             title="Changer l'arrière-plan de l'overview, la couleur primaire et le thème"
           >
-            <Palette className="w-3.5 h-3.5 text-orange-400" />
+            <Palette
+              className="w-3.5 h-3.5"
+              style={{ color: isCustomPrimary ? primaryColor : isOverviewDark ? '#FFFFFF' : '#0F172A' }}
+            />
             <span>Personnalisation</span>
           </button>
         </div>
       </footer>
 
       {/* Modals */}
+      <OnboardingWizardModal
+        isOpen={isOnboardingOpen}
+        onClose={() => setIsOnboardingOpen(false)}
+        onComplete={handleOnboardingComplete}
+        workspaceName={workspaceTitle}
+      />
+
       <CreateProjectModal
         isOpen={isNewProjectOpen}
         onClose={() => setIsNewProjectOpen(false)}

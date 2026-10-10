@@ -82,7 +82,7 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
       <div
         className="h-1.5 w-full shrink-0 relative z-10"
         style={{
-          background: `linear-gradient(90deg, ${color} 0%, #FF7A00 100%)`,
+          background: `linear-gradient(90deg, ${color} 0%, ${color}CC 100%)`,
         }}
       />
 
@@ -195,7 +195,7 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
               className="h-full rounded-full transition-all duration-700 ease-out shadow-xs"
               style={{
                 width: `${project.metrics.progressPercentage}%`,
-                background: `linear-gradient(90deg, #FF7A00 0%, ${color} 100%)`,
+                background: `linear-gradient(90deg, ${color}88 0%, ${color} 100%)`,
               }}
             />
           </div>
