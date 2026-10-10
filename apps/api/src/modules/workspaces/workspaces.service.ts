@@ -114,12 +114,19 @@ export class WorkspacesService {
       },
     });
 
-    // Attach subscription plan (SUPER_ADMIN gets enterprise plan by default)
+    // Attach subscription plan (SUPER_ADMIN gets enterprise/expansion plan by default)
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    const targetPlanSlug = user?.role === 'SUPER_ADMIN' ? 'enterprise' : 'basic';
-    const plan = (await this.prisma.subscriptionPlan.findUnique({
-      where: { slug: targetPlanSlug },
-    })) || (await this.prisma.subscriptionPlan.findFirst());
+    const plan =
+      (await this.prisma.subscriptionPlan.findFirst({
+        where: {
+          slug: {
+            in:
+              user?.role === 'SUPER_ADMIN'
+                ? ['expansion', 'entreprise', 'enterprise']
+                : ['visionnaire', 'starter', 'basic'],
+          },
+        },
+      })) || (await this.prisma.subscriptionPlan.findFirst());
 
     if (plan) {
       await this.prisma.subscription.create({

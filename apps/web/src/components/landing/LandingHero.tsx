@@ -120,7 +120,7 @@ export function LandingHero() {
           </div>
           <div className="flex items-center gap-1.5">
             <Shield className="w-4 h-4 text-amber-500 dark:text-amber-400" />
-            <span>Formule Entreprise offerte au Super Admin</span>
+            <span>Formule Expansion offerte au Super Admin</span>
           </div>
         </div>
       </div>

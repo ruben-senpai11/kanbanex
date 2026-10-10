@@ -117,16 +117,16 @@ export function InteractiveBentoGrid() {
             </div>
 
             <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-              Gouvernance & Formule Entreprise par Défaut
+              Gouvernance & Formule Expansion par Défaut
             </h3>
             <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              Le premier utilisateur enregistré devient automatiquement le Super Administrateur de la plateforme et bénéficie d&apos;emblée du plan Entreprise illimité. Créez des espaces de travail cloisonnés et invitez vos collaborateurs en toute sérénité.
+              Le premier utilisateur enregistré devient automatiquement le Super Administrateur de la plateforme et bénéficie d&apos;emblée du plan Expansion illimité. Créez des espaces de travail cloisonnés et invitez vos collaborateurs en toute sérénité.
             </p>
 
             <div className="pt-2 flex flex-wrap gap-3 text-xs font-semibold text-slate-700 dark:text-slate-300">
               <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
                 <CheckCircle className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
-                Plan Entreprise offert au Super Admin
+                Plan Expansion offert au Super Admin
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
                 <CheckCircle className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />

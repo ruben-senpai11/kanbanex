@@ -38,7 +38,7 @@ export function PlanModal({ isOpen, onClose }: PlanModalProps) {
     loadSub();
   }, [isOpen, currentWorkspace]);
 
-  const activePlanName = subscription?.subscription?.plan?.name || currentWorkspace?.subscription?.plan?.name || 'Formule Starter';
+  const activePlanName = subscription?.subscription?.plan?.name || currentWorkspace?.subscription?.plan?.name || 'Formule Visionnaire';
   const activePlanPrice = subscription?.subscription?.plan?.priceMonthly ?? 0;
   const status = subscription?.subscription?.status || 'Actif';
 

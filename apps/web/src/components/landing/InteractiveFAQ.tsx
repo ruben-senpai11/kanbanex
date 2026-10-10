@@ -12,7 +12,7 @@ const FAQS = [
   {
     question: 'Comment fonctionne l\'attribution du statut Super Administrateur ?',
     answer:
-      'Conformément aux spécifications, le tout premier utilisateur à créer un compte sur la plateforme se voit automatiquement attribuer le rôle de Super Administrateur (Super Admin). Ce compte bénéficie d\'emblée de la formule Entreprise avec un accès complet à la console de gestion globale.',
+      'Conformément aux spécifications, le tout premier utilisateur à créer un compte sur la plateforme se voit automatiquement attribuer le rôle de Super Administrateur (Super Admin). Ce compte bénéficie d\'emblée de la formule Expansion avec un accès complet à la console de gestion globale.',
   },
   {
     question: 'Puis-je personnaliser les arrière-plans sur grand écran et smartphone ?',

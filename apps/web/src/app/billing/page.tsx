@@ -195,33 +195,41 @@ export default function BillingPage() {
           ) : (
             <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
               {plans.map((plan) => {
-                const isCurrent = activePlanSlug === plan.slug || (activePlanSlug === 'basic' && plan.slug === 'starter');
-                const isPro = plan.slug === 'pro';
-                const isEntreprise = plan.slug === 'entreprise' || plan.slug === 'enterprise';
+                const isCurrent =
+                  activePlanSlug === plan.slug ||
+                  (['basic', 'starter', 'visionnaire'].includes(activePlanSlug) &&
+                    ['basic', 'starter', 'visionnaire'].includes(plan.slug));
+                const isPro = plan.slug === 'pro' || plan.slug === 'eclosion';
+                const isEntreprise =
+                  plan.slug === 'entreprise' ||
+                  plan.slug === 'enterprise' ||
+                  plan.slug === 'expansion';
 
-                // Exact features from Image 1 / Login benefits
-                const featuresList = plan.slug === 'starter' || plan.slug === 'basic'
-                  ? [
-                      'Tableaux Kanban illimités',
-                      'Vue calendrier et échéancier',
-                      'Arrière-plans signature KanbanEx',
-                      'Jusqu\'à 3 membres par espace',
-                    ]
-                  : isPro
-                  ? [
-                      'Toutes les fonctionnalités Starter',
-                      'Diagramme de Gantt interactif',
-                      'Membres et collaborateurs illimités',
-                      'Personnalisation cinématique complète',
-                      'Paiement sécurisé et instantané',
-                    ]
-                  : [
-                      'Toutes les fonctionnalités Pro',
-                      'Console Super Admin centralisée',
-                      'Multi-espaces de travail illimités',
-                      'Gestion avancée de la tarification',
-                      'Support dédié et prioritaire 24/7',
-                    ];
+                // Features list conforming to Visionnaire, Éclosion, Expansion
+                const featuresList =
+                  plan.slug === 'starter' || plan.slug === 'basic' || plan.slug === 'visionnaire'
+                    ? [
+                        'Tableaux Kanban illimités',
+                        'Tamis « The One Thing » & GTD',
+                        'Vue calendrier et échéancier',
+                        'Arrière-plans signature KanbanEx',
+                        'Jusqu\'à 3 membres par espace',
+                      ]
+                    : isPro
+                    ? [
+                        'Toutes les fonctionnalités Visionnaire',
+                        'Diagramme de Gantt interactif',
+                        'Membres et collaborateurs illimités',
+                        'Personnalisation cinématique complète',
+                        'Paiement sécurisé et instantané',
+                      ]
+                    : [
+                        'Toutes les fonctionnalités Éclosion',
+                        'Console Super Admin centralisée',
+                        'Multi-espaces de travail illimités',
+                        'Gestion avancée de la tarification',
+                        'Support dédié et prioritaire 24/7',
+                      ];
 
                 return (
                   <div
@@ -291,8 +299,8 @@ export default function BillingPage() {
                           {plan.price === 0
                             ? 'Démarrer gratuitement'
                             : isPro
-                            ? 'Passer à la formule Pro →'
-                            : 'Rejoindre l\'Écosystème'}
+                            ? 'Passer à la formule Éclosion →'
+                            : 'Rejoindre la formule Expansion'}
                         </Button>
                       )}
                     </div>

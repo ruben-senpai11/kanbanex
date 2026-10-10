@@ -48,7 +48,7 @@ export default function TermsPage() {
 
           <h2 className="text-lg font-bold text-white pt-4">2. Création de Compte et Rôles</h2>
           <p>
-            L&apos;accès aux fonctionnalités requiert la création d&apos;un compte utilisateur. Le premier utilisateur enregistré sur la plateforme se voit attribuer de plein droit le statut de Super Administrateur (Super Admin) avec la formule Entreprise par défaut. L&apos;utilisateur est responsable du maintien de la confidentialité de ses identifiants.
+            L&apos;accès aux fonctionnalités requiert la création d&apos;un compte utilisateur. Le premier utilisateur enregistré sur la plateforme se voit attribuer de plein droit le statut de Super Administrateur (Super Admin) avec la formule Expansion par défaut. L&apos;utilisateur est responsable du maintien de la confidentialité de ses identifiants.
           </p>
 
           <h2 className="text-lg font-bold text-white pt-4">3. Utilisation de la Plateforme</h2>
@@ -58,7 +58,7 @@ export default function TermsPage() {
 
           <h2 className="text-lg font-bold text-white pt-4">4. Abonnements et Facturation Sécurisée</h2>
           <p>
-            KanbanEx propose différents niveaux d&apos;abonnements (Starter, Pro, Entreprise). Les paiements sont traités via des passerelles bancaires et financières cryptées certifiées garantissant une totale confidentialité et sécurité des transactions.
+            KanbanEx propose différents niveaux d&apos;abonnements (Visionnaire, Éclosion, Expansion). Les paiements sont traités via des passerelles bancaires et financières cryptées certifiées garantissant une totale confidentialité et sécurité des transactions.
           </p>
 
           <h2 className="text-lg font-bold text-white pt-4">5. Propriété Intellectuelle</h2>

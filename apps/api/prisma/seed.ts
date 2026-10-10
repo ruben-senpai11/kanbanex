@@ -10,8 +10,8 @@ async function main() {
   const defaultPlans = [
     {
       slug: 'starter',
-      name: 'Starter',
-      description: 'Pour les créateurs et indépendants',
+      name: 'Visionnaire',
+      description: 'Pour les créateurs, fondateurs et indépendants',
       price: 0,
       currency: 'XOF',
       billingInterval: BillingInterval.MONTHLY,
@@ -28,9 +28,9 @@ async function main() {
     },
     {
       slug: 'pro',
-      name: 'Pro',
-      description: 'Pour les équipes et studios en croissance',
-      price: 9900,
+      name: 'Éclosion',
+      description: 'Pour les équipes et projets en pleine éclosion',
+      price: 5000,
       currency: 'XOF',
       billingInterval: BillingInterval.MONTHLY,
       isCustomPrice: false,
@@ -47,9 +47,9 @@ async function main() {
     },
     {
       slug: 'entreprise',
-      name: 'Entreprise',
+      name: 'Expansion',
       description: 'Pour les grandes organisations & le Super Admin',
-      price: 29900,
+      price: 15000,
       currency: 'XOF',
       billingInterval: BillingInterval.MONTHLY,
       isCustomPrice: true,

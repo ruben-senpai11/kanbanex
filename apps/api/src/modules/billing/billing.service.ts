@@ -59,7 +59,7 @@ export class BillingService {
 
     if (isSuperAdmin) {
       const enterprisePlan = await this.prisma.subscriptionPlan.findFirst({
-        where: { slug: { in: ['entreprise', 'enterprise'] } },
+        where: { slug: { in: ['entreprise', 'enterprise', 'expansion'] } },
       });
       if (enterprisePlan && (!subscription || subscription.planId !== enterprisePlan.id)) {
         subscription = await this.prisma.subscription.upsert({
@@ -78,7 +78,7 @@ export class BillingService {
       }
     } else if (!subscription) {
       const defaultPlan = await this.prisma.subscriptionPlan.findFirst({
-        where: { slug: { in: ['starter', 'basic'] } },
+        where: { slug: { in: ['starter', 'basic', 'visionnaire'] } },
       });
       if (defaultPlan) {
         subscription = await this.prisma.subscription.create({

@@ -154,11 +154,18 @@ export class AuthService {
       },
     });
 
-    // Attach subscription plan to the new workspace (SUPER_ADMIN gets enterprise plan by default)
-    const targetPlanSlug = role === SystemRole.SUPER_ADMIN ? 'enterprise' : 'basic';
-    const plan = (await this.prisma.subscriptionPlan.findUnique({
-      where: { slug: targetPlanSlug },
-    })) || (await this.prisma.subscriptionPlan.findFirst());
+    // Attach subscription plan to the new workspace (SUPER_ADMIN gets enterprise/expansion plan by default)
+    const plan =
+      (await this.prisma.subscriptionPlan.findFirst({
+        where: {
+          slug: {
+            in:
+              role === SystemRole.SUPER_ADMIN
+                ? ['expansion', 'entreprise', 'enterprise']
+                : ['visionnaire', 'starter', 'basic'],
+          },
+        },
+      })) || (await this.prisma.subscriptionPlan.findFirst());
 
     if (plan) {
       await this.prisma.subscription.create({
