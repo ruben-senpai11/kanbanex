@@ -290,7 +290,7 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
           href={`/projects/${project.id}`}
           className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all duration-300 group/btn bg-white/15 hover:bg-gradient-warm text-white border border-white/25 hover:border-transparent shadow-md active:scale-98"
         >
-          <span>Ouvrir l&apos;espace Kanban</span>
+          <span>Ouvrir l&apos;espace travail</span>
           <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
         </Link>
       </div>
