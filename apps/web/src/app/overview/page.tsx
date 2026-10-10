@@ -156,8 +156,9 @@ export default function OverviewPage() {
 
           <div ref={wsDropdownRef} className="relative">
             <button
-              onClick={() => workspaces.length > 1 && setIsWsDropdownOpen(!isWsDropdownOpen)}
+              onClick={() => setIsWsDropdownOpen(!isWsDropdownOpen)}
               className="flex items-center gap-2 group text-left"
+              title="Menu de l'espace de travail"
             >
               <h1
                 className={`text-xl md:text-2xl font-black tracking-tight truncate max-w-[280px] md:max-w-md ${
@@ -166,39 +167,81 @@ export default function OverviewPage() {
               >
                 {workspaceTitle}
               </h1>
-              {workspaces.length > 1 && (
-                <ChevronDown
-                  className={`w-4 h-4 transition-transform ${
-                    isOverviewDark ? 'text-white/70 group-hover:text-white' : 'text-slate-600 group-hover:text-slate-950'
-                  }`}
-                />
-              )}
+              <ChevronDown
+                className={`w-4 h-4 transition-transform ${
+                  isWsDropdownOpen ? 'rotate-180 ' : ''
+                }${isOverviewDark ? 'text-white/70 group-hover:text-white' : 'text-slate-600 group-hover:text-slate-950'}`}
+              />
             </button>
 
-            {/* Dropdown if multiple workspaces */}
-            {isWsDropdownOpen && workspaces.length > 1 && (
+            {/* Dropdown with workspaces and Ajouter un projet button */}
+            {isWsDropdownOpen && (
               <div
-                className="absolute left-0 mt-2 w-60 bg-white dark:bg-[#12151C] border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl py-1.5 z-50 animate-fade-in text-slate-800 dark:text-slate-200"
+                className="absolute left-0 mt-2 w-64 bg-white dark:bg-[#12151C] border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl py-1.5 z-50 animate-fade-in text-slate-800 dark:text-slate-200"
                 onClick={() => setIsWsDropdownOpen(false)}
               >
-                <div className="px-3 py-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                  Mes espaces de travail
-                </div>
-                {workspaces.map((ws) => (
+                {workspaces.length > 1 && (
+                  <>
+                    <div className="px-3 py-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                      Mes espaces de travail
+                    </div>
+                    {workspaces.map((ws) => (
+                      <button
+                        key={ws.id}
+                        onClick={() => setCurrentWorkspace(ws)}
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between"
+                      >
+                        <span className="truncate">{ws.name}</span>
+                        {ws.id === currentWorkspace?.id && (
+                          <span
+                            className="w-2 h-2 rounded-full"
+                            style={{ backgroundColor: primaryColor }}
+                          />
+                        )}
+                      </button>
+                    ))}
+                  </>
+                )}
+
+                {/* Quick list of projects if available */}
+                {projects.length > 0 && (
+                  <>
+                    <div className="px-3 py-1.5 text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider border-t border-slate-100 dark:border-slate-800/80 mt-1">
+                      Mes Projets ({projects.length})
+                    </div>
+                    <div className="max-h-48 overflow-y-auto">
+                      {projects.map((p) => (
+                        <button
+                          key={p.id}
+                          onClick={() => router.push(`/projects/${p.id}`)}
+                          className="w-full text-left px-3 py-1.5 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 truncate"
+                        >
+                          <span
+                            className="w-2 h-2 rounded-full shrink-0"
+                            style={{ backgroundColor: p.customColor || primaryColor }}
+                          />
+                          <span className="truncate">{p.name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {/* Action: Ajouter un projet */}
+                <div className="pt-1 mt-1 border-t border-slate-200 dark:border-slate-800">
                   <button
-                    key={ws.id}
-                    onClick={() => setCurrentWorkspace(ws)}
-                    className="w-full text-left px-3 py-2 text-xs hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between"
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsWsDropdownOpen(false);
+                      setIsNewProjectOpen(true);
+                    }}
+                    className="w-full text-left px-3 py-2 text-xs font-bold text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-500/10 flex items-center gap-2 transition-colors rounded-b-xl"
                   >
-                    <span className="truncate">{ws.name}</span>
-                    {ws.id === currentWorkspace?.id && (
-                      <span
-                        className="w-2 h-2 rounded-full"
-                        style={{ backgroundColor: primaryColor }}
-                      />
-                    )}
+                    <Plus className="w-3.5 h-3.5 shrink-0" />
+                    <span>Ajouter un projet</span>
                   </button>
-                ))}
+                </div>
               </div>
             )}
           </div>

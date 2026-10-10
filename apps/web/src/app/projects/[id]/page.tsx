@@ -272,6 +272,7 @@ export default function ProjectWorkspacePage() {
         projectId={project.id}
         allProjects={allProjects}
         onSelectProject={(id) => router.push(`/projects/${id}`)}
+        onOpenNewProject={() => setIsNewProjectOpen(true)}
         members={project.members?.map((m: any) => m.user) || []}
         onOpenFilter={() => setIsFilterModalOpen(true)}
         activeFilterCount={activeFilterCount}

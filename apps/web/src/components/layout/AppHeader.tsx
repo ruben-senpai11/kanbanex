@@ -93,6 +93,22 @@ export function AppHeader({
                     )}
                   </button>
                 ))}
+
+                {/* Action: Ajouter un projet */}
+                <div className="pt-1 mt-1 border-t border-slate-200 dark:border-slate-700">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsWsOpen(false);
+                      onOpenNewProject?.();
+                    }}
+                    className="w-full text-left px-3 py-2 text-xs font-bold text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-500/10 flex items-center gap-2 transition-colors rounded-b-xl"
+                  >
+                    <Plus className="w-3.5 h-3.5 shrink-0" />
+                    <span>Ajouter un projet</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>

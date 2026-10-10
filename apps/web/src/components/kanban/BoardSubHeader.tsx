@@ -17,6 +17,7 @@ import {
   CreditCard,
   User as UserIcon,
   Crown,
+  Plus,
 } from 'lucide-react';
 
 interface BoardSubHeaderProps {
@@ -24,6 +25,7 @@ interface BoardSubHeaderProps {
   projectId: string;
   allProjects?: Array<{ id: string; name: string; customColor?: string }>;
   onSelectProject?: (projectId: string) => void;
+  onOpenNewProject?: () => void;
   members?: Array<{ id: string; fullName: string; avatarUrl?: string }>;
   onOpenFilter?: () => void;
   activeFilterCount?: number;
@@ -37,6 +39,7 @@ export function BoardSubHeader({
   projectId,
   allProjects = [],
   onSelectProject,
+  onOpenNewProject,
   members = [],
   onOpenFilter,
   activeFilterCount = 0,
@@ -145,6 +148,22 @@ export function BoardSubHeader({
                     )}
                   </button>
                 ))}
+              </div>
+
+              {/* Action: Ajouter un projet */}
+              <div className="pt-1 mt-1 border-t border-slate-200 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsProjectDropdownOpen(false);
+                    onOpenNewProject?.();
+                  }}
+                  className="w-full text-left px-3 py-2 text-xs font-bold text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-500/10 flex items-center gap-2 transition-colors rounded-b-xl"
+                >
+                  <Plus className="w-3.5 h-3.5 shrink-0" />
+                  <span>Ajouter un projet</span>
+                </button>
               </div>
             </div>
           )}
