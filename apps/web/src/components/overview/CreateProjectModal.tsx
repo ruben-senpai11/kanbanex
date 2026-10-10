@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { DatePicker } from '@/components/ui/DatePicker';
+import { ColorPicker } from '@/components/ui/ColorPicker';
+import { Select, SelectOption } from '@/components/ui/Select';
 import { CINEMATIC_THEMES } from '@/lib/themes';
 import { Palette, Check } from 'lucide-react';
 
@@ -12,6 +15,13 @@ interface CreateProjectModalProps {
   onClose: () => void;
   onSubmit: (data: any) => Promise<void>;
 }
+
+const PRIORITY_OPTIONS: SelectOption[] = [
+  { value: 'LOW', label: 'Basse', colorDot: '#10B981' },
+  { value: 'MEDIUM', label: 'Moyenne', colorDot: '#3B82F6' },
+  { value: 'HIGH', label: 'Élevée', colorDot: '#F59E0B' },
+  { value: 'URGENT', label: 'Urgent', colorDot: '#EF4444' },
+];
 
 export function CreateProjectModal({ isOpen, onClose, onSubmit }: CreateProjectModalProps) {
   const [name, setName] = useState('');
@@ -43,6 +53,8 @@ export function CreateProjectModal({ isOpen, onClose, onSubmit }: CreateProjectM
       // Reset form
       setName('');
       setDescription('');
+      setPlannedStartDate('');
+      setPlannedEndDate('');
       onClose();
     } catch (err: any) {
       setError(err.message || 'Erreur lors de la création du projet');
@@ -83,56 +95,40 @@ export function CreateProjectModal({ isOpen, onClose, onSubmit }: CreateProjectM
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Objectifs et périmètre du projet..."
             rows={2}
-            className="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-[#12151C] border border-slate-300 dark:border-slate-700/80 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:border-orange-500/80 focus:ring-1 focus:ring-orange-500/80 resize-none"
+            className="w-full px-3.5 py-2.5 bg-slate-100/90 dark:bg-[#12151C] border border-slate-300 dark:border-slate-700/80 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all resize-none"
           />
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-              Priorité
-            </label>
-            <select
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
-              className="w-full px-3 py-2.5 bg-slate-100 dark:bg-[#12151C] border border-slate-300 dark:border-slate-700/80 rounded-xl text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:border-orange-500/80"
-            >
-              <option value="LOW">Basse</option>
-              <option value="MEDIUM">Moyenne</option>
-              <option value="HIGH">Élevée</option>
-              <option value="URGENT">Urgent</option>
-            </select>
-          </div>
+          <Select
+            label="Priorité"
+            value={priority}
+            onChange={setPriority}
+            options={PRIORITY_OPTIONS}
+          />
 
-          <div>
-            <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-              Couleur d'accent
-            </label>
-            <div className="flex items-center gap-2">
-              <input
-                type="color"
-                value={customColor}
-                onChange={(e) => setCustomColor(e.target.value)}
-                className="w-10 h-10 rounded-xl bg-transparent border-0 cursor-pointer"
-              />
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">{customColor}</span>
-            </div>
-          </div>
+          <ColorPicker
+            label="Couleur d'accent"
+            value={customColor}
+            onChange={setCustomColor}
+            align="right"
+          />
         </div>
 
-        {/* Planned Dates */}
+        {/* Modern Date Pickers */}
         <div className="grid grid-cols-2 gap-3">
-          <Input
+          <DatePicker
             label="Date de début planifiée"
-            type="date"
             value={plannedStartDate}
-            onChange={(e) => setPlannedStartDate(e.target.value)}
+            onChange={setPlannedStartDate}
+            placeholder="Choisir une date..."
           />
-          <Input
+          <DatePicker
             label="Date de fin planifiée"
-            type="date"
             value={plannedEndDate}
-            onChange={(e) => setPlannedEndDate(e.target.value)}
+            onChange={setPlannedEndDate}
+            placeholder="Choisir une date..."
+            align="right"
           />
         </div>
 

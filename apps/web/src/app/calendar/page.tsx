@@ -8,6 +8,7 @@ import { ProjectCalendar } from '@/components/calendar/ProjectCalendar';
 import { TaskDrawer } from '@/components/task/TaskDrawer';
 import { GlobalSearchModal } from '@/components/layout/GlobalSearchModal';
 import { CalendarSkeleton } from '@/components/ui/Skeleton';
+import { Select } from '@/components/ui/Select';
 
 export default function WorkspaceCalendarPage() {
   const { currentWorkspace } = useAuth();
@@ -69,18 +70,14 @@ export default function WorkspaceCalendarPage() {
 
             {projects.length > 0 && (
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-500 dark:text-slate-400">Projet :</span>
-                <select
-                  value={selectedProjectId}
-                  onChange={(e) => setSelectedProjectId(e.target.value)}
-                  className="bg-slate-100 dark:bg-[#181D26] border border-slate-200 dark:border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-orange-500"
-                >
-                  {projects.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}
-                    </option>
-                  ))}
-                </select>
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Projet :</span>
+                <div className="w-56">
+                  <Select
+                    value={selectedProjectId}
+                    onChange={setSelectedProjectId}
+                    options={projects.map((p) => ({ value: p.id, label: p.name }))}
+                  />
+                </div>
               </div>
             )}
           </div>

@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
+import { DatePicker } from '@/components/ui/DatePicker';
+import { Select, SelectOption } from '@/components/ui/Select';
 import { StatusBadge, PriorityBadge } from '@/components/ui/Badge';
 import { formatDate, formatDateTime } from '@/lib/utils';
 import { animateDrawerSlideIn, animateCheckmarkPop } from '@/lib/animations';
@@ -29,6 +31,21 @@ interface TaskDrawerProps {
   onTaskUpdated?: () => void;
   availableMembers?: Array<{ id: string; fullName: string; avatarUrl?: string }>;
 }
+
+const STATUS_OPTIONS: SelectOption[] = [
+  { value: 'TODO', label: 'À faire', colorDot: '#64748B' },
+  { value: 'IN_PROGRESS', label: 'En cours', colorDot: '#3B82F6' },
+  { value: 'IN_REVIEW', label: 'En revue', colorDot: '#8B5CF6' },
+  { value: 'BLOCKED', label: 'Bloqué', colorDot: '#EF4444' },
+  { value: 'DONE', label: 'Terminé', colorDot: '#10B981' },
+];
+
+const PRIORITY_OPTIONS: SelectOption[] = [
+  { value: 'LOW', label: 'Basse', colorDot: '#10B981' },
+  { value: 'MEDIUM', label: 'Moyenne', colorDot: '#3B82F6' },
+  { value: 'HIGH', label: 'Élevée', colorDot: '#F59E0B' },
+  { value: 'URGENT', label: 'Urgent', colorDot: '#EF4444' },
+];
 
 export function TaskDrawer({
   taskId,
@@ -245,44 +262,25 @@ export function TaskDrawer({
 
             {/* Quick Status / Priority Selector Badges */}
             <div className="grid grid-cols-2 gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800">
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
-                  Statut
-                </label>
-                <select
-                  value={status}
-                  onChange={(e) => {
-                    setStatus(e.target.value);
-                    handleSaveFields({ status: e.target.value });
-                  }}
-                  className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-lg px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
-                >
-                  <option value="TODO">À faire</option>
-                  <option value="IN_PROGRESS">En cours</option>
-                  <option value="IN_REVIEW">En revue</option>
-                  <option value="BLOCKED">Bloqué</option>
-                  <option value="DONE">Terminé</option>
-                </select>
-              </div>
+              <Select
+                label="Statut"
+                value={status}
+                onChange={(val) => {
+                  setStatus(val);
+                  handleSaveFields({ status: val });
+                }}
+                options={STATUS_OPTIONS}
+              />
 
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
-                  Priorité
-                </label>
-                <select
-                  value={priority}
-                  onChange={(e) => {
-                    setPriority(e.target.value);
-                    handleSaveFields({ priority: e.target.value });
-                  }}
-                  className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-lg px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
-                >
-                  <option value="LOW">Basse</option>
-                  <option value="MEDIUM">Moyenne</option>
-                  <option value="HIGH">Élevée</option>
-                  <option value="URGENT">Urgent</option>
-                </select>
-              </div>
+              <Select
+                label="Priorité"
+                value={priority}
+                onChange={(val) => {
+                  setPriority(val);
+                  handleSaveFields({ priority: val });
+                }}
+                options={PRIORITY_OPTIONS}
+              />
             </div>
 
             {/* Dates & Estimation (Essential for Gantt synchronization) */}
@@ -293,39 +291,30 @@ export function TaskDrawer({
               </h4>
 
               <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[10px] font-medium text-slate-500 dark:text-slate-400 mb-1">
-                    Date de début
-                  </label>
-                  <input
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => {
-                      setStartDate(e.target.value);
-                      handleSaveFields({
-                        startDate: e.target.value ? new Date(e.target.value).toISOString() : null,
-                      });
-                    }}
-                    className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-lg px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
-                  />
-                </div>
+                <DatePicker
+                  label="Date de début"
+                  value={startDate}
+                  onChange={(val) => {
+                    setStartDate(val);
+                    handleSaveFields({
+                      startDate: val ? new Date(val).toISOString() : null,
+                    });
+                  }}
+                  placeholder="Début..."
+                />
 
-                <div>
-                  <label className="block text-[10px] font-medium text-slate-500 dark:text-slate-400 mb-1">
-                    Date d'échéance
-                  </label>
-                  <input
-                    type="date"
-                    value={dueDate}
-                    onChange={(e) => {
-                      setDueDate(e.target.value);
-                      handleSaveFields({
-                        dueDate: e.target.value ? new Date(e.target.value).toISOString() : null,
-                      });
-                    }}
-                    className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-lg px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
-                  />
-                </div>
+                <DatePicker
+                  label="Date d'échéance"
+                  value={dueDate}
+                  onChange={(val) => {
+                    setDueDate(val);
+                    handleSaveFields({
+                      dueDate: val ? new Date(val).toISOString() : null,
+                    });
+                  }}
+                  placeholder="Échéance..."
+                  align="right"
+                />
               </div>
 
               {/* Progress Slider */}

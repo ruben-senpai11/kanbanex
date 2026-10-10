@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api';
 import { Modal } from '@/components/ui/Modal';
+import { Select, SelectOption } from '@/components/ui/Select';
 import { Search, FolderKanban, CheckSquare, Calendar, Tag, AlertCircle, ArrowRight } from 'lucide-react';
 import { StatusBadge, PriorityBadge } from '@/components/ui/Badge';
 import { formatDate } from '@/lib/utils';
@@ -13,6 +14,22 @@ interface GlobalSearchModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+const PRIORITY_FILTER_OPTIONS: SelectOption[] = [
+  { value: '', label: 'Toute priorité' },
+  { value: 'URGENT', label: 'Urgent', colorDot: '#EF4444' },
+  { value: 'HIGH', label: 'Élevée', colorDot: '#F59E0B' },
+  { value: 'MEDIUM', label: 'Moyenne', colorDot: '#3B82F6' },
+  { value: 'LOW', label: 'Basse', colorDot: '#10B981' },
+];
+
+const STATUS_FILTER_OPTIONS: SelectOption[] = [
+  { value: '', label: 'Tous statuts' },
+  { value: 'TODO', label: 'À faire', colorDot: '#64748B' },
+  { value: 'IN_PROGRESS', label: 'En cours', colorDot: '#3B82F6' },
+  { value: 'IN_REVIEW', label: 'En revue', colorDot: '#8B5CF6' },
+  { value: 'DONE', label: 'Terminé', colorDot: '#10B981' },
+];
 
 export function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModalProps) {
   const { currentWorkspace } = useAuth();
@@ -79,30 +96,22 @@ export function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModalProps) {
           <span className="text-slate-500 dark:text-slate-400 text-[11px] uppercase font-semibold">Filtres :</span>
 
           {/* Priority filter */}
-          <select
-            value={priorityFilter}
-            onChange={(e) => setPriorityFilter(e.target.value)}
-            className="bg-slate-100 dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 text-slate-700 dark:text-slate-300 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-orange-500"
-          >
-            <option value="">Toute priorité</option>
-            <option value="URGENT">Urgent</option>
-            <option value="HIGH">Élevée</option>
-            <option value="MEDIUM">Moyenne</option>
-            <option value="LOW">Basse</option>
-          </select>
+          <div className="w-36">
+            <Select
+              value={priorityFilter}
+              onChange={setPriorityFilter}
+              options={PRIORITY_FILTER_OPTIONS}
+            />
+          </div>
 
           {/* Status filter */}
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-slate-100 dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 text-slate-700 dark:text-slate-300 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-orange-500"
-          >
-            <option value="">Tous statuts</option>
-            <option value="TODO">À faire</option>
-            <option value="IN_PROGRESS">En cours</option>
-            <option value="IN_REVIEW">En revue</option>
-            <option value="DONE">Terminé</option>
-          </select>
+          <div className="w-36">
+            <Select
+              value={statusFilter}
+              onChange={setStatusFilter}
+              options={STATUS_FILTER_OPTIONS}
+            />
+          </div>
 
           {/* Overdue toggle */}
           <button

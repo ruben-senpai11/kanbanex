@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { cn } from '@/lib/utils';
 
@@ -5,10 +7,12 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   label?: string;
   error?: string;
   helperText?: string;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, helperText, id, ...props }, ref) => {
+  ({ className, label, error, helperText, id, leftIcon, rightIcon, ...props }, ref) => {
     const inputId = id || props.name;
 
     return (
@@ -18,16 +22,30 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {label}
           </label>
         )}
-        <input
-          ref={ref}
-          id={inputId}
-          className={cn(
-            'w-full px-3.5 py-2.5 bg-slate-100 dark:bg-[#12151C] border border-slate-300 dark:border-slate-700/80 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:border-orange-500/80 focus:ring-1 focus:ring-orange-500/80 transition-colors',
-            error && 'border-rose-500/80 focus:border-rose-500 focus:ring-rose-500',
-            className
+        <div className="relative flex items-center">
+          {leftIcon && (
+            <div className="absolute left-3.5 pointer-events-none text-slate-400 dark:text-slate-500 flex items-center">
+              {leftIcon}
+            </div>
           )}
-          {...props}
-        />
+          <input
+            ref={ref}
+            id={inputId}
+            className={cn(
+              'w-full h-11 px-3.5 bg-slate-100/90 dark:bg-[#12151C] border border-slate-300 dark:border-slate-700/80 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm transition-all focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20',
+              leftIcon && 'pl-10',
+              rightIcon && 'pr-10',
+              error && 'border-rose-500/80 focus:border-rose-500 focus:ring-rose-500/20',
+              className
+            )}
+            {...props}
+          />
+          {rightIcon && (
+            <div className="absolute right-3.5 pointer-events-none text-slate-400 dark:text-slate-500 flex items-center">
+              {rightIcon}
+            </div>
+          )}
+        </div>
         {error && <p className="text-xs text-rose-400">{error}</p>}
         {helperText && !error && <p className="text-xs text-slate-500">{helperText}</p>}
       </div>

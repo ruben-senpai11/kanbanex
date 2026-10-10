@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
+import { ColorPicker } from '@/components/ui/ColorPicker';
 import { CINEMATIC_THEMES } from '@/lib/themes';
 import { Check, Palette } from 'lucide-react';
 
@@ -57,21 +58,18 @@ export function ThemeSelectorModal({
           </div>
         )}
 
-        {/* Color picker */}
-        <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-100 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800">
-          <div className="flex items-center gap-2.5">
-            <Palette className="w-4 h-4 text-orange-500" />
-            <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">Couleur d'accent personnalisée</span>
+        {/* Modern Color picker */}
+        <div className="p-3.5 rounded-xl bg-slate-100/90 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+              <Palette className="w-4 h-4 text-orange-500" />
+              Couleur d&apos;accent personnalisée
+            </span>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-bold">{customColor}</span>
-            <input
-              type="color"
-              value={customColor}
-              onChange={(e) => setCustomColor(e.target.value)}
-              className="w-8 h-8 rounded-lg bg-transparent cursor-pointer border-0"
-            />
-          </div>
+          <ColorPicker
+            value={customColor}
+            onChange={setCustomColor}
+          />
         </div>
 
         {/* Themes presets */}

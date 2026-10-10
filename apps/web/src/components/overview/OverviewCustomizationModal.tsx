@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
+import { ColorPicker } from '@/components/ui/ColorPicker';
 import { CINEMATIC_THEMES, getThemeById } from '@/lib/themes';
 import { usePreferences, ThemeMode } from '@/lib/preferences-context';
 import { usePwa } from '@/components/pwa/PwaProvider';
@@ -163,16 +164,12 @@ export function OverviewCustomizationModal({
                   <Palette className="w-4 h-4 text-orange-500" />
                   Couleur d&apos;accent primaire
                 </label>
-                <div className="flex items-center gap-2 bg-white dark:bg-[#12151C] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700">
-                  <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">{tempColor}</span>
-                  <input
-                    type="color"
-                    value={tempColor}
-                    onChange={(e) => setTempColor(e.target.value)}
-                    className="w-5 h-5 rounded cursor-pointer bg-transparent border-0"
-                    title="Choisir une couleur sur mesure"
-                  />
-                </div>
+                <ColorPicker
+                  value={tempColor}
+                  onChange={setTempColor}
+                  align="right"
+                  className="w-auto"
+                />
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
