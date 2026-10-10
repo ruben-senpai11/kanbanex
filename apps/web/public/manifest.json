@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-  "name": "KanbanEx - Vos projets. Une seule vision.",
+  "name": "KanbanEx - La plateforme #1 pour organiser ses projets et sa vision à long terme",
   "short_name": "KanbanEx",
-  "description": "Plateforme collaborative premium KanbanEx. Vue panoramique signature Projects Overview, Kanban agile, Gantt interactif et calendrier unifié.",
+  "description": "La plateforme #1 pour organiser ses projets et sa vision à long terme. Conçue pour les entrepreneurs : tamis The One Thing, GTD, Essentialism, Kanban panoramique, Gantt et calendrier unifié.",
   "start_url": "/overview",
   "scope": "/",
   "display": "standalone",

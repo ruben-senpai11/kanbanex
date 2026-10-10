@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { ProjectCard, ProjectOverviewData } from './ProjectCard';
-import { ChevronLeft, ChevronRight, Plus, FolderPlus, Compass } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, FolderPlus, Compass, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { ProjectCardSkeleton } from '@/components/ui/Skeleton';
 import { animatePanoramicEntrance } from '@/lib/animations';
@@ -239,6 +239,38 @@ export function HorizontalProjectList({
           <ChevronRight className="w-6 h-6" />
         </button>
       )}
+
+      {/* The One Thing (Domino #1) Spotlight Banner */}
+      {(() => {
+        const theOneThingProject = projects.find((p) => p.priority === 'URGENT');
+        if (!theOneThingProject) return null;
+        return (
+          <div className="px-6 md:px-10 pt-2 shrink-0">
+            <div
+              className={`px-4 py-2 rounded-2xl backdrop-blur-xl border flex items-center justify-between gap-3 shadow-lg ${
+                isDark
+                  ? 'bg-amber-950/40 border-amber-500/30 text-amber-200'
+                  : 'bg-amber-500/10 border-amber-300 text-amber-900'
+              }`}
+            >
+              <div className="flex items-center gap-2.5 truncate">
+                <span className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-black font-black text-xs shrink-0 shadow-xs">
+                  ⚡
+                </span>
+                <span className="text-[11px] font-black uppercase tracking-wider text-amber-500 shrink-0">
+                  The One Thing (Domino #1) :
+                </span>
+                <span className="text-xs font-bold truncate text-white dark:text-white">
+                  {theOneThingProject.name}
+                </span>
+              </div>
+              <span className="text-[11px] font-medium opacity-85 hidden md:inline shrink-0">
+                Effet de levier 10x • Focus entrepreneurial absolu
+              </span>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Horizontal Scroller Container */}
       <div

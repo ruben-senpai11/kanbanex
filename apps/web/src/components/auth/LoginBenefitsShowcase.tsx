@@ -32,14 +32,14 @@ interface BenefitItem {
 
 const BENEFITS: BenefitItem[] = [
   {
-    id: 'kanban-fullscreen',
-    badge: 'EXPÉRIENCE VISUELLE',
-    title: 'Interface Kanban Pure & Plein Écran',
-    subtitle: 'Zéro barre latérale encombrante, 100% de concentration.',
+    id: 'the-one-thing',
+    badge: 'MÉTHODOLOGIE ENTREPRENEURIALE',
+    title: 'Tamis « The One Thing » & Clarté GTD',
+    subtitle: 'Identifiez votre Domino #1 et concentrez 90% de vos efforts.',
     description:
-      'Libérez toute la largeur de votre écran. Vos colonnes de tâches respirent avec des contrastes travaillés, des badges d’état clairs et un sentiment de clarté absolue dès la première seconde.',
-    stats: { label: 'Espace utile libéré', value: '+35%' },
-    icon: Kanban,
+      'Chaque projet passe par un filtre objectif combinant Gary Keller (The One Thing), Greg McKeown (Essentialism) et David Allen (Getting Things Done) pour éliminer le superflu et décupler vos résultats.',
+    stats: { label: 'Levier stratégique', value: '10x Domino' },
+    icon: Zap,
   },
   {
     id: 'cinematic-wallpaper',
@@ -151,7 +151,7 @@ export function LoginBenefitsShowcase() {
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 dark:bg-black/40 backdrop-blur-md border border-white/15 text-xs font-semibold text-amber-300 shadow-lg">
           <span className="w-2 h-2 rounded-full bg-orange-500 animate-ping" />
           <span className="tracking-wide uppercase text-[11px] font-black">
-            Plateforme KanbanEx 2026
+            La plateforme #1 pour organiser ses projets et sa vision à long terme
           </span>
         </div>
 
@@ -210,38 +210,38 @@ export function LoginBenefitsShowcase() {
             <div className="space-y-3 animate-fade-in">
               <div className="flex items-center justify-between text-xs text-slate-300 pb-2 border-b border-white/10">
                 <span className="font-bold flex items-center gap-1.5 text-white">
-                  <Kanban className="w-3.5 h-3.5 text-orange-400" />
-                  Tableau Sprint Actif • Vue Plein Écran
+                  <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                  Tamis The One Thing • Hiérarchie GTD
                 </span>
-                <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800 px-2 py-0.5 rounded-full font-bold">
-                  ● 12 tâches en cours
+                <span className="text-[11px] font-mono text-amber-400 bg-amber-950/60 border border-amber-800 px-2 py-0.5 rounded-full font-bold">
+                  ● Domino #1 Actif
                 </span>
               </div>
 
               <div className="grid grid-cols-3 gap-2.5 text-xs">
                 {/* Col 1 */}
-                <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 space-y-2">
-                  <div className="flex items-center justify-between text-[11px] font-bold text-slate-400">
-                    <span>À faire</span>
-                    <span className="text-slate-500">3</span>
+                <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-2">
+                  <div className="flex items-center justify-between text-[11px] font-bold text-amber-300">
+                    <span>⚡ Domino #1</span>
+                    <span className="text-amber-400 font-bold">10x</span>
                   </div>
-                  <div className="p-2 rounded-lg bg-black/50 border border-white/10 text-[11px] font-semibold text-slate-200 shadow-xs">
-                    Déploiement Vercel
+                  <div className="p-2 rounded-lg bg-black/60 border border-amber-500/40 text-[11px] font-bold text-white shadow-xs">
+                    Offre Clé & GTM
                   </div>
-                  <div className="p-2 rounded-lg bg-black/50 border border-white/10 text-[11px] font-semibold text-slate-200 shadow-xs">
-                    Audit Performance
+                  <div className="text-[10px] text-amber-200/80 font-medium">
+                    → Action immédiate
                   </div>
                 </div>
 
                 {/* Col 2 - Active Card */}
                 <div className="p-2.5 rounded-xl bg-orange-500/10 border border-orange-500/30 space-y-2">
                   <div className="flex items-center justify-between text-[11px] font-bold text-orange-300">
-                    <span>En cours</span>
+                    <span>File Active</span>
                     <span className="text-orange-400">2</span>
                   </div>
                   <div className="p-2 rounded-lg bg-gradient-to-r from-orange-500/20 to-amber-500/20 border border-orange-500/50 text-[11px] font-bold text-white shadow-md space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <span>Refonte KanbanEx</span>
+                      <span>Pipeline B2B</span>
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
                     </div>
                     <div className="h-1.5 w-full bg-black/40 rounded-full overflow-hidden">

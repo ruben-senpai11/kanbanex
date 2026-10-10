@@ -11,6 +11,7 @@ import {
   ArrowRight,
   Palette,
   Layers,
+  Zap,
 } from 'lucide-react';
 import { StatusBadge, PriorityBadge } from '@/components/ui/Badge';
 import { formatDate } from '@/lib/utils';
@@ -63,8 +64,16 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
       : theme.previewBg || `linear-gradient(135deg, ${color}33 0%, #0F172A 100%)`,
   };
 
+  const isOneThing = project.priority === 'URGENT';
+
   return (
-    <div className="w-[320px] md:w-[350px] lg:w-[370px] shrink-0 h-full flex flex-col rounded-3xl relative overflow-hidden card-hover-effect group select-none border border-white/20 shadow-2xl transition-all duration-300">
+    <div
+      className={`w-[320px] md:w-[350px] lg:w-[370px] shrink-0 h-full flex flex-col rounded-3xl relative overflow-hidden card-hover-effect group select-none transition-all duration-300 ${
+        isOneThing
+          ? 'border-2 border-amber-400/80 shadow-[0_0_35px_rgba(245,158,11,0.3)] ring-1 ring-amber-400/40'
+          : 'border border-white/20 shadow-2xl'
+      }`}
+    >
       {/* 1. Underlying Atmospheric Wallpaper / Color Layer */}
       <div
         className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none"
@@ -81,7 +90,9 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
       <div
         className="h-1.5 w-full shrink-0 relative z-10"
         style={{
-          background: `linear-gradient(90deg, ${color} 0%, ${color}CC 100%)`,
+          background: isOneThing
+            ? 'linear-gradient(90deg, #F59E0B 0%, #FF7A00 100%)'
+            : `linear-gradient(90deg, ${color} 0%, ${color}CC 100%)`,
         }}
       />
 
@@ -90,7 +101,14 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2">
             <StatusBadge status={project.status} />
-            <PriorityBadge priority={project.priority} />
+            {isOneThing ? (
+              <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/25 border border-amber-400/80 text-amber-200 text-[10px] font-black uppercase tracking-wider shadow-sm">
+                <Zap className="w-3 h-3 fill-amber-300 text-amber-300 animate-pulse shrink-0" />
+                <span>The One Thing</span>
+              </div>
+            ) : (
+              <PriorityBadge priority={project.priority} />
+            )}
           </div>
 
           {onOpenThemeSelector && (

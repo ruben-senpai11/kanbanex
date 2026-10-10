@@ -92,7 +92,7 @@ export default function SignupPage() {
             </h1>
 
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
-              Démarrez en quelques secondes et organisez vos projets avec fluidité.
+              La plateforme #1 pour organiser ses projets et sa vision à long terme.
             </p>
           </div>
 

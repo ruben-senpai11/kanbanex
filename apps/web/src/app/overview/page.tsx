@@ -93,7 +93,22 @@ export default function OverviewPage() {
 
   const handleCreateProject = async (data: any) => {
     if (!currentWorkspace) return;
-    const res = await api.createProject(currentWorkspace.id, data);
+    const { initialNextAction, ...projectData } = data;
+    const res = await api.createProject(currentWorkspace.id, projectData);
+    if (res?.id && initialNextAction?.trim()) {
+      try {
+        const firstListId = res.boards?.[0]?.lists?.[0]?.id;
+        if (firstListId) {
+          await api.createTask(firstListId, {
+            title: initialNextAction.trim(),
+            description: 'Action physique concrète générée lors du tamis GTD / The One Thing',
+            priority: projectData.priority === 'URGENT' ? 'URGENT' : 'HIGH',
+          });
+        }
+      } catch (err) {
+        console.warn('Could not inject initial GTD task', err);
+      }
+    }
     await loadProjects();
     if (res?.id) {
       router.push(`/projects/${res.id}`);
@@ -160,18 +175,29 @@ export default function OverviewPage() {
               className="flex items-center gap-2 group text-left"
               title="Menu de l'espace de travail"
             >
-              <h1
-                className={`text-xl md:text-2xl font-black tracking-tight truncate max-w-[280px] md:max-w-md ${
-                  isOverviewDark ? 'text-white drop-shadow-md' : 'text-slate-950 drop-shadow-xs'
-                }`}
-              >
-                {workspaceTitle}
-              </h1>
-              <ChevronDown
-                className={`w-4 h-4 transition-transform ${
-                  isWsDropdownOpen ? 'rotate-180 ' : ''
-                }${isOverviewDark ? 'text-white/70 group-hover:text-white' : 'text-slate-600 group-hover:text-slate-950'}`}
-              />
+              <div>
+                <div className="flex items-center gap-2">
+                  <h1
+                    className={`text-xl md:text-2xl font-black tracking-tight truncate max-w-[280px] md:max-w-md ${
+                      isOverviewDark ? 'text-white drop-shadow-md' : 'text-slate-950 drop-shadow-xs'
+                    }`}
+                  >
+                    {workspaceTitle}
+                  </h1>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform ${
+                      isWsDropdownOpen ? 'rotate-180 ' : ''
+                    }${isOverviewDark ? 'text-white/70 group-hover:text-white' : 'text-slate-600 group-hover:text-slate-950'}`}
+                  />
+                </div>
+                <p
+                  className={`text-[10px] md:text-[11px] font-semibold hidden sm:block ${
+                    isOverviewDark ? 'text-amber-200/90 drop-shadow-xs' : 'text-orange-600'
+                  }`}
+                >
+                  La plateforme #1 pour organiser ses projets et sa vision à long terme
+                </p>
+              </div>
             </button>
 
             {/* Dropdown with workspaces and Ajouter un projet button */}

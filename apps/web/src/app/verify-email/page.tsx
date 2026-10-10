@@ -110,7 +110,7 @@ function VerifyEmailContent() {
           Kanban<span className="app-logo-accent font-black">Ex</span>
         </h1>
         <p className="text-xs text-amber-100 font-medium drop-shadow-sm">
-          Vos projets. Une seule vision.
+          La plateforme #1 pour organiser ses projets et sa vision à long terme
         </p>
       </div>
 

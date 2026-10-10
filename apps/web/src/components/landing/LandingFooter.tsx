@@ -26,7 +26,7 @@ export function LandingFooter() {
           <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
             <div>
               <AppLogo size="md" withText textClassName="font-black text-base text-slate-900 dark:text-white justify-center sm:justify-start" />
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Vos projets. Une seule vision.</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">La plateforme #1 pour organiser ses projets et sa vision à long terme.</p>
             </div>
           </div>
 

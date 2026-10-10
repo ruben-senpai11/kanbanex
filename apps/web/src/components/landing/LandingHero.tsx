@@ -62,7 +62,7 @@ export function LandingHero() {
         <div className="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-black/60 border border-orange-500/30 backdrop-blur-xl shadow-lg shadow-orange-950/5">
           <span className="w-2 h-2 rounded-full bg-orange-500 animate-ping" />
           <span className="text-xs font-bold text-orange-600 dark:text-orange-400">
-            Productivité décuplée • Pilotez vos projets en toute simplicité
+            Conçu spécialement pour les entrepreneurs • The One Thing & GTD
           </span>
         </div>
 
@@ -71,15 +71,15 @@ export function LandingHero() {
           ref={headlineRef}
           className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.08] drop-shadow-xs"
         >
-          Une seule plateforme pour vos projets.{' '}
+          La plateforme #1 pour organiser ses projets{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600">
-            Une vision absolue.
+            et sa vision à long terme.
           </span>
         </h1>
 
         {/* Subtitle */}
         <p className="hero-subtitle text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed">
-          Fini la dispersion des tâches. Rassemblez vos tableaux Kanban agiles, vos diagrammes de Gantt, vos calendriers et vos univers cinématiques dans une interface fluide et instantanée.
+          Tamisez objectivement vos idées, éliminez le superflu avec Essentialism et concentrez toute votre énergie sur votre Domino #1. La puissance de Getting Things Done alliée à une expérience panoramique cinématographique.
         </p>
 
         {/* CTAs */}

@@ -81,7 +81,7 @@ export default function LoginPage() {
             </h1>
 
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
-              Vos tableaux, sprints et collaborateurs réunis en un seul endroit.
+              La plateforme #1 pour organiser ses projets et sa vision à long terme.
             </p>
           </div>
 

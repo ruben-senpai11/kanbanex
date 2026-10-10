@@ -112,7 +112,7 @@ export function SplashScreen({
           Bienvenue sur Kanban<span className="app-logo-accent font-black">Ex</span>
         </h1>
         <p className="mt-2 text-sm text-amber-200/90 font-medium tracking-wide drop-shadow">
-          Vos projets. Une seule vision.
+          La plateforme #1 pour organiser ses projets et sa vision à long terme
         </p>
       </div>
 
@@ -132,7 +132,7 @@ export function SplashScreen({
         </div>
 
         <p className="text-center text-[10px] text-slate-400 tracking-wider uppercase font-semibold">
-          Écosystème Expansion
+          Conçu pour les entrepreneurs & la vision à long terme
         </p>
       </div>
     </div>

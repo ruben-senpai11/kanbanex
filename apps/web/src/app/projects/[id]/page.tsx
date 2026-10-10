@@ -270,6 +270,7 @@ export default function ProjectWorkspacePage() {
       <BoardSubHeader
         projectName={project.name}
         projectId={project.id}
+        projectPriority={project.priority}
         allProjects={allProjects}
         onSelectProject={(id) => router.push(`/projects/${id}`)}
         onOpenNewProject={() => setIsNewProjectOpen(true)}

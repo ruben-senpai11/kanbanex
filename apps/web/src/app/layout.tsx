@@ -17,9 +17,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'KanbanEx - Vos projets. Une seule vision.',
+  title: 'KanbanEx - La plateforme #1 pour organiser ses projets et sa vision à long terme',
   description:
-    'Plateforme collaborative premium KanbanEx. Vue panoramique signature Projects Overview, Kanban agile, Gantt interactif et calendrier unifié.',
+    'La plateforme #1 pour organiser ses projets et sa vision à long terme. Conçue pour les entrepreneurs : tamis The One Thing, GTD, Essentialism, Kanban panoramique, Gantt et calendrier unifié.',
   applicationName: 'KanbanEx',
   manifest: '/manifest.json',
   appleWebApp: {

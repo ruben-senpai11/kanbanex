@@ -18,11 +18,13 @@ import {
   User as UserIcon,
   Crown,
   Plus,
+  Zap,
 } from 'lucide-react';
 
 interface BoardSubHeaderProps {
   projectName: string;
   projectId: string;
+  projectPriority?: string;
   allProjects?: Array<{ id: string; name: string; customColor?: string }>;
   onSelectProject?: (projectId: string) => void;
   onOpenNewProject?: () => void;
@@ -37,6 +39,7 @@ interface BoardSubHeaderProps {
 export function BoardSubHeader({
   projectName,
   projectId,
+  projectPriority,
   allProjects = [],
   onSelectProject,
   onOpenNewProject,
@@ -168,6 +171,14 @@ export function BoardSubHeader({
             </div>
           )}
         </div>
+
+        {/* The One Thing badge */}
+        {projectPriority === 'URGENT' && (
+          <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 border border-amber-400/60 text-amber-500 dark:text-amber-300 shadow-xs">
+            <Zap className="w-2.5 h-2.5 fill-current" />
+            <span>The One Thing</span>
+          </span>
+        )}
       </div>
 
       {/* ========================================================================= */}

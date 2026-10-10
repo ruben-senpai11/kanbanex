@@ -5,6 +5,11 @@ import { ChevronDown, HelpCircle } from 'lucide-react';
 
 const FAQS = [
   {
+    question: 'En quoi KanbanEx est-il spécialement conçu pour les entrepreneurs ?',
+    answer:
+      'Contrairement aux outils Kanban génériques qui encouragent l’accumulation désordonnée de tâches, KanbanEx intègre la philosophie « The One Thing » (Gary Keller), Getting Things Done (GTD) et Essentialism (Greg McKeown). Lors de l’onboarding et de la création de projet, chaque initiative passe par un tamis objectif (effet domino 10x, règle du 90%, action physique concrète) pour identifier sans ambiguïté votre priorité vitale (#1 Domino) et préserver votre bande passante mentale.',
+  },
+  {
     question: 'Comment fonctionne l\'attribution du statut Super Administrateur ?',
     answer:
       'Conformément aux spécifications, le tout premier utilisateur à créer un compte sur la plateforme se voit automatiquement attribuer le rôle de Super Administrateur (Super Admin). Ce compte bénéficie d\'emblée de la formule Entreprise avec un accès complet à la console de gestion globale.',
