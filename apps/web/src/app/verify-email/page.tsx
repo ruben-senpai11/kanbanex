@@ -342,7 +342,7 @@ export default function VerifyEmailPage() {
           className="hidden md:block absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url('/images/kanbanex-desktop.jpg')` }}
         />
-        <div className="absolute inset-0 bg-slate-900/40 dark:bg-black/75 backdrop-blur-md" />
+        <div className="absolute inset-0 bg-black/75 dark:bg-black/85 backdrop-blur-md" />
       </div>
 
       <Suspense
