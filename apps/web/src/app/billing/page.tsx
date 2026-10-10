@@ -6,7 +6,7 @@ import { api } from '@/lib/api';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { Button } from '@/components/ui/Button';
 import { formatFCFA, formatDate } from '@/lib/utils';
-import { Check, Shield, Sparkles, CreditCard, ExternalLink, AlertCircle } from 'lucide-react';
+import { Check, Shield, Zap, CreditCard, ExternalLink, AlertCircle } from 'lucide-react';
 import { Skeleton } from '@/components/ui/Skeleton';
 
 export default function BillingPage() {
@@ -195,110 +195,111 @@ export default function BillingPage() {
           ) : (
             <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
               {plans.map((plan) => {
-              const isCurrent = activePlanSlug === plan.slug;
-              const isEclosion = plan.slug === 'eclosion';
+                const isCurrent = activePlanSlug === plan.slug || (activePlanSlug === 'basic' && plan.slug === 'starter');
+                const isPro = plan.slug === 'pro';
+                const isEntreprise = plan.slug === 'entreprise' || plan.slug === 'enterprise';
 
-              return (
-                <div
-                  key={plan.id}
-                  className={`p-6 rounded-3xl border flex flex-col justify-between relative transition-all shadow-sm ${
-                    isEclosion
-                      ? 'bg-gradient-to-b from-orange-50/60 to-white dark:from-[#181D26] dark:to-[#12151C] border-orange-400 dark:border-orange-500/80 shadow-xl brand-glow'
-                      : 'bg-white dark:bg-[#12151C] border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
-                  }`}
-                >
-                  {isEclosion && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-gradient-warm text-white text-[10px] font-bold uppercase tracking-wider shadow">
-                      Recommandé
-                    </div>
-                  )}
+                // Exact features from Image 1 / Login benefits
+                const featuresList = plan.slug === 'starter' || plan.slug === 'basic'
+                  ? [
+                      'Tableaux Kanban illimités',
+                      'Vue calendrier et échéancier',
+                      'Arrière-plans signature KanbanEx',
+                      'Jusqu\'à 3 membres par espace',
+                    ]
+                  : isPro
+                  ? [
+                      'Toutes les fonctionnalités Starter',
+                      'Diagramme de Gantt interactif',
+                      'Membres et collaborateurs illimités',
+                      'Personnalisation cinématique complète',
+                      'Paiement sécurisé et instantané',
+                    ]
+                  : [
+                      'Toutes les fonctionnalités Pro',
+                      'Console Super Admin centralisée',
+                      'Multi-espaces de travail illimités',
+                      'Gestion avancée de la tarification',
+                      'Support dédié et prioritaire 24/7',
+                    ];
 
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="text-lg font-bold text-slate-900 dark:text-white">{plan.name}</h4>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 min-h-[32px]">
-                        {plan.description}
-                      </p>
-                    </div>
-
-                    {/* Price in FCFA directly from DB */}
-                    <div className="pt-2">
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-3xl font-extrabold text-slate-900 dark:text-white">
-                          {plan.price === 0 ? 'Gratuit' : formatFCFA(plan.price)}
-                        </span>
-                        {plan.price > 0 && (
-                          <span className="text-xs text-slate-500 dark:text-slate-400">/ mois</span>
-                        )}
+                return (
+                  <div
+                    key={plan.id}
+                    className={`p-6 rounded-xl border flex flex-col justify-between relative transition-all shadow-sm ${
+                      isPro
+                        ? 'bg-gradient-to-b from-orange-50/60 to-white dark:from-[#181D26] dark:to-[#12151C] border-orange-500 ring-2 ring-orange-500/20 shadow-xl'
+                        : 'bg-white dark:bg-[#12151C] border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                    }`}
+                  >
+                    {isPro && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-gradient-warm text-white text-[10px] font-bold uppercase tracking-wider shadow">
+                        Le plus populaire
                       </div>
-                    </div>
-
-                    {/* Features list */}
-                    <div className="space-y-2.5 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs">
-                      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                        <Check className="w-4 h-4 text-orange-500 dark:text-orange-400 shrink-0" />
-                        <span>
-                          {plan.maxProjects === -1 ? 'Projets illimités' : `Jusqu'à ${plan.maxProjects} projets`}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                        <Check className="w-4 h-4 text-orange-500 dark:text-orange-400 shrink-0" />
-                        <span>
-                          {plan.maxMembersPerProject === -1 ? 'Collaborateurs illimités' : `Jusqu'à ${plan.maxMembersPerProject} membres par projet`}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                        <Check className="w-4 h-4 text-orange-500 dark:text-orange-400 shrink-0" />
-                        <span>Vue Projects Overview panoramique</span>
-                      </div>
-
-                      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                        <Check
-                          className={`w-4 h-4 shrink-0 ${
-                            plan.features?.customThemes ? 'text-orange-500 dark:text-orange-400' : 'text-slate-400 dark:text-slate-600'
-                          }`}
-                        />
-                        <span className={plan.features?.customThemes ? '' : 'text-slate-400 dark:text-slate-500'}>
-                          Univers et thèmes cinématographiques
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                        <Check
-                          className={`w-4 h-4 shrink-0 ${
-                            plan.features?.ganttExport ? 'text-orange-500 dark:text-orange-400' : 'text-slate-400 dark:text-slate-600'
-                          }`}
-                        />
-                        <span className={plan.features?.ganttExport ? '' : 'text-slate-400 dark:text-slate-500'}>
-                          Diagramme de Gantt interactif complet
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Subscribe / Change Action */}
-                  <div className="pt-8">
-                    {isCurrent ? (
-                      <Button variant="secondary" className="w-full" disabled>
-                        Plan actuel
-                      </Button>
-                    ) : (
-                      <Button
-                        variant={isEclosion ? 'primary' : 'secondary'}
-                        className="w-full"
-                        isLoading={checkoutLoading === plan.slug}
-                        onClick={() => handleSubscribe(plan.slug)}
-                      >
-                        {plan.price === 0 ? 'Choisir ce plan' : `Paiement sécurisé`}
-                      </Button>
                     )}
+
+                    {isEntreprise && (
+                      <div className="absolute -top-3 right-4 px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-500 border border-amber-500/30 text-[10px] font-bold">
+                        Inclus pour le Super Admin
+                      </div>
+                    )}
+
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="text-lg font-bold text-slate-900 dark:text-white">{plan.name}</h4>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 min-h-[32px]">
+                          {plan.description}
+                        </p>
+                      </div>
+
+                      {/* Price in FCFA directly from DB */}
+                      <div className="pt-2">
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-3xl font-extrabold text-slate-900 dark:text-white">
+                            {plan.price === 0 ? '0 FCFA' : formatFCFA(plan.price)}
+                          </span>
+                          <span className="text-xs text-slate-500 dark:text-slate-400">
+                            {plan.price === 0 ? '/toujours gratuit' : '/mois'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Features list */}
+                      <div className="space-y-2.5 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs">
+                        {featuresList.map((feature, fIdx) => (
+                          <div key={fIdx} className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                            <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                            <span>{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Subscribe / Change Action */}
+                    <div className="pt-8">
+                      {isCurrent ? (
+                        <Button variant="secondary" className="w-full rounded-lg" disabled>
+                          Plan actuel
+                        </Button>
+                      ) : (
+                        <Button
+                          variant={isPro ? 'primary' : 'secondary'}
+                          className="w-full rounded-lg"
+                          isLoading={checkoutLoading === plan.slug}
+                          onClick={() => handleSubscribe(plan.slug)}
+                        >
+                          {plan.price === 0
+                            ? 'Démarrer gratuitement'
+                            : isPro
+                            ? 'Passer à la formule Pro →'
+                            : 'Rejoindre l\'Écosystème'}
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
           )}
 
           {/* Transactions History */}

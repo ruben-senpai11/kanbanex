@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { ProjectCard, ProjectOverviewData } from './ProjectCard';
-import { ChevronLeft, ChevronRight, Plus, Sparkles, FolderPlus, Compass } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, FolderPlus, Compass } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { ProjectCardSkeleton } from '@/components/ui/Skeleton';
 import { animatePanoramicEntrance } from '@/lib/animations';

@@ -16,7 +16,7 @@ import {
   ArrowRight,
   ArrowLeft,
   RotateCw,
-  Sparkles,
+  ShieldCheck,
 } from 'lucide-react';
 import { getLandingUrl } from '@/lib/urls';
 
@@ -141,7 +141,7 @@ function VerifyEmailContent() {
             </div>
             <div className="space-y-2">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                <Sparkles className="w-3.5 h-3.5" />
+                <ShieldCheck className="w-3.5 h-3.5" />
                 Compte Activé
               </div>
               <h2 className="text-xl font-black text-slate-900 dark:text-white">

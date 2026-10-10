@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { CINEMATIC_THEMES } from '@/lib/themes';
-import { Check, Sparkles, Palette } from 'lucide-react';
+import { Check, Palette } from 'lucide-react';
 
 interface ThemeSelectorModalProps {
   isOpen: boolean;
@@ -77,8 +77,8 @@ export function ThemeSelectorModal({
         {/* Themes presets */}
         <div className="space-y-2">
           <label className="text-xs font-semibold text-slate-800 dark:text-white flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-orange-500" />
-            Bibliothèque d'univers cinématographiques
+            <Palette className="w-3.5 h-3.5 text-orange-500" />
+            Bibliothèque d&apos;univers cinématographiques
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
             {CINEMATIC_THEMES.map((theme) => {

@@ -7,7 +7,7 @@ import {
   Bell,
   Check,
   CheckCheck,
-  Sparkles,
+  Star,
   Layers,
   Crown,
   Clock,
@@ -102,7 +102,7 @@ export function NotificationsPopover({
   const getIcon = (type: string) => {
     switch (type) {
       case 'WELCOME':
-        return <Sparkles className="w-4 h-4 text-amber-500" />;
+        return <Star className="w-4 h-4 text-amber-500" />;
       case 'SUBSCRIPTION':
         return <Crown className="w-4 h-4 text-emerald-500" />;
       case 'PROJECT':

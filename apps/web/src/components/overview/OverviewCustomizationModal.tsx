@@ -7,7 +7,6 @@ import { CINEMATIC_THEMES, getThemeById } from '@/lib/themes';
 import { usePreferences, ThemeMode } from '@/lib/preferences-context';
 import {
   Check,
-  Sparkles,
   Palette,
   Sun,
   Moon,
@@ -101,7 +100,7 @@ export function OverviewCustomizationModal({
             {/* 1. Theme Mode (Système / Sombre / Clair) */}
             <div className="space-y-3 p-4 rounded-2xl bg-slate-50 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800">
               <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-orange-500" />
+                <Sliders className="w-4 h-4 text-orange-500" />
                 Mode d&apos;affichage global
               </label>
               <div className="grid grid-cols-3 gap-2.5">

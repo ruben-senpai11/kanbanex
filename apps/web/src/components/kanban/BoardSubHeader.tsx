@@ -11,7 +11,6 @@ import {
   Filter,
   Palette,
   Share2,
-  Sparkles,
   Bell,
   Check,
   LogOut,
@@ -163,7 +162,7 @@ export function BoardSubHeader({
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition-all shadow-xs active:scale-95"
             title="Consulter les fonctionnalités et passer au plan Pro"
           >
-            <Sparkles className="w-3.5 h-3.5" />
+            <Crown className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Passer à l&apos;offre Pro</span>
             <span className="sm:hidden">Pro</span>
           </button>

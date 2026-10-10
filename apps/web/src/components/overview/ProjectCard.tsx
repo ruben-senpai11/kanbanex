@@ -11,7 +11,6 @@ import {
   ArrowRight,
   Palette,
   Layers,
-  Sparkles,
 } from 'lucide-react';
 import { StatusBadge, PriorityBadge } from '@/components/ui/Badge';
 import { formatDate } from '@/lib/utils';

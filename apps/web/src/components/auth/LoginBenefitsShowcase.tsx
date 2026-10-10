@@ -7,7 +7,6 @@ import {
   Wallpaper,
   Clock,
   Layers,
-  Sparkles,
   CheckCircle2,
   TrendingUp,
   ShieldCheck,
@@ -187,7 +186,7 @@ export function LoginBenefitsShowcase() {
         {/* Dynamic Badge & Title */}
         <div className="space-y-3">
           <div className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-orange-400 uppercase">
-            <Sparkles className="w-3.5 h-3.5 text-orange-400" />
+            <Zap className="w-3.5 h-3.5 text-orange-400" />
             <span>{activeBenefit.badge}</span>
           </div>
 

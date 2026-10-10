@@ -5,7 +5,7 @@ import { AppLogo } from '@/components/ui/AppLogo';
 import { CINEMATIC_THEMES } from '@/lib/themes';
 import { usePreferences } from '@/lib/preferences-context';
 import {
-  Sparkles,
+  Zap,
   ArrowRight,
   ArrowLeft,
   Check,
@@ -180,7 +180,7 @@ export function OnboardingWizardModal({
             <div className="space-y-6 animate-fade-in">
               <div className="space-y-1.5 text-center sm:text-left">
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300 mb-1">
-                  <Sparkles className="w-3 h-3" />
+                  <Zap className="w-3 h-3" />
                   <span>Configuration personnalisée</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">

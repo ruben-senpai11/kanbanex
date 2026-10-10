@@ -60,16 +60,16 @@ interface PreferencesContextType {
 const PreferencesContext = createContext<PreferencesContextType | undefined>(undefined);
 
 export function PreferencesProvider({ children }: { children: React.ReactNode }) {
-  const [themeMode, setThemeModeState] = useState<ThemeMode>('system');
+  const [themeMode, setThemeModeState] = useState<ThemeMode>('light');
   const [primaryColor, setPrimaryColorState] = useState<string>('#FF7A00'); // Default Orange
   const [overviewBackground, setOverviewBackgroundState] = useState<string>('gradient-orange-chaud');
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('dark');
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
 
   // Load persisted preferences on client mount
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const savedMode = (localStorage.getItem('kanbanex_theme_mode') || localStorage.getItem('kabanex_theme_mode')) as ThemeMode || 'system';
+    const savedMode = (localStorage.getItem('kanbanex_theme_mode') || localStorage.getItem('kabanex_theme_mode')) as ThemeMode || 'light';
     const savedColor = localStorage.getItem('kanbanex_primary_color') || localStorage.getItem('kabanex_primary_color') || '#FF7A00';
     let savedBg = localStorage.getItem('kanbanex_overview_bg') || localStorage.getItem('kabanex_overview_bg') || 'gradient-orange-chaud';
     if (savedBg === 'kabanex-horizon' || savedBg === 'kanbanex-horizon') {

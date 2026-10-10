@@ -11,7 +11,7 @@ import { LandingFooter } from '@/components/landing/LandingFooter';
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#0B0D11] text-slate-100 selection:bg-orange-500 selection:text-white overflow-x-hidden relative">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0B0D11] text-slate-900 dark:text-slate-100 selection:bg-orange-500 selection:text-white overflow-x-hidden relative transition-colors duration-200">
       {/* Background ambient lighting */}
       <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-orange-600/10 blur-[140px] rounded-full" />

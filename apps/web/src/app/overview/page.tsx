@@ -22,7 +22,6 @@ import {
   LogOut,
   CreditCard,
   Palette,
-  Sparkles,
   Layers,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';

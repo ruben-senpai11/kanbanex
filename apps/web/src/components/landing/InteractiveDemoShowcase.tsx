@@ -9,7 +9,7 @@ import {
   Layers,
   CheckCircle2,
   Clock,
-  Sparkles,
+  Play,
   Plus,
   MoreHorizontal,
   ChevronRight,
@@ -45,27 +45,27 @@ export function InteractiveDemoShowcase() {
     <div id="showcase" className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-24 space-y-8 select-none">
       {/* Section Header */}
       <div className="text-center space-y-3 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-orange-500/10 text-orange-400 border border-orange-500/20">
-          <Sparkles className="w-3.5 h-3.5" />
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20 shadow-xs">
+          <Play className="w-3.5 h-3.5 fill-current" />
           Démonstration Interactive
         </div>
-        <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+        <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
           Passez d&apos;une vue à l&apos;autre sans aucune friction
         </h2>
-        <p className="text-sm md:text-base text-slate-400">
+        <p className="text-sm md:text-base text-slate-600 dark:text-slate-400">
           Chaque projet vit selon vos besoins. Basculez instantanément entre la fluidité du Kanban, la rigueur temporelle du Gantt et la clarté du calendrier.
         </p>
       </div>
 
       {/* Interactive Tabs Switcher */}
       <div className="flex items-center justify-center">
-        <div className="p-1.5 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 flex items-center gap-1 shadow-2xl flex-wrap justify-center">
+        <div className="p-1.5 rounded-xl bg-slate-200/80 dark:bg-black/60 backdrop-blur-xl border border-slate-300 dark:border-white/10 flex items-center gap-1 shadow-md dark:shadow-2xl flex-wrap justify-center">
           <button
             onClick={() => setActiveTab('kanban')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all ${
               activeTab === 'kanban'
                 ? 'bg-gradient-warm text-white shadow-md'
-                : 'text-slate-400 hover:text-white hover:bg-white/5'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-white/5'
             }`}
           >
             <Columns className="w-4 h-4" />
@@ -74,10 +74,10 @@ export function InteractiveDemoShowcase() {
 
           <button
             onClick={() => setActiveTab('gantt')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all ${
               activeTab === 'gantt'
                 ? 'bg-gradient-warm text-white shadow-md'
-                : 'text-slate-400 hover:text-white hover:bg-white/5'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-white/5'
             }`}
           >
             <BarChart3 className="w-4 h-4" />
@@ -86,10 +86,10 @@ export function InteractiveDemoShowcase() {
 
           <button
             onClick={() => setActiveTab('calendar')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all ${
               activeTab === 'calendar'
                 ? 'bg-gradient-warm text-white shadow-md'
-                : 'text-slate-400 hover:text-white hover:bg-white/5'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-white/5'
             }`}
           >
             <CalendarIcon className="w-4 h-4" />
@@ -98,10 +98,10 @@ export function InteractiveDemoShowcase() {
 
           <button
             onClick={() => setActiveTab('overview')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all ${
               activeTab === 'overview'
                 ? 'bg-gradient-warm text-white shadow-md'
-                : 'text-slate-400 hover:text-white hover:bg-white/5'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-white/5'
             }`}
           >
             <Layers className="w-4 h-4" />
@@ -111,15 +111,15 @@ export function InteractiveDemoShowcase() {
       </div>
 
       {/* Interactive Mockup Frame */}
-      <div className="rounded-3xl border border-white/15 bg-[#12151C]/90 backdrop-blur-2xl shadow-2xl overflow-hidden relative">
+      <div className="rounded-2xl border border-slate-200 dark:border-white/15 bg-white dark:bg-[#12151C]/90 backdrop-blur-2xl shadow-xl dark:shadow-2xl overflow-hidden relative">
         {/* Frame Topbar */}
-        <div className="h-11 px-4 border-b border-white/10 bg-black/40 flex items-center justify-between">
+        <div className="h-11 px-4 border-b border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-black/40 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-rose-500/80" />
             <div className="w-3 h-3 rounded-full bg-amber-500/80" />
             <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
-            <span className="ml-3 text-[11px] font-mono text-slate-400 hidden sm:inline">
-              kanbanex.app/workspace/expansion-studio
+            <span className="ml-3 text-[11px] font-mono text-slate-500 dark:text-slate-400 hidden sm:inline">
+              kanbanex.app/workspace/studio-alpha
             </span>
           </div>
 
@@ -398,7 +398,7 @@ export function InteractiveDemoShowcase() {
                   </div>
                   <h4 className="text-sm font-black text-white">Stratégie Marketing Q4</h4>
                   <p className="text-xs text-slate-400">
-                    Acquisition de nouveaux utilisateurs et expansion de l&apos;écosystème.
+                    Acquisition de nouveaux utilisateurs et accélération de la croissance.
                   </p>
                 </div>
               </div>

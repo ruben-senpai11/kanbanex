@@ -5,7 +5,7 @@ import { Modal } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { CINEMATIC_THEMES } from '@/lib/themes';
-import { Sparkles, Check } from 'lucide-react';
+import { Palette, Check } from 'lucide-react';
 
 interface CreateProjectModalProps {
   isOpen: boolean;
@@ -140,7 +140,7 @@ export function CreateProjectModal({ isOpen, onClose, onSubmit }: CreateProjectM
         <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800">
           <div className="flex items-center justify-between">
             <label className="text-xs font-semibold text-slate-800 dark:text-white flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-orange-500" />
+              <Palette className="w-3.5 h-3.5 text-orange-500" />
               Univers visuel cinématographique
             </label>
           </div>

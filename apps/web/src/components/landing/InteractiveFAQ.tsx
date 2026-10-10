@@ -41,14 +41,14 @@ export function InteractiveFAQ() {
   return (
     <section id="faq" className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-16 md:py-24 space-y-8 select-none">
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-orange-500/10 text-orange-400 border border-orange-500/20">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
           <HelpCircle className="w-3.5 h-3.5" />
           Foire Aux Questions
         </div>
-        <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+        <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
           Questions Fréquentes
         </h2>
-        <p className="text-sm md:text-base text-slate-400">
+        <p className="text-sm md:text-base text-slate-600 dark:text-slate-400">
           Tout ce que vous devez savoir pour démarrer sereinement sur KanbanEx.
         </p>
       </div>
@@ -61,24 +61,24 @@ export function InteractiveFAQ() {
               key={index}
               className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
                 isOpen
-                  ? 'border-orange-500/50 bg-[#161B24]'
-                  : 'border-white/10 bg-[#12151C]/70 hover:border-white/20'
+                  ? 'border-orange-500/50 bg-orange-50/60 dark:bg-[#161B24]'
+                  : 'border-slate-200 dark:border-white/10 bg-white/80 dark:bg-[#12151C]/70 hover:border-slate-300 dark:hover:border-white/20'
               }`}
             >
               <button
                 onClick={() => toggle(index)}
-                className="w-full p-5 text-left flex items-center justify-between gap-4 text-sm md:text-base font-bold text-white"
+                className="w-full p-5 text-left flex items-center justify-between gap-4 text-sm md:text-base font-bold text-slate-900 dark:text-white"
               >
                 <span>{faq.question}</span>
                 <ChevronDown
-                  className={`w-4 h-4 text-orange-400 shrink-0 transition-transform duration-300 ${
+                  className={`w-4 h-4 text-orange-500 dark:text-orange-400 shrink-0 transition-transform duration-300 ${
                     isOpen ? 'rotate-180' : ''
                   }`}
                 />
               </button>
 
               {isOpen && (
-                <div className="px-5 pb-5 text-xs md:text-sm text-slate-300 leading-relaxed border-t border-white/5 pt-3 animate-fade-in">
+                <div className="px-5 pb-5 text-xs md:text-sm text-slate-700 dark:text-slate-300 leading-relaxed border-t border-slate-200/60 dark:border-white/5 pt-3 animate-fade-in">
                   {faq.answer}
                 </div>
               )}
