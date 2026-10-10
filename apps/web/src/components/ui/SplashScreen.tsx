@@ -107,7 +107,7 @@ export function SplashScreen({
 
       {/* Center Desktop Brand Callout (Mobile already has tagline in the artwork, desktop highlights brand) */}
       <div className="hidden md:flex relative z-10 flex-col items-center text-center px-6 my-auto">
-        <AppLogo size={80} priority className="mb-4 animate-fade-in" />
+        <AppLogo size={56} priority className="mb-4 animate-fade-in" />
         <h1 className="text-3xl lg:text-4xl font-black text-white tracking-tight drop-shadow-lg">
           Bienvenue sur Kanban<span className="app-logo-accent font-black">Ex</span>
         </h1>
