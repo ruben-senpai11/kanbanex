@@ -12,6 +12,7 @@ out/
 # NestJS / Dist
 dist/
 build/
+*.tsbuildinfo
 
 # Prisma
 generated/

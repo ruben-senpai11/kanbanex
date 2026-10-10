@@ -36,24 +36,11 @@ export function toQueryString(params?: Record<string, any>): string {
 let authToken: string | null = null;
 let refreshToken: string | null = null;
 
-function getCookieDomainAttr(): string {
-  if (typeof window === 'undefined') return '';
-  const host = window.location.hostname;
-  if (host.includes('kanbanex.vercel.app')) {
-    return '; domain=.kanbanex.vercel.app';
-  }
-  if (host.includes('kabanex.vercel.app')) {
-    return '; domain=.kabanex.vercel.app';
-  }
-  return '';
-}
-
 if (typeof window !== 'undefined') {
   authToken = localStorage.getItem('kanbanex_token');
   refreshToken = localStorage.getItem('kanbanex_refresh_token');
   if (authToken && !document.cookie.includes('kanbanex_token=')) {
-    const domainAttr = getCookieDomainAttr();
-    document.cookie = `kanbanex_token=${authToken}; path=/${domainAttr}; max-age=604800; SameSite=Lax`;
+    document.cookie = `kanbanex_token=${authToken}; path=/; max-age=604800; SameSite=Lax`;
   }
 }
 
@@ -61,13 +48,11 @@ export function setTokens(access: string | null, refresh: string | null) {
   authToken = access;
   refreshToken = refresh;
   if (typeof window !== 'undefined') {
-    const domainAttr = getCookieDomainAttr();
     if (access) {
       localStorage.setItem('kanbanex_token', access);
-      document.cookie = `kanbanex_token=${access}; path=/${domainAttr}; max-age=604800; SameSite=Lax`;
+      document.cookie = `kanbanex_token=${access}; path=/; max-age=604800; SameSite=Lax`;
     } else {
       localStorage.removeItem('kanbanex_token');
-      document.cookie = `kanbanex_token=; path=/${domainAttr}; max-age=0; SameSite=Lax`;
       document.cookie = 'kanbanex_token=; path=/; max-age=0; SameSite=Lax';
     }
     if (refresh) {

@@ -44,7 +44,7 @@ export class MailService {
     const appUrl =
       this.configService.get<string>('APP_URL') ||
       this.configService.get<string>('FRONTEND_URL') ||
-      'https://app.kabanex.vercel.app';
+      'https://kanbanex.vercel.app';
     return appUrl.replace(/\/$/, '');
   }
 

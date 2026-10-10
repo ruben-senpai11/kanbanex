@@ -183,7 +183,7 @@ export class BillingService {
       try {
         const baseCallback =
           dto.callbackUrl ||
-          `${this.configService.get('APP_URL') || this.configService.get('FRONTEND_URL') || 'https://app.kabanex.vercel.app'}/billing`;
+          `${this.configService.get('APP_URL') || this.configService.get('FRONTEND_URL') || 'https://kanbanex.vercel.app'}/billing`;
         const separator = baseCallback.includes('?') ? '&' : '?';
         const callbackUrl = `${baseCallback}${separator}tx=${transaction.id}`;
 

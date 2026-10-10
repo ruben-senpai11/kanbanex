@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
-export interface UpdateUserProfileDto {
+export class UpdateUserProfileDto {
   fullName?: string;
   avatarUrl?: string;
 }
