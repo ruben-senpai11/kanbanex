@@ -71,6 +71,8 @@ export async function apiRequest<T = any>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
+  const method = (options.method || 'GET').toUpperCase();
+  const cacheKey = `kanbanex_offline_data_${endpoint}`;
   const headers = new Headers(options.headers || {});
   headers.set('Content-Type', 'application/json');
 
@@ -80,10 +82,28 @@ export async function apiRequest<T = any>(
 
   const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
 
-  let response = await fetch(url, {
-    ...options,
-    headers,
-  });
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      ...options,
+      headers,
+    });
+  } catch (netErr) {
+    // If offline and request is GET, attempt local cache fallback
+    if (method === 'GET' && typeof window !== 'undefined') {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        try {
+          return JSON.parse(cached) as T;
+        } catch {}
+      }
+    }
+    throw new ApiError(
+      'Connexion impossible : vous êtes actuellement hors-ligne ou le serveur est inaccessible.',
+      0,
+      { offline: true }
+    );
+  }
 
   // Handle 401: Try token refresh
   if (response.status === 401 && refreshToken) {
@@ -111,6 +131,16 @@ export async function apiRequest<T = any>(
   }
 
   if (!response.ok) {
+    // If server error on GET and offline/server down, try local cache
+    if (method === 'GET' && typeof window !== 'undefined') {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        try {
+          return JSON.parse(cached) as T;
+        } catch {}
+      }
+    }
+
     let errorMsg = `Erreur HTTP ${response.status}`;
     let data;
     try {
@@ -120,7 +150,16 @@ export async function apiRequest<T = any>(
     throw new ApiError(errorMsg, response.status, data);
   }
 
-  return response.json();
+  const data = await response.json();
+
+  // If GET request succeeded, save snapshot for offline use
+  if (method === 'GET' && typeof window !== 'undefined') {
+    try {
+      localStorage.setItem(cacheKey, JSON.stringify(data));
+    } catch {}
+  }
+
+  return data;
 }
 
 // ==============================================================================

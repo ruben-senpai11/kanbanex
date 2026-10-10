@@ -5,6 +5,7 @@ import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { CINEMATIC_THEMES, getThemeById } from '@/lib/themes';
 import { usePreferences, ThemeMode } from '@/lib/preferences-context';
+import { usePwa } from '@/components/pwa/PwaProvider';
 import {
   Check,
   Palette,
@@ -15,6 +16,9 @@ import {
   RotateCcw,
   Sliders,
   Eye,
+  Download,
+  Smartphone,
+  CheckCircle2,
 } from 'lucide-react';
 
 interface OverviewCustomizationModalProps {
@@ -45,6 +49,7 @@ export function OverviewCustomizationModal({
     overviewBackground,
     setOverviewBackground,
   } = usePreferences();
+  const { isInstallable, isInstalled, installApp } = usePwa();
 
   const [tempThemeMode, setTempThemeMode] = useState<ThemeMode>(themeMode);
   const [tempColor, setTempColor] = useState(primaryColor);
@@ -330,6 +335,43 @@ export function OverviewCustomizationModal({
                 );
               })}
             </div>
+          </div>
+
+          {/* 4. Application Progressive Web App (PWA) & Mode Hors-Ligne */}
+          <div className="space-y-3 p-4 rounded-2xl bg-slate-50 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                <Smartphone className="w-4 h-4 text-orange-500" />
+                Application Desktop &amp; Mobile (PWA)
+              </label>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
+                <CheckCircle2 className="w-3 h-3" />
+                Mode Hors-Ligne Actif
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              KanbanEx intègre un Service Worker de pointe qui met en cache vos tableaux, calendriers et projets. Vous pouvez continuer à travailler en avion ou sans connexion, vos données sont synchronisées dès le retour du réseau.
+            </p>
+            {isInstalled ? (
+              <div className="flex items-center gap-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 p-2.5 rounded-xl border border-emerald-500/20">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <span>KanbanEx est installée sur cet appareil comme application native.</span>
+              </div>
+            ) : isInstallable ? (
+              <Button
+                type="button"
+                onClick={installApp}
+                size="sm"
+                className="w-full bg-gradient-warm text-white font-bold h-9 rounded-xl shadow-md shadow-brand-500/20 hover:brightness-105"
+              >
+                <Download className="w-3.5 h-3.5 mr-1.5" />
+                Installer l&apos;application sur cet appareil
+              </Button>
+            ) : (
+              <p className="text-[11px] text-slate-400 dark:text-slate-500 italic">
+                Disponible pour installation via le menu de votre navigateur (Chrome, Edge, Safari iOS &quot;Sur l&apos;écran d&apos;accueil&quot;).
+              </p>
+            )}
           </div>
         </div>
 
