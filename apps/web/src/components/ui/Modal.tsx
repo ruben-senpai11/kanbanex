@@ -59,7 +59,7 @@ export function Modal({
       />
       <div
         className={cn(
-          'relative w-full bg-white dark:bg-[#12151C] border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl p-6 md:p-8 z-10 animate-scale-in text-slate-900 dark:text-slate-100 max-h-[90vh] overflow-hidden flex flex-col',
+          'relative w-full bg-white dark:bg-[#12151C] border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl p-6 md:p-8 z-10 animate-scale-in text-slate-900 dark:text-slate-100 max-h-[90vh] overflow-hidden flex flex-col',
           widthClasses[maxWidth] || widthClasses.md,
           className
         )}

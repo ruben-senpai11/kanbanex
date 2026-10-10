@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/lib/auth-context';
+import { useClickOutside } from '@/hooks/useClickOutside';
 import { AppLogo } from '@/components/ui/AppLogo';
 import {
   Search,
@@ -38,6 +39,12 @@ export function AppHeader({
   const [isWsOpen, setIsWsOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
+  const wsRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(wsRef, () => setIsWsOpen(false));
+  useClickOutside(userMenuRef, () => setIsUserMenuOpen(false));
+
   return (
     <header className="h-12 border-b border-slate-200/80 dark:border-white/10 bg-white/95 dark:bg-[#1D2125]/90 backdrop-blur-md sticky top-0 z-40 px-3 md:px-4 flex items-center justify-between shadow-xs">
       {/* Left: 9-dots App Launcher, Logo & Workspace Switcher */}
@@ -57,7 +64,7 @@ export function AppHeader({
 
         {/* Workspace Dropdown */}
         {currentWorkspace && (
-          <div className="relative ml-1">
+          <div ref={wsRef} className="relative ml-1">
             <button
               onClick={() => setIsWsOpen(!isWsOpen)}
               className="flex items-center gap-1.5 px-2.5 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-white/10 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors"
@@ -149,7 +156,7 @@ export function AppHeader({
 
         {/* User Avatar (Circle with initials & online indicator) */}
         {user && (
-          <div className="relative ml-1">
+          <div ref={userMenuRef} className="relative ml-1">
             <button
               onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
               className="flex items-center focus:outline-none"

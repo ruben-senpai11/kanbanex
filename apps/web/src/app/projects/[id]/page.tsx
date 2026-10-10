@@ -4,7 +4,6 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api';
-import { AppHeader } from '@/components/layout/AppHeader';
 import { BoardSubHeader } from '@/components/kanban/BoardSubHeader';
 import { BottomNavigationDock, BoardActiveView } from '@/components/kanban/BottomNavigationDock';
 import { InboxDrawer } from '@/components/kanban/InboxDrawer';
@@ -15,6 +14,7 @@ import { ProjectCalendar } from '@/components/calendar/ProjectCalendar';
 import { TaskDrawer } from '@/components/task/TaskDrawer';
 import { GlobalSearchModal } from '@/components/layout/GlobalSearchModal';
 import { ThemeSelectorModal } from '@/components/overview/ThemeSelectorModal';
+import { PlanModal } from '@/components/overview/PlanModal';
 import { CreateProjectModal } from '@/components/overview/CreateProjectModal';
 import { getThemeById } from '@/lib/themes';
 import { KanbanColumnSkeleton } from '@/components/ui/Skeleton';
@@ -47,6 +47,7 @@ export default function ProjectWorkspacePage() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [isInboxOpen, setIsInboxOpen] = useState(false);
   const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
+  const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
 
   // Filter States
   const [searchFilter, setSearchFilter] = useState('');
@@ -217,9 +218,16 @@ export default function ProjectWorkspacePage() {
   if (isLoading || !project) {
     return (
       <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col">
-        <AppHeader />
-        <div className="h-12 bg-white/70 border-b border-slate-200 px-6 flex items-center">
-          <div className="w-32 h-5 rounded bg-slate-200 shimmer-effect" />
+        <div className="h-12 bg-white/70 border-b border-slate-200 px-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-24 h-5 rounded bg-slate-200 shimmer-effect" />
+            <div className="h-4 w-px bg-slate-200" />
+            <div className="w-32 h-5 rounded bg-slate-200 shimmer-effect" />
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-20 h-6 rounded bg-slate-200 shimmer-effect" />
+            <div className="w-6 h-6 rounded-full bg-slate-200 shimmer-effect" />
+          </div>
         </div>
         <div className="flex-1 p-6 flex gap-4 overflow-hidden">
           <KanbanColumnSkeleton />
@@ -258,15 +266,7 @@ export default function ProjectWorkspacePage() {
         </div>
       )}
 
-      {/* 1. App Header (Trello-style top bar) */}
-      <AppHeader
-        onOpenSearch={() => setIsSearchOpen(true)}
-        onOpenNewProject={() => setIsNewProjectOpen(true)}
-        onOpenNotifications={() => setIsInboxOpen(true)}
-        unreadCount={project.activities?.length || 0}
-      />
-
-      {/* 2. Board Sub-Header (Project title, switcher, avatars, filters, share, theme) */}
+      {/* Unified Board Header (KanbanEx brand logo, Project title, switcher, avatars, filters, share, theme, notifications, Pro upgrade) */}
       <BoardSubHeader
         projectName={project.name}
         projectId={project.id}
@@ -276,12 +276,12 @@ export default function ProjectWorkspacePage() {
         onOpenFilter={() => setIsFilterModalOpen(true)}
         activeFilterCount={activeFilterCount}
         onOpenThemeModal={() => setIsThemeModalOpen(true)}
-        onShare={() => alert(`Lien de partage du tableau copié : ${window.location.href}`)}
+        onOpenPlanModal={() => setIsPlanModalOpen(true)}
         isDarkTheme={isDark}
       />
 
-      {/* 3. Main Workspace Area: Kanban, Gantt, or Calendar */}
-      <main className="flex-1 flex flex-col h-[calc(100vh-96px)] overflow-hidden relative">
+      {/* Main Workspace Area: Kanban, Gantt, or Calendar */}
+      <main className="flex-1 flex flex-col h-[calc(100vh-48px)] overflow-hidden relative">
         <div ref={viewContainerRef} className="flex-1 flex overflow-hidden relative">
           {activeView === 'kanban' && (
             <KanbanBoard
@@ -316,13 +316,11 @@ export default function ProjectWorkspacePage() {
           )}
         </div>
 
-        {/* 4. Bottom Floating Navigation Dock (Trello-style dock: Inbox, Agenda, Tableau, Gantt, Switcher) */}
+        {/* Floating Navigation Dock: Tableau | Gantt | Calendrier */}
         <BottomNavigationDock
           activeView={activeView}
           onSelectView={switchView}
-          onOpenInbox={() => setIsInboxOpen(true)}
-          onOpenBoardSwitcher={() => router.push('/overview')}
-          inboxBadgeCount={project.activities?.length || 0}
+          isDarkTheme={isDark}
         />
       </main>
 
@@ -372,6 +370,12 @@ export default function ProjectWorkspacePage() {
         initialThemeId={project.backgroundTheme}
         initialColor={project.customColor}
         onSaveTheme={handleSaveTheme}
+      />
+
+      {/* Plan / Subscription Modal */}
+      <PlanModal
+        isOpen={isPlanModalOpen}
+        onClose={() => setIsPlanModalOpen(false)}
       />
 
       {/* Create New Project Modal */}

@@ -52,7 +52,7 @@ export function PlanModal({ isOpen, onClose }: PlanModalProps) {
     >
       <div className="space-y-5">
         {/* Active plan card */}
-        <div className="p-5 rounded-2xl bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-transparent border border-orange-500/30 relative overflow-hidden">
+        <div className="p-5 rounded-xl bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-transparent border border-orange-500/30 relative overflow-hidden">
           <div className="flex items-start justify-between">
             <div className="space-y-1">
               <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1">

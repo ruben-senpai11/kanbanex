@@ -46,7 +46,7 @@ export function BoardFilterModal({
         onClick={onClose}
       />
 
-      <div className="relative bg-white dark:bg-[#12151C] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-sm p-4 space-y-4 z-10 text-slate-800 dark:text-slate-100">
+      <div className="relative bg-white dark:bg-[#12151C] rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-sm p-4 space-y-4 z-10 text-slate-800 dark:text-slate-100">
         <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-orange-500" />

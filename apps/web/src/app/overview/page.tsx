@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api';
 import { usePreferences } from '@/lib/preferences-context';
+import { useClickOutside } from '@/hooks/useClickOutside';
 import { HorizontalProjectList } from '@/components/overview/HorizontalProjectList';
 import { CreateProjectModal } from '@/components/overview/CreateProjectModal';
 import { ThemeSelectorModal } from '@/components/overview/ThemeSelectorModal';
@@ -42,6 +43,10 @@ export default function OverviewPage() {
   const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
   const [themeModalProjectId, setThemeModalProjectId] = useState<string | null>(null);
   const [isWsDropdownOpen, setIsWsDropdownOpen] = useState(false);
+  const wsDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close workspace dropdown when clicking outside
+  useClickOutside(wsDropdownRef, () => setIsWsDropdownOpen(false));
 
   // Keyboard shortcut Ctrl+K
   useEffect(() => {
@@ -150,7 +155,7 @@ export default function OverviewPage() {
         <div className="flex items-center gap-3">
           <AppLogo size="md" priority />
 
-          <div className="relative">
+          <div ref={wsDropdownRef} className="relative">
             <button
               onClick={() => workspaces.length > 1 && setIsWsDropdownOpen(!isWsDropdownOpen)}
               className="flex items-center gap-2 group text-left"
@@ -174,7 +179,7 @@ export default function OverviewPage() {
             {/* Dropdown if multiple workspaces */}
             {isWsDropdownOpen && workspaces.length > 1 && (
               <div
-                className="absolute left-0 mt-2 w-60 bg-white dark:bg-[#12151C] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl py-1.5 z-50 animate-fade-in text-slate-800 dark:text-slate-200"
+                className="absolute left-0 mt-2 w-60 bg-white dark:bg-[#12151C] border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl py-1.5 z-50 animate-fade-in text-slate-800 dark:text-slate-200"
                 onClick={() => setIsWsDropdownOpen(false)}
               >
                 <div className="px-3 py-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider">

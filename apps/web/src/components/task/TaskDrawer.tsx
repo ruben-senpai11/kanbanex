@@ -255,7 +255,7 @@ export function TaskDrawer({
                     setStatus(e.target.value);
                     handleSaveFields({ status: e.target.value });
                   }}
-                  className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
+                  className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-lg px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
                 >
                   <option value="TODO">À faire</option>
                   <option value="IN_PROGRESS">En cours</option>
@@ -275,7 +275,7 @@ export function TaskDrawer({
                     setPriority(e.target.value);
                     handleSaveFields({ priority: e.target.value });
                   }}
-                  className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
+                  className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-lg px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
                 >
                   <option value="LOW">Basse</option>
                   <option value="MEDIUM">Moyenne</option>
@@ -286,7 +286,7 @@ export function TaskDrawer({
             </div>
 
             {/* Dates & Estimation (Essential for Gantt synchronization) */}
-            <div className="space-y-3 p-4 rounded-2xl bg-slate-50 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800">
+            <div className="space-y-3 p-4 rounded-xl bg-slate-50 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800">
               <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5 text-orange-500" />
                 Planification temporelle & Gantt
@@ -306,7 +306,7 @@ export function TaskDrawer({
                         startDate: e.target.value ? new Date(e.target.value).toISOString() : null,
                       });
                     }}
-                    className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
+                    className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-lg px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
                   />
                 </div>
 
@@ -323,7 +323,7 @@ export function TaskDrawer({
                         dueDate: e.target.value ? new Date(e.target.value).toISOString() : null,
                       });
                     }}
-                    className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
+                    className="w-full bg-white dark:bg-[#1A1F29] border border-slate-300 dark:border-slate-700/80 rounded-lg px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-orange-500"
                   />
                 </div>
               </div>
@@ -361,7 +361,7 @@ export function TaskDrawer({
                     <button
                       key={member.id}
                       onClick={() => handleToggleAssignee(member.id)}
-                      className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium border transition-colors ${
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                         isAssigned
                           ? 'bg-orange-50 dark:bg-orange-950/60 border-orange-500 text-orange-600 dark:text-orange-300 shadow-xs'
                           : 'bg-slate-50 dark:bg-[#15181F] border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
@@ -387,7 +387,7 @@ export function TaskDrawer({
                 onBlur={() => handleSaveFields()}
                 rows={4}
                 placeholder="Ajoutez une description détaillée de la tâche..."
-                className="w-full p-3 bg-slate-50 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-orange-500/80 leading-relaxed resize-none"
+                className="w-full p-3 bg-slate-50 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800 rounded-lg text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-orange-500/80 leading-relaxed resize-none"
               />
             </div>
 
@@ -406,7 +406,7 @@ export function TaskDrawer({
                 const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
                 return (
-                  <div key={cl.id} className="p-4 rounded-2xl bg-slate-50 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800 space-y-3">
+                  <div key={cl.id} className="p-4 rounded-xl bg-slate-50 dark:bg-[#15181F] border border-slate-200 dark:border-slate-800 space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white">{cl.title}</span>
                       <span className="text-[11px] text-slate-500 dark:text-slate-400">{completed}/{total} ({pct}%)</span>

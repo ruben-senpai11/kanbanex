@@ -1,19 +1,24 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import Link from 'next/link';
+import { AppLogo } from '@/components/ui/AppLogo';
+import { useAuth } from '@/lib/auth-context';
+import { useClickOutside } from '@/hooks/useClickOutside';
+import { NotificationsPopover } from '@/components/notifications/NotificationsPopover';
 import {
-  Star,
-  Zap,
-  Filter,
-  Share2,
-  MoreHorizontal,
   ChevronDown,
+  Filter,
   Palette,
+  Share2,
+  Sparkles,
+  Bell,
   Check,
-  UserPlus,
-  Users,
+  LogOut,
+  CreditCard,
+  User as UserIcon,
+  Crown,
 } from 'lucide-react';
-import { PriorityBadge, StatusBadge } from '@/components/ui/Badge';
 
 interface BoardSubHeaderProps {
   projectName: string;
@@ -21,12 +26,10 @@ interface BoardSubHeaderProps {
   allProjects?: Array<{ id: string; name: string; customColor?: string }>;
   onSelectProject?: (projectId: string) => void;
   members?: Array<{ id: string; fullName: string; avatarUrl?: string }>;
-  isStarred?: boolean;
-  onToggleStar?: () => void;
   onOpenFilter?: () => void;
   activeFilterCount?: number;
   onOpenThemeModal?: () => void;
-  onShare?: () => void;
+  onOpenPlanModal?: () => void;
   isDarkTheme?: boolean;
 }
 
@@ -36,164 +39,256 @@ export function BoardSubHeader({
   allProjects = [],
   onSelectProject,
   members = [],
-  isStarred = false,
-  onToggleStar,
   onOpenFilter,
   activeFilterCount = 0,
   onOpenThemeModal,
-  onShare,
+  onOpenPlanModal,
   isDarkTheme = false,
 }: BoardSubHeaderProps) {
-  const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
-  const [starred, setStarred] = useState(isStarred);
+  const { user, logout } = useAuth();
 
-  const handleStar = () => {
-    setStarred(!starred);
-    onToggleStar?.();
+  const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(2);
+  const [copiedShare, setCopiedShare] = useState(false);
+
+  const projectDropdownRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const notificationsAnchorRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdowns when clicking outside
+  useClickOutside(projectDropdownRef, () => setIsProjectDropdownOpen(false));
+  useClickOutside(userMenuRef, () => setIsUserMenuOpen(false));
+
+  const handleShare = () => {
+    if (typeof window !== 'undefined') {
+      navigator.clipboard?.writeText(window.location.href);
+      setCopiedShare(true);
+      setTimeout(() => setCopiedShare(false), 2000);
+    }
   };
 
   const textPrimary = isDarkTheme ? 'text-white' : 'text-slate-900';
   const textSecondary = isDarkTheme ? 'text-slate-300' : 'text-slate-700';
-  const btnHover = isDarkTheme ? 'hover:bg-white/10 text-white' : 'hover:bg-slate-200/70 text-slate-800';
-  const bgGlass = isDarkTheme ? 'bg-black/20 backdrop-blur-md border-white/10' : 'bg-white/70 backdrop-blur-md border-slate-200/60';
+  const btnHover = isDarkTheme
+    ? 'hover:bg-white/10 text-white'
+    : 'hover:bg-slate-200/70 text-slate-800';
+  const bgGlass = isDarkTheme
+    ? 'bg-black/35 backdrop-blur-md border-white/10'
+    : 'bg-white/80 backdrop-blur-md border-slate-200/70';
 
   return (
-    <div className={`h-12 px-3 md:px-4 border-b flex items-center justify-between shrink-0 select-none transition-colors ${bgGlass}`}>
-      {/* Left: Board Title & Switcher, Star */}
+    <header
+      className={`h-12 px-3 md:px-4 border-b flex items-center justify-between shrink-0 select-none transition-colors relative z-40 ${bgGlass}`}
+    >
+      {/* ========================================================================= */}
+      {/* GAUCHE : LOGO KANBANEX + SÉPARATEUR + CHANGER DE TABLEAU                  */}
+      {/* ========================================================================= */}
       <div className="flex items-center gap-2 md:gap-3">
-        {/* Project Selector Dropdown */}
-        <div className="relative">
+        {/* Logo officiel KanbanEx (Icône K + Nom KanbanEx) */}
+        <Link
+          href="/overview"
+          className="flex items-center gap-2 group hover:opacity-90 transition-opacity"
+          title="Retour à l'aperçu de tous les projets"
+        >
+          <AppLogo size="sm" withText textClassName={`text-sm font-black ${textPrimary}`} />
+        </Link>
+
+        {/* Separator */}
+        <div className={`h-4 w-px ${isDarkTheme ? 'bg-white/20' : 'bg-slate-300'}`} />
+
+        {/* Project Selector Dropdown with Click-Outside handler */}
+        <div ref={projectDropdownRef} className="relative">
           <button
             onClick={() => setIsProjectDropdownOpen(!isProjectDropdownOpen)}
-            className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm font-bold tracking-tight transition-colors ${btnHover}`}
+            className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs md:text-sm font-bold tracking-tight transition-colors ${btnHover}`}
+            title="Changer de projet"
           >
-            <span className="truncate max-w-[200px] md:max-w-[320px]">{projectName}</span>
-            <ChevronDown className="w-3.5 h-3.5 opacity-70" />
+            <span className="truncate max-w-[140px] sm:max-w-[220px] md:max-w-[320px]">
+              {projectName}
+            </span>
+            <ChevronDown
+              className={`w-3.5 h-3.5 opacity-70 transition-transform ${
+                isProjectDropdownOpen ? 'rotate-180' : ''
+              }`}
+            />
           </button>
 
           {isProjectDropdownOpen && (
             <div
-              className="absolute left-0 mt-1.5 w-64 bg-white dark:bg-[#12151C] border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl py-1.5 z-50 animate-fade-in text-slate-800 dark:text-slate-200"
+              className="absolute left-0 mt-1.5 w-64 bg-white dark:bg-[#12151C] border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl py-1.5 z-50 animate-fade-in text-slate-800 dark:text-slate-200"
               onClick={() => setIsProjectDropdownOpen(false)}
             >
-              <div className="px-3 py-1 text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider">
-                Changer de tableau
+              <div className="px-3 py-1.5 text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider">
+                Mes Projets
               </div>
-              {allProjects.map((p) => (
-                <button
-                  key={p.id}
-                  onClick={() => onSelectProject?.(p.id)}
-                  className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors ${
-                    p.id === projectId
-                      ? 'font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-950/30'
-                      : 'text-slate-700 dark:text-slate-300'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 truncate">
-                    <span
-                      className="w-2.5 h-2.5 rounded-full shrink-0 shadow-2xs"
-                      style={{ backgroundColor: p.customColor || '#FF7A00' }}
-                    />
-                    <span className="truncate">{p.name}</span>
-                  </div>
-                  {p.id === projectId && <Check className="w-3.5 h-3.5 text-orange-600 dark:text-orange-400 shrink-0" />}
-                </button>
-              ))}
+              <div className="max-h-60 overflow-y-auto">
+                {allProjects.map((p) => (
+                  <button
+                    key={p.id}
+                    onClick={() => onSelectProject?.(p.id)}
+                    className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors ${
+                      p.id === projectId
+                        ? 'font-bold bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white'
+                        : 'text-slate-700 dark:text-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 truncate">
+                      <span
+                        className="w-2.5 h-2.5 rounded-full shrink-0 shadow-2xs"
+                        style={{ backgroundColor: p.customColor || '#FF7A00' }}
+                      />
+                      <span className="truncate">{p.name}</span>
+                    </div>
+                    {p.id === projectId && (
+                      <Check className="w-3.5 h-3.5 text-slate-900 dark:text-white shrink-0" />
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>
-
-        {/* Favorite Star */}
-        <button
-          onClick={handleStar}
-          className={`p-1.5 rounded-lg transition-colors ${
-            starred ? 'text-amber-400' : isDarkTheme ? 'text-white/60 hover:text-white' : 'text-slate-400 hover:text-slate-700'
-          }`}
-          title={starred ? 'Retirer des favoris' : 'Ajouter aux favoris'}
-        >
-          <Star className={`w-4 h-4 ${starred ? 'fill-amber-400' : ''}`} />
-        </button>
       </div>
 
-      {/* Right Tools: Avatars, Power-ups, Filtres, Partager, Theme, More */}
-      <div className="flex items-center gap-1.5 md:gap-2">
-        {/* Team Member Avatars (Overlapping style as in screenshot) */}
-        {members.length > 0 && (
-          <div className="flex items-center -space-x-1.5 mr-1">
-            {members.slice(0, 4).map((m, idx) => (
-              <div
-                key={m.id || idx}
-                className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-orange-500 border-2 border-white text-white font-bold text-[10px] flex items-center justify-center shadow-xs cursor-pointer hover:scale-110 transition-transform"
-                title={m.fullName}
-              >
-                {m.fullName.slice(0, 2).toUpperCase()}
-              </div>
-            ))}
-            {members.length > 4 && (
-              <div className="w-7 h-7 rounded-full bg-slate-200 border-2 border-white text-slate-700 font-bold text-[10px] flex items-center justify-center shadow-xs">
-                +{members.length - 4}
-              </div>
-            )}
-          </div>
+      {/* ========================================================================= */}
+      {/* DROITE : PASSER À L'OFFRE PRO + NOTIFICATIONS + FILTRES + THÈME + AVATAR  */}
+      {/* ========================================================================= */}
+      <div className="flex items-center gap-2 md:gap-2.5">
+        {/* 1. Passer à l'offre Pro */}
+        {onOpenPlanModal && (
+          <button
+            onClick={onOpenPlanModal}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition-all shadow-xs active:scale-95"
+            title="Consulter les fonctionnalités et passer au plan Pro"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Passer à l&apos;offre Pro</span>
+            <span className="sm:hidden">Pro</span>
+          </button>
         )}
 
-        {/* Power-Ups / Automations */}
-        <button
-          className={`p-1.5 rounded-lg transition-colors ${btnHover}`}
-          title="Automatisations & Power-Ups"
-        >
-          <Zap className="w-4 h-4" />
-        </button>
+        {/* 2. Notifications System (Frontend + Backend) */}
+        <div ref={notificationsAnchorRef} className="relative">
+          <button
+            onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+            className={`p-1.5 rounded-lg transition-colors relative ${btnHover}`}
+            title="Notifications"
+          >
+            <Bell className="w-4 h-4" />
+            {unreadCount > 0 && (
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-blue-500 ring-2 ring-white dark:ring-black" />
+            )}
+          </button>
 
-        {/* Filters Button */}
-        <button
-          onClick={onOpenFilter}
-          className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${btnHover} ${
-            activeFilterCount > 0 ? 'bg-orange-500/20 text-orange-600 font-bold' : ''
-          }`}
-          title="Filtrer les cartes"
-        >
-          <Filter className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Filtres</span>
-          {activeFilterCount > 0 && (
-            <span className="w-4 h-4 rounded-full bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center">
-              {activeFilterCount}
-            </span>
-          )}
-        </button>
+          <NotificationsPopover
+            isOpen={isNotificationsOpen}
+            onClose={() => setIsNotificationsOpen(false)}
+            onUnreadCountChange={(c) => setUnreadCount(c)}
+          />
+        </div>
 
-        {/* Background / Theme Switcher (Palette) */}
+        {/* 3. Filtres */}
+        {onOpenFilter && (
+          <button
+            onClick={onOpenFilter}
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${btnHover}`}
+            title="Filtrer les tâches"
+          >
+            <Filter className="w-3.5 h-3.5" />
+            <span className="hidden md:inline">Filtres</span>
+            {activeFilterCount > 0 && (
+              <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-950">
+                {activeFilterCount}
+              </span>
+            )}
+          </button>
+        )}
+
+        {/* 4. Thème / Palette */}
         {onOpenThemeModal && (
           <button
             onClick={onOpenThemeModal}
             className={`p-1.5 rounded-lg transition-colors ${btnHover}`}
-            title="Personnaliser l'arrière-plan (Blanc, Dégradé, Soie...)"
+            title="Personnaliser l'univers visuel de ce projet"
           >
             <Palette className="w-4 h-4" />
           </button>
         )}
 
-        {/* Share Button (Partager) */}
+        {/* 5. Partager le tableau (Copie propre du lien) */}
         <button
-          onClick={onShare}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-            isDarkTheme
-              ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white'
-              : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-800 shadow-2xs'
+          onClick={handleShare}
+          className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+            copiedShare
+              ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30'
+              : btnHover
           }`}
+          title="Copier le lien d'accès au tableau"
         >
-          <UserPlus className="w-3.5 h-3.5" />
-          <span>Partager</span>
+          <Share2 className="w-3.5 h-3.5" />
+          <span className="hidden md:inline">
+            {copiedShare ? 'Copié !' : 'Partager'}
+          </span>
         </button>
 
-        {/* More Actions Menu */}
-        <button
-          className={`p-1.5 rounded-lg transition-colors ${btnHover}`}
-          title="Menu du tableau"
-        >
-          <MoreHorizontal className="w-4 h-4" />
-        </button>
+        {/* 6. Avatar Utilisateur & Menu Déroulant (avec Click-Outside) */}
+        <div ref={userMenuRef} className="relative ml-1">
+          <button
+            onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+            className="w-7 h-7 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-950 text-xs font-bold flex items-center justify-center transition-transform hover:scale-105 active:scale-95 shadow-sm"
+            title={user?.fullName || 'Mon profil'}
+          >
+            {user?.fullName?.slice(0, 2).toUpperCase() || 'U'}
+          </button>
+
+          {isUserMenuOpen && (
+            <div className="absolute right-0 mt-2 w-56 rounded-xl bg-white dark:bg-[#151921] border border-slate-200 dark:border-white/10 shadow-2xl py-1.5 z-50 animate-fade-in text-slate-800 dark:text-slate-200">
+              <div className="px-3 py-2 border-b border-slate-100 dark:border-white/5">
+                <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                  {user?.fullName || 'Utilisateur'}
+                </p>
+                <p className="text-[10px] text-slate-400 truncate">
+                  {user?.email || ''}
+                </p>
+              </div>
+
+              {onOpenPlanModal && (
+                <button
+                  onClick={() => {
+                    setIsUserMenuOpen(false);
+                    onOpenPlanModal();
+                  }}
+                  className="w-full text-left px-3 py-2 text-xs hover:bg-slate-100 dark:hover:bg-white/5 flex items-center gap-2 text-slate-700 dark:text-slate-200 transition-colors"
+                >
+                  <CreditCard className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Mon Plan / Abonnement</span>
+                </button>
+              )}
+
+              <Link
+                href="/overview"
+                className="w-full text-left px-3 py-2 text-xs hover:bg-slate-100 dark:hover:bg-white/5 flex items-center gap-2 text-slate-700 dark:text-slate-200 transition-colors"
+                onClick={() => setIsUserMenuOpen(false)}
+              >
+                <UserIcon className="w-3.5 h-3.5 text-slate-400" />
+                <span>Tous mes projets</span>
+              </Link>
+
+              <div className="border-t border-slate-100 dark:border-white/5 my-1" />
+
+              <button
+                onClick={() => logout()}
+                className="w-full text-left px-3 py-2 text-xs hover:bg-rose-50 dark:hover:bg-rose-950/30 text-rose-600 dark:text-rose-400 flex items-center gap-2 transition-colors"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Me déconnecter</span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </header>
   );
 }

@@ -210,6 +210,11 @@ export const api = {
   getComments: (taskId: string) => apiRequest(`/comments/task/${taskId}`),
   addComment: (taskId: string, content: string) => apiRequest(`/comments/task/${taskId}`, { method: 'POST', body: JSON.stringify({ content }) }),
 
+  // Notifications
+  getNotifications: () => apiRequest('/notifications'),
+  markNotificationAsRead: (id: string) => apiRequest(`/notifications/${id}/read`, { method: 'PATCH' }),
+  markAllNotificationsAsRead: () => apiRequest('/notifications/read-all', { method: 'PATCH' }),
+
   // Activity & Search
   getProjectActivity: (projectId: string) => apiRequest(`/activity/project/${projectId}`),
   globalSearch: (workspaceId: string, params: any) => {

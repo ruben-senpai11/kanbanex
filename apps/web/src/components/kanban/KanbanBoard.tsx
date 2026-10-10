@@ -150,7 +150,7 @@ export function KanbanBoard({
               if (dragOverListId === list.id) setDragOverListId(null);
             }}
             onDrop={(e) => handleDrop(e, list.id)}
-            className={`w-[280px] shrink-0 rounded-2xl flex flex-col max-h-[calc(100vh-140px)] transition-all duration-200 border ${
+            className={`w-[280px] shrink-0 rounded-xl flex flex-col max-h-[calc(100vh-100px)] transition-all duration-200 border ${
               isDragOver
                 ? 'ring-2 ring-orange-500 bg-orange-50/80 dark:bg-orange-950/40 border-orange-300'
                 : 'bg-[#F1F2F4]/95 dark:bg-[#15181F]/95 backdrop-blur-xs border-slate-200/80 dark:border-slate-800 shadow-xs'
@@ -169,7 +169,7 @@ export function KanbanBoard({
                       if (e.key === 'Escape') setEditingListId(null);
                     }}
                     autoFocus
-                    className="w-full text-xs font-bold px-2 py-1 rounded bg-white dark:bg-[#1A1F29] text-slate-900 dark:text-white border border-orange-500 focus:outline-none"
+                    className="w-full text-xs font-bold px-2 py-1 rounded-md bg-white dark:bg-[#1A1F29] text-slate-900 dark:text-white border border-orange-500 focus:outline-none"
                   />
                   <button
                     onClick={() => handleSaveRename(list.id)}
@@ -198,7 +198,7 @@ export function KanbanBoard({
                   </h3>
 
                   {/* Count badge */}
-                  <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-300 shrink-0">
+                  <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-300 shrink-0">
                     {taskCount}
                   </span>
                 </div>
@@ -210,35 +210,41 @@ export function KanbanBoard({
                   onClick={() =>
                     setActiveMenuColId(activeMenuColId === list.id ? null : list.id)
                   }
-                  className="p-1 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-slate-800 transition-colors"
+                  className="p-1 rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-slate-800 transition-colors"
                   title="Actions de la liste"
                 >
                   <MoreHorizontal className="w-4 h-4" />
                 </button>
 
                 {activeMenuColId === list.id && (
-                  <div
-                    className="absolute right-0 mt-1.5 w-44 bg-white dark:bg-[#1A1F29] border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl py-1 z-40 animate-fade-in text-slate-700 dark:text-slate-200"
-                    onClick={() => setActiveMenuColId(null)}
-                  >
-                    <button
-                      onClick={() => {
-                        setEditingListId(list.id);
-                        setEditingListName(list.name);
-                      }}
-                      className="w-full text-left px-3 py-1.5 text-xs hover:bg-slate-100 dark:hover:bg-slate-800/80 flex items-center gap-2 text-slate-700 dark:text-slate-200"
+                  <>
+                    <div
+                      className="fixed inset-0 z-30"
+                      onClick={() => setActiveMenuColId(null)}
+                    />
+                    <div
+                      className="absolute right-0 mt-1.5 w-44 bg-white dark:bg-[#1A1F29] border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl py-1 z-40 animate-fade-in text-slate-700 dark:text-slate-200"
+                      onClick={() => setActiveMenuColId(null)}
                     >
-                      <Edit2 className="w-3.5 h-3.5 text-slate-400" />
-                      Renommer la liste
-                    </button>
-                    <button
-                      onClick={() => onDeleteList(list.id)}
-                      className="w-full text-left px-3 py-1.5 text-xs hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 dark:text-rose-400 flex items-center gap-2"
-                    >
-                      <Trash2 className="w-3.5 h-3.5 text-rose-500" />
-                      Supprimer la liste
-                    </button>
-                  </div>
+                      <button
+                        onClick={() => {
+                          setEditingListId(list.id);
+                          setEditingListName(list.name);
+                        }}
+                        className="w-full text-left px-3 py-1.5 text-xs hover:bg-slate-100 dark:hover:bg-slate-800/80 flex items-center gap-2 text-slate-700 dark:text-slate-200"
+                      >
+                        <Edit2 className="w-3.5 h-3.5 text-slate-400" />
+                        Renommer la liste
+                      </button>
+                      <button
+                        onClick={() => onDeleteList(list.id)}
+                        className="w-full text-left px-3 py-1.5 text-xs hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 dark:text-rose-400 flex items-center gap-2"
+                      >
+                        <Trash2 className="w-3.5 h-3.5 text-rose-500" />
+                        Supprimer la liste
+                      </button>
+                    </div>
+                  </>
                 )}
               </div>
             </div>
@@ -267,7 +273,7 @@ export function KanbanBoard({
                     draggable
                     onDragStart={(e) => handleDragStart(e, task.id)}
                     onClick={() => onTaskClick(task.id)}
-                    className="p-3 rounded-xl bg-white dark:bg-[#1A1F29] hover:bg-white dark:hover:bg-[#202633] border border-slate-200/90 dark:border-slate-700/80 hover:border-orange-500/50 shadow-xs dark:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col gap-2 group active:cursor-grabbing active:scale-[0.98]"
+                    className="p-3 rounded-lg bg-white dark:bg-[#1A1F29] hover:bg-white dark:hover:bg-[#202633] border border-slate-200/90 dark:border-slate-700/80 hover:border-orange-500/50 shadow-xs dark:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col gap-2 group active:cursor-grabbing active:scale-[0.98]"
                   >
                     {/* Top Labels row */}
                     {task.labels?.length > 0 && (
@@ -347,7 +353,7 @@ export function KanbanBoard({
 
               {/* Inline Create Task Form */}
               {activeNewTaskCol === list.id ? (
-                <div className="p-2.5 rounded-xl bg-white dark:bg-[#1A1F29] border border-orange-500 shadow-sm space-y-2">
+                <div className="p-2.5 rounded-lg bg-white dark:bg-[#1A1F29] border border-orange-500 shadow-sm space-y-2">
                   <textarea
                     value={newTaskTitle}
                     onChange={(e) => setNewTaskTitle(e.target.value)}
@@ -386,7 +392,7 @@ export function KanbanBoard({
                     setActiveNewTaskCol(list.id);
                     setNewTaskTitle('');
                   }}
-                  className="w-full py-2 px-3 rounded-xl text-left text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-slate-800/60 flex items-center gap-2 transition-colors"
+                  className="w-full py-2 px-3 rounded-lg text-left text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-slate-800/60 flex items-center gap-2 transition-colors"
                 >
                   <Plus className="w-4 h-4 text-slate-500 dark:text-slate-400" />
                   <span>Ajouter une carte</span>
@@ -402,7 +408,7 @@ export function KanbanBoard({
         {isAddingList ? (
           <form
             onSubmit={handleCreateListSubmit}
-            className="p-3 rounded-2xl bg-[#F1F2F4] dark:bg-[#15181F] border border-slate-300/80 dark:border-slate-800 shadow-sm space-y-2.5"
+            className="p-3 rounded-xl bg-[#F1F2F4] dark:bg-[#15181F] border border-slate-300/80 dark:border-slate-800 shadow-sm space-y-2.5"
           >
             <input
               type="text"
@@ -431,7 +437,7 @@ export function KanbanBoard({
         ) : (
           <button
             onClick={() => setIsAddingList(true)}
-            className="w-full py-3 px-4 rounded-2xl bg-white/70 dark:bg-[#15181F]/70 hover:bg-white/95 dark:hover:bg-[#15181F]/95 backdrop-blur-xs border border-slate-200/80 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center gap-2 transition-all shadow-xs"
+            className="w-full py-3 px-4 rounded-xl bg-white/70 dark:bg-[#15181F]/70 hover:bg-white/95 dark:hover:bg-[#15181F]/95 backdrop-blur-xs border border-slate-200/80 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center gap-2 transition-all shadow-xs"
           >
             <Plus className="w-4 h-4 text-slate-600 dark:text-slate-400" />
             <span>Ajouter une autre liste</span>
