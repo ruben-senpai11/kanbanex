@@ -36,6 +36,33 @@ export default function BillingPage() {
 
   useEffect(() => {
     loadBillingData();
+
+    // Vérifier si l'utilisateur revient du guichet de paiement avec un paramètre ?tx=...
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const txId = params.get('tx');
+      if (txId) {
+        const verifyPaymentReturn = async () => {
+          try {
+            await api.verifyPayment(txId);
+            setNotification({
+              type: 'success',
+              message: 'Paiement confirmé avec succès ! Votre nouvel abonnement est maintenant actif.',
+            });
+            await loadBillingData();
+            await refreshUserData();
+          } catch (err: any) {
+            setNotification({
+              type: 'error',
+              message: err.message || 'Le paiement n\'a pas pu être validé par la passerelle.',
+            });
+          } finally {
+            window.history.replaceState({}, '', window.location.pathname);
+          }
+        };
+        verifyPaymentReturn();
+      }
+    }
   }, [currentWorkspace]);
 
   const handleSubscribe = async (planSlug: string) => {
@@ -44,21 +71,25 @@ export default function BillingPage() {
     setNotification(null);
 
     try {
+      const callbackUrl = `${window.location.origin}/billing`;
       const res = await api.createCheckout(currentWorkspace.id, {
         planSlug,
-        callbackUrl: window.location.href,
+        callbackUrl,
       });
 
       if (res.isFree) {
         setNotification({ type: 'success', message: res.message });
         await loadBillingData();
         await refreshUserData();
-      } else if (res.checkoutUrl) {
-        // In local/sandbox, also verify payment directly to demonstrate instantaneous activation
-        const verifyRes = await api.verifyPayment(res.transactionId);
+      } else if (res.checkoutUrl && res.checkoutUrl.startsWith('http')) {
+        // Redirection sécurisée vers la page de paiement FedaPay
+        window.location.href = res.checkoutUrl;
+      } else if (res.transactionId) {
+        // Mode simulation dev (hors-ligne ou sans clé FedaPay)
+        await api.verifyPayment(res.transactionId);
         setNotification({
           type: 'success',
-          message: `Paiement approuvé avec succès ! Votre abonnement est maintenant actif.`,
+          message: `[Mode Simulation Dev] Abonnement validé avec succès !`,
         });
         await loadBillingData();
         await refreshUserData();

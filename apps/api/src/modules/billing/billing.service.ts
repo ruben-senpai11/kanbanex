@@ -181,6 +181,12 @@ export class BillingService {
 
     if (this.fedapaySecretKey && this.fedapaySecretKey.startsWith('sk_')) {
       try {
+        const baseCallback =
+          dto.callbackUrl ||
+          `${this.configService.get('APP_URL') || this.configService.get('FRONTEND_URL') || 'https://app.kabanex.vercel.app'}/billing`;
+        const separator = baseCallback.includes('?') ? '&' : '?';
+        const callbackUrl = `${baseCallback}${separator}tx=${transaction.id}`;
+
         const response = await fetch(fedapayApiUrl, {
           method: 'POST',
           headers: {
@@ -191,7 +197,7 @@ export class BillingService {
             description: `Abonnement KanbanEX ${targetPlan.name}`,
             amount: targetPlan.price,
             currency: { iso: targetPlan.currency },
-            callback_url: dto.callbackUrl || `${this.configService.get('FRONTEND_URL') || 'http://localhost:3000'}/billing/verify?tx=${transaction.id}`,
+            callback_url: callbackUrl,
             customer: {
               email: user.email,
               firstname: user.fullName.split(' ')[0] || 'Client',
@@ -252,6 +258,46 @@ export class BillingService {
       return { success: true, message: 'Transaction déjà validée.', transaction };
     }
 
+    // 1. Si la clé secrète FedaPay est configurée, vérifier en temps réel auprès de l'API FedaPay (Single Source of Truth)
+    if (this.fedapaySecretKey && transaction.providerTxId && !transaction.providerTxId.startsWith('TX_FEDAPAY_')) {
+      const isLive = this.fedapayEnv === 'live';
+      const fedapayApiUrl = isLive
+        ? `https://api.fedapay.com/v1/transactions/${transaction.providerTxId}`
+        : `https://sandbox-api.fedapay.com/v1/transactions/${transaction.providerTxId}`;
+
+      try {
+        const response = await fetch(fedapayApiUrl, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${this.fedapaySecretKey}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new BadRequestException('Impossible de joindre la passerelle FedaPay pour vérifier la transaction.');
+        }
+
+        const data: any = await response.json();
+        const fedaTx = data['v1/transaction'] || data.transaction || data;
+        const status = fedaTx?.status;
+
+        // FedaPay status doit impérativement être 'approved' pour valider
+        if (status !== 'approved') {
+          throw new BadRequestException(
+            `Le paiement n'a pas été validé par la passerelle de paiement (statut actuel : ${status || 'en attente'}). Les fonds n'ont pas été reçus.`,
+          );
+        }
+      } catch (err: any) {
+        if (err instanceof BadRequestException) throw err;
+        throw new BadRequestException(`Erreur lors de la confirmation du paiement : ${err.message}`);
+      }
+    } else if (this.fedapaySecretKey && transaction.providerTxId?.startsWith('TX_FEDAPAY_')) {
+      throw new BadRequestException('Transaction non initiée auprès de la passerelle.');
+    } else {
+      this.logger.warn(`[SIMULATION DEV] Validation de la transaction ${transactionId} sans clé FedaPay.`);
+    }
+
     // Set end period to 30 days from now
     const periodEnd = new Date();
     periodEnd.setDate(periodEnd.getDate() + 30);
@@ -296,17 +342,19 @@ export class BillingService {
    * Webhook handler for FedaPay callbacks (Idempotent)
    */
   async handleWebhook(event: string, payload: any) {
-    this.logger.log(`Webhook FedaPay reçu : ${event}`);
+    this.logger.log(`Webhook FedaPay reçu : ${event || payload?.name}`);
 
-    if (event === 'transaction.approved' || payload?.name === 'transaction.approved') {
-      const fedaId = String(payload?.entity?.id || payload?.id);
-      const tx = await this.prisma.paymentTransaction.findFirst({
-        where: { providerTxId: fedaId },
-      });
+    const fedaId = String(payload?.entity?.id || payload?.id || payload?.['v1/transaction']?.id || '');
+    if (!fedaId) {
+      return { received: false, message: 'ID de transaction introuvable' };
+    }
 
-      if (tx && tx.status !== PaymentStatus.APPROVED) {
-        await this.verifyPayment(tx.id);
-      }
+    const tx = await this.prisma.paymentTransaction.findFirst({
+      where: { providerTxId: fedaId },
+    });
+
+    if (tx && tx.status !== PaymentStatus.APPROVED) {
+      await this.verifyPayment(tx.id);
     }
 
     return { received: true };
