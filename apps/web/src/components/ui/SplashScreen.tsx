@@ -109,7 +109,7 @@ export function SplashScreen({
       <div className="hidden md:flex relative z-10 flex-col items-center text-center px-6 my-auto">
         <AppLogo size={80} priority className="mb-4 animate-fade-in" />
         <h1 className="text-3xl lg:text-4xl font-black text-white tracking-tight drop-shadow-lg">
-          Bienvenue sur Kanban<span className="text-orange-500">Ex</span>
+          Bienvenue sur Kanban<span className="app-logo-accent font-black">Ex</span>
         </h1>
         <p className="mt-2 text-sm text-amber-200/90 font-medium tracking-wide drop-shadow">
           Vos projets. Une seule vision.

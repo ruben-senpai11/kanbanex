@@ -173,9 +173,14 @@
   --primary-contrast: #FFFFFF;
 }
 
-/* Ensure AppLogo brand text always stays official KanbanEx orange */
+/* Ensure AppLogo brand text always stays official KanbanEx gold-to-orange gradient from SVG */
 .app-logo-accent {
-  color: #FF7A00 !important;
+  background: linear-gradient(135deg, #FFE94A 0%, #FF9D00 45%, #FF3B08 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  display: inline-block;
 }
 
 /* When custom primary is active: override all Tailwind orange classes */

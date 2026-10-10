@@ -24,12 +24,9 @@ export function LandingFooter() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Brand */}
           <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
-            <AppLogo size="md" />
             <div>
-              <span className="font-black text-base text-slate-900 dark:text-white tracking-tight flex items-center justify-center sm:justify-start">
-                Kanban<span className="text-orange-500">Ex</span>
-              </span>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">Vos projets. Une seule vision.</p>
+              <AppLogo size="md" withText textClassName="font-black text-base text-slate-900 dark:text-white justify-center sm:justify-start" />
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Vos projets. Une seule vision.</p>
             </div>
           </div>
 

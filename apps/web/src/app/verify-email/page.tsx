@@ -107,7 +107,7 @@ function VerifyEmailContent() {
       <div className="flex flex-col items-center text-center space-y-2">
         <AppLogo size="xl" priority className="mb-2" />
         <h1 className="text-2xl font-extrabold text-white tracking-tight drop-shadow-sm">
-          Kanban<span className="text-orange-500">Ex</span>
+          Kanban<span className="app-logo-accent font-black">Ex</span>
         </h1>
         <p className="text-xs text-amber-100 font-medium drop-shadow-sm">
           Vos projets. Une seule vision.
