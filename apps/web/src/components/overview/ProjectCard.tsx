@@ -80,11 +80,11 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
         style={backgroundStyle}
       />
 
-      {/* 2. Frosted Backdrop Blur & High-Contrast Scrim Layer */}
-      <div className="absolute inset-0 bg-slate-950/65 backdrop-blur-md pointer-events-none transition-colors duration-300 group-hover:bg-slate-950/60" />
+      {/* 2. Frosted Backdrop Blur & Modern Translucent Scrim Layer */}
+      <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-md pointer-events-none transition-colors duration-300 group-hover:bg-slate-950/35" />
 
       {/* 3. Deep Vignette Gradient for Crystal-Clear Text Contrast */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/10 pointer-events-none" />
 
       {/* 4. Top Accent Stripe using the project's primary color */}
       <div
@@ -285,7 +285,7 @@ export function ProjectCard({ project, onOpenThemeSelector }: ProjectCardProps) 
       </div>
 
       {/* 7. Footer / Direct Enter Project Action */}
-      <div className="p-4 pt-3 border-t border-white/10 relative z-10 bg-black/40 backdrop-blur-sm">
+      <div className="p-4 pt-3 border-t border-white/10 relative z-10 bg-black/25 backdrop-blur-sm">
         <Link
           href={`/projects/${project.id}`}
           className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all duration-300 group/btn bg-white/15 hover:bg-gradient-warm text-white border border-white/25 hover:border-transparent shadow-md active:scale-98"

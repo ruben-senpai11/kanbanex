@@ -159,7 +159,7 @@ export default function OverviewPage() {
             style={{ backgroundImage: `url('/images/kanbanex-desktop.jpg')` }}
           />
           {/* Atmospheric Contrast Overlay */}
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[0.5px]" />
+          <div className="absolute inset-0 bg-black/20 backdrop-blur-[0.5px]" />
         </div>
       )}
 
