@@ -1,5 +1,14 @@
-export const DEFAULT_APP_DOMAIN = 'app.kabanex.vercel.app';
-export const DEFAULT_LANDING_DOMAIN = 'kabanex.vercel.app';
+export const DEFAULT_APP_DOMAIN =
+  process.env.NEXT_PUBLIC_APP_DOMAIN ||
+  (typeof window !== 'undefined' && window.location.host.includes('kanbanex.vercel.app')
+    ? 'app.kanbanex.vercel.app'
+    : 'app.kabanex.vercel.app');
+
+export const DEFAULT_LANDING_DOMAIN =
+  process.env.NEXT_PUBLIC_LANDING_DOMAIN ||
+  (typeof window !== 'undefined' && window.location.host.includes('kanbanex.vercel.app')
+    ? 'kanbanex.vercel.app'
+    : 'kabanex.vercel.app');
 
 /**
  * Returns the full or relative URL to the App domain.

@@ -45,7 +45,7 @@ export function InteractiveBentoGrid() {
               Interface Kanban Pure & Plein Écran
             </h3>
             <p className="text-sm text-slate-300 leading-relaxed">
-              Fini les barres latérales encombrantes qui réduisent votre espace de travail. KabanEx libère 100% de la largeur de votre écran pour vos colonnes de tâches, vos cartes blanches contrastées et son mini-dock inférieur ultra-réactif.
+              Fini les barres latérales encombrantes qui réduisent votre espace de travail. KanbanEx libère 100% de la largeur de votre écran pour vos colonnes de tâches, vos cartes blanches contrastées et son mini-dock inférieur ultra-réactif.
             </p>
 
             <div className="pt-2 flex flex-wrap gap-3 text-xs font-semibold text-slate-300">
@@ -76,7 +76,7 @@ export function InteractiveBentoGrid() {
               Wallpapers Cinématiques
             </h3>
             <p className="text-xs text-slate-300 leading-relaxed">
-              Arrière-plan signature KabanEx adaptatif : panorama 16:9 au lever du soleil sur grand écran et format 9:16 portrait immersif sur smartphone.
+              Arrière-plan signature KanbanEx adaptatif : panorama 16:9 au lever du soleil sur grand écran et format 9:16 portrait immersif sur smartphone.
             </p>
           </div>
 

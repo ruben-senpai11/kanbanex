@@ -240,18 +240,18 @@ export default function ProjectWorkspacePage() {
       }`}
       style={theme.backgroundStyle}
     >
-      {/* Responsive Wallpaper Layer for KabanEx official brand backgrounds */}
+      {/* Responsive Wallpaper Layer for KanbanEx official brand backgrounds */}
       {theme.isWallpaper && (
         <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none select-none">
           {/* Mobile Wallpaper: 9:16 Portrait (Img 2) */}
           <div
             className="block md:hidden absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url('/images/kabanex-mobile.jpg')` }}
+            style={{ backgroundImage: `url('/images/kanbanex-mobile.jpg')` }}
           />
           {/* Desktop Wallpaper: 16:9 Landscape (Img 3) */}
           <div
             className="hidden md:block absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url('/images/kabanex-desktop.jpg')` }}
+            style={{ backgroundImage: `url('/images/kanbanex-desktop.jpg')` }}
           />
           {/* Subtle atmospheric scrim for crisp contrast on Trello cards */}
           <div className="absolute inset-0 bg-black/15" />

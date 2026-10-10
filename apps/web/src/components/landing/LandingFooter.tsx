@@ -20,7 +20,7 @@ export function LandingFooter() {
             <AppLogo size="md" />
             <div>
               <span className="font-black text-base text-white tracking-tight flex items-center justify-center sm:justify-start">
-                Kaban<span className="text-orange-500">Ex</span>
+                Kanban<span className="text-orange-500">Ex</span>
               </span>
               <p className="text-[11px] text-slate-500">Vos projets. Une seule vision.</p>
             </div>
@@ -52,7 +52,7 @@ export function LandingFooter() {
 
         {/* Bottom copyright */}
         <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-center text-[11px] text-slate-500">
-          <p>© 2026 KabanEx • Écosystème Expansion. Tous droits réservés.</p>
+          <p>© 2026 KanbanEx • Écosystème Expansion. Tous droits réservés.</p>
           <p className="flex items-center gap-1">
             Conçu pour la haute productivité et l&apos;orchestration agile
           </p>

@@ -36,14 +36,14 @@ export default function PrivacyPage() {
             Politique de Confidentialité
           </h1>
           <p className="text-sm text-slate-400">
-            Dernière mise à jour : 9 octobre 2026 • KabanEx Data Privacy
+            Dernière mise à jour : 9 octobre 2026 • KanbanEx Data Privacy
           </p>
         </div>
 
         <section className="space-y-4 text-sm leading-relaxed text-slate-300">
           <h2 className="text-lg font-bold text-white">1. Collecte des Données Personnelles</h2>
           <p>
-            KabanEx ne collecte que les informations strictement nécessaires au bon fonctionnement du service : nom complet, adresse email professionnelle, préférences d&apos;affichage, ainsi que les données relatives aux projets et tâches créés par l&apos;utilisateur.
+            KanbanEx ne collecte que les informations strictement nécessaires au bon fonctionnement du service : nom complet, adresse email professionnelle, préférences d&apos;affichage, ainsi que les données relatives aux projets et tâches créés par l&apos;utilisateur.
           </p>
 
           <h2 className="text-lg font-bold text-white pt-4">2. Utilisation des Données</h2>
@@ -64,12 +64,12 @@ export default function PrivacyPage() {
 
           <h2 className="text-lg font-bold text-white pt-4">4. Non-Partage et Zéro Vente de Données</h2>
           <p>
-            KabanEx ne vend, ne loue et ne cède aucune de vos données personnelles à des tiers ou courtiers en données à des fins publicitaires. Vos projets et informations restent votre propriété exclusive.
+            KanbanEx ne vend, ne loue et ne cède aucune de vos données personnelles à des tiers ou courtiers en données à des fins publicitaires. Vos projets et informations restent votre propriété exclusive.
           </p>
 
           <h2 className="text-lg font-bold text-white pt-4">5. Droits de l&apos;Utilisateur</h2>
           <p>
-            Vous disposez d&apos;un droit d&apos;accès, de rectification et de suppression de vos données personnelles sur simple demande via votre tableau de bord ou par email à support@kabanex.io.
+            Vous disposez d&apos;un droit d&apos;accès, de rectification et de suppression de vos données personnelles sur simple demande via votre tableau de bord ou par email à support@kanbanex.io.
           </p>
         </section>
       </main>

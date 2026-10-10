@@ -15,17 +15,17 @@ export interface ProjectTheme {
 
 export const CINEMATIC_THEMES: ProjectTheme[] = [
   {
-    id: 'kabanex-horizon',
-    name: 'KabanEx Horizon (Officiel)',
+    id: 'kanbanex-horizon',
+    name: 'KanbanEx Horizon (Officiel)',
     category: 'cinematic',
-    backgroundClass: 'bg-kabanex-wallpaper',
+    backgroundClass: 'bg-kanbanex-wallpaper',
     accentColor: '#FF7A00',
     isDark: true,
     isWallpaper: true,
-    desktopBg: '/images/kabanex-desktop.jpg',
-    mobileBg: '/images/kabanex-mobile.jpg',
-    previewBg: 'url(/images/kabanex-desktop.jpg) center/cover',
-    description: 'Arrière-plan signature KabanEx officiel : lever de soleil panoramique (responsive desktop & mobile).',
+    desktopBg: '/images/kanbanex-desktop.jpg',
+    mobileBg: '/images/kanbanex-mobile.jpg',
+    previewBg: 'url(/images/kanbanex-desktop.jpg) center/cover',
+    description: 'Arrière-plan signature KanbanEx officiel : lever de soleil panoramique (responsive desktop & mobile).',
   },
   {
     id: 'pure-white',
@@ -142,7 +142,7 @@ export const CINEMATIC_THEMES: ProjectTheme[] = [
 ];
 
 export function getThemeById(id?: string | null): ProjectTheme {
-  const found = CINEMATIC_THEMES.find((t) => t.id === id);
-  // Default to KabanEx Horizon official brand wallpaper
+  const found = CINEMATIC_THEMES.find((t) => t.id === id || (id === 'kabanex-horizon' && t.id === 'kanbanex-horizon'));
+  // Default to KanbanEx Horizon official brand wallpaper
   return found || CINEMATIC_THEMES[0];
 }

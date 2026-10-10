@@ -36,21 +36,21 @@ export default function LoginPage() {
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none select-none">
         <div
           className="block md:hidden absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url('/images/kabanex-mobile.jpg')` }}
+          style={{ backgroundImage: `url('/images/kanbanex-mobile.jpg')` }}
         />
         <div
           className="hidden md:block absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url('/images/kabanex-desktop.jpg')` }}
+          style={{ backgroundImage: `url('/images/kanbanex-desktop.jpg')` }}
         />
         <div className="absolute inset-0 bg-slate-900/40 dark:bg-black/75 backdrop-blur-md" />
       </div>
 
       <div className="w-full max-w-md relative z-10 space-y-6">
-        {/* Brand Header with Official KabanEx Logo */}
+        {/* Brand Header with Official KanbanEx Logo */}
         <div className="flex flex-col items-center text-center space-y-2">
           <AppLogo size="xl" priority className="mb-2" />
           <h1 className="text-2xl font-extrabold text-white tracking-tight drop-shadow-sm">
-            Connexion à Kaban<span className="text-orange-500">Ex</span>
+            Connexion à Kanban<span className="text-orange-500">Ex</span>
           </h1>
           <p className="text-xs text-amber-100 font-medium drop-shadow-sm">
             Vos projets. Une seule vision.

@@ -22,7 +22,7 @@ export function SplashScreen({
   useEffect(() => {
     // Check session storage so splashscreen only displays once per session (unless forceShow is true)
     if (typeof window !== 'undefined') {
-      const alreadyShown = sessionStorage.getItem('kabanex_splash_seen');
+      const alreadyShown = sessionStorage.getItem('kanbanex_splash_seen') || sessionStorage.getItem('kabanex_splash_seen');
       if (alreadyShown && !forceShow) {
         return;
       }
@@ -47,7 +47,7 @@ export function SplashScreen({
   const handleDismiss = () => {
     setIsFadingOut(true);
     if (typeof window !== 'undefined') {
-      sessionStorage.setItem('kabanex_splash_seen', 'true');
+      sessionStorage.setItem('kanbanex_splash_seen', 'true');
     }
     setTimeout(() => {
       setIsVisible(false);
@@ -62,7 +62,7 @@ export function SplashScreen({
       className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-black select-none transition-opacity duration-600 ease-out ${
         isFadingOut ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
-      aria-label="KabanEx SplashScreen"
+      aria-label="KanbanEx SplashScreen"
       role="dialog"
       aria-modal="true"
     >
@@ -70,8 +70,8 @@ export function SplashScreen({
       {/* Mobile Splashscreen: 9:16 Portrait Image */}
       <div className="block md:hidden absolute inset-0 -z-10">
         <Image
-          src="/images/kabanex-mobile.jpg"
-          alt="KabanEx Mobile Splashscreen"
+          src="/images/kanbanex-mobile.jpg"
+          alt="KanbanEx Mobile Splashscreen"
           fill
           priority
           sizes="100vw"
@@ -83,8 +83,8 @@ export function SplashScreen({
       {/* Desktop Splashscreen: 16:9 Landscape Image */}
       <div className="hidden md:block absolute inset-0 -z-10">
         <Image
-          src="/images/kabanex-desktop.jpg"
-          alt="KabanEx Desktop Splashscreen"
+          src="/images/kanbanex-desktop.jpg"
+          alt="KanbanEx Desktop Splashscreen"
           fill
           priority
           sizes="100vw"
@@ -109,7 +109,7 @@ export function SplashScreen({
       <div className="hidden md:flex relative z-10 flex-col items-center text-center px-6 my-auto">
         <AppLogo size={80} priority className="mb-4 animate-fade-in" />
         <h1 className="text-3xl lg:text-4xl font-black text-white tracking-tight drop-shadow-lg">
-          Bienvenue sur Kaban<span className="text-orange-500">Ex</span>
+          Bienvenue sur Kanban<span className="text-orange-500">Ex</span>
         </h1>
         <p className="mt-2 text-sm text-amber-200/90 font-medium tracking-wide drop-shadow">
           Vos projets. Une seule vision.

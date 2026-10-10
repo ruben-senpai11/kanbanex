@@ -119,7 +119,7 @@ export function InteractiveDemoShowcase() {
             <div className="w-3 h-3 rounded-full bg-amber-500/80" />
             <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
             <span className="ml-3 text-[11px] font-mono text-slate-400 hidden sm:inline">
-              kabanex.app/workspace/expansion-studio
+              kanbanex.app/workspace/expansion-studio
             </span>
           </div>
 
@@ -264,7 +264,7 @@ export function InteractiveDemoShowcase() {
 
                   <div className="p-3 rounded-xl bg-white dark:bg-[#12151C] border border-emerald-500/30 shadow-xs space-y-1 opacity-80">
                     <p className="text-xs font-bold text-slate-900 dark:text-white line-through text-slate-500">
-                      Intégration du logo officiel KabanEx
+                      Intégration du logo officiel KanbanEx
                     </p>
                     <span className="text-[10px] text-emerald-500 font-semibold flex items-center gap-1">
                       <CheckCircle2 className="w-3 h-3" />
@@ -353,7 +353,7 @@ export function InteractiveDemoShowcase() {
                     <span className="font-bold">{day} oct.</span>
                     {day === 14 && (
                       <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-orange-500 text-white truncate shadow-xs">
-                        🚀 Release KabanEx
+                        🚀 Release KanbanEx
                       </span>
                     )}
                     {day === 16 && (
@@ -383,7 +383,7 @@ export function InteractiveDemoShowcase() {
                     </span>
                     <span className="text-xs text-orange-400 font-bold">95%</span>
                   </div>
-                  <h4 className="text-sm font-black text-white">Refonte Plateforme KabanEx</h4>
+                  <h4 className="text-sm font-black text-white">Refonte Plateforme KanbanEx</h4>
                   <p className="text-xs text-slate-400">
                     Expérience immersive sans sidebar, Kanban pur et arrière-plans cinématiques.
                   </p>

@@ -21,16 +21,17 @@ const PreferencesContext = createContext<PreferencesContextType | undefined>(und
 export function PreferencesProvider({ children }: { children: React.ReactNode }) {
   const [themeMode, setThemeModeState] = useState<ThemeMode>('system');
   const [primaryColor, setPrimaryColorState] = useState<string>('#FF7A00'); // Default Orange
-  const [overviewBackground, setOverviewBackgroundState] = useState<string>('kabanex-horizon');
+  const [overviewBackground, setOverviewBackgroundState] = useState<string>('kanbanex-horizon');
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('dark');
 
   // Load persisted preferences on client mount
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const savedMode = (localStorage.getItem('kabanex_theme_mode') as ThemeMode) || 'system';
-    const savedColor = localStorage.getItem('kabanex_primary_color') || '#FF7A00';
-    const savedBg = localStorage.getItem('kabanex_overview_bg') || 'kabanex-horizon';
+    const savedMode = (localStorage.getItem('kanbanex_theme_mode') || localStorage.getItem('kabanex_theme_mode')) as ThemeMode || 'system';
+    const savedColor = localStorage.getItem('kanbanex_primary_color') || localStorage.getItem('kabanex_primary_color') || '#FF7A00';
+    let savedBg = localStorage.getItem('kanbanex_overview_bg') || localStorage.getItem('kabanex_overview_bg') || 'kanbanex-horizon';
+    if (savedBg === 'kabanex-horizon') savedBg = 'kanbanex-horizon';
 
     setThemeModeState(savedMode);
     setPrimaryColorState(savedColor);
@@ -86,21 +87,21 @@ export function PreferencesProvider({ children }: { children: React.ReactNode })
   const setThemeMode = (mode: ThemeMode) => {
     setThemeModeState(mode);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('kabanex_theme_mode', mode);
+      localStorage.setItem('kanbanex_theme_mode', mode);
     }
   };
 
   const setPrimaryColor = (color: string) => {
     setPrimaryColorState(color);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('kabanex_primary_color', color);
+      localStorage.setItem('kanbanex_primary_color', color);
     }
   };
 
   const setOverviewBackground = (bgId: string) => {
     setOverviewBackgroundState(bgId);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('kabanex_overview_bg', bgId);
+      localStorage.setItem('kanbanex_overview_bg', bgId);
     }
   };
 

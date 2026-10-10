@@ -39,6 +39,9 @@ let refreshToken: string | null = null;
 function getCookieDomainAttr(): string {
   if (typeof window === 'undefined') return '';
   const host = window.location.hostname;
+  if (host.includes('kanbanex.vercel.app')) {
+    return '; domain=.kanbanex.vercel.app';
+  }
   if (host.includes('kabanex.vercel.app')) {
     return '; domain=.kabanex.vercel.app';
   }

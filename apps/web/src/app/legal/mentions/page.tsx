@@ -36,14 +36,14 @@ export default function MentionsPage() {
             Mentions Légales
           </h1>
           <p className="text-sm text-slate-400">
-            KabanEx • Écosystème Expansion
+            KanbanEx • Écosystème Expansion
           </p>
         </div>
 
         <section className="space-y-4 text-sm leading-relaxed text-slate-300">
           <h2 className="text-lg font-bold text-white">1. Éditeur du Service</h2>
           <p>
-            Le service KabanEx est édité par l&apos;organisation Expansion Ecosystem, dédiée au développement d&apos;outils et de solutions logicielles de haute productivité pour les créateurs, entreprises et équipes agiles.
+            Le service KanbanEx est édité par l&apos;organisation Expansion Ecosystem, dédiée au développement d&apos;outils et de solutions logicielles de haute productivité pour les créateurs, entreprises et équipes agiles.
           </p>
 
           <h2 className="text-lg font-bold text-white pt-4">2. Hébergement de la Plateforme</h2>
@@ -62,9 +62,9 @@ export default function MentionsPage() {
 
           <h2 className="text-lg font-bold text-white pt-4">4. Contact et Support</h2>
           <p>
-            Pour toute question, réclamation ou assistance technique relative au service KabanEx :
+            Pour toute question, réclamation ou assistance technique relative au service KanbanEx :
             <br />
-            Email : <span className="text-orange-400 font-semibold">contact@kabanex.io</span>
+            Email : <span className="text-orange-400 font-semibold">contact@kanbanex.io</span>
           </p>
         </section>
       </main>

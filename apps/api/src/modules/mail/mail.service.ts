@@ -52,7 +52,7 @@ export class MailService {
     return (
       this.configService.get<string>('SMTP_FROM') ||
       this.configService.get<string>('MAIL_FROM') ||
-      '"KabanEx" <no-reply@kabanex.vercel.app>'
+      '"KanbanEx" <no-reply@kanbanex.vercel.app>'
     );
   }
 
@@ -63,8 +63,8 @@ export class MailService {
     const appUrl = this.getAppUrl();
     const verificationUrl = `${appUrl}/verify-email?token=${token}`;
 
-    const subject = 'Validez votre adresse email - KabanEx';
-    const textContent = `Bonjour ${fullName},\n\nMerci de rejoindre KabanEx ! Pour valider votre compte, veuillez vous rendre sur le lien suivant :\n${verificationUrl}\n\nCe lien est valable 24 heures.\n\nSi vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email.\n\nL'équipe KabanEx`;
+    const subject = 'Validez votre adresse email - KanbanEx';
+    const textContent = `Bonjour ${fullName},\n\nMerci de rejoindre KanbanEx ! Pour valider votre compte, veuillez vous rendre sur le lien suivant :\n${verificationUrl}\n\nCe lien est valable 24 heures.\n\nSi vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email.\n\nL'équipe KanbanEx`;
 
     const htmlContent = `
 <!DOCTYPE html>
@@ -72,7 +72,7 @@ export class MailService {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Validation de compte KabanEx</title>
+  <title>Validation de compte KanbanEx</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -169,7 +169,7 @@ export class MailService {
   <div class="container">
     <div class="header">
       <div class="logo">
-        <span class="logo-text">Kaban<span class="logo-accent">Ex</span></span>
+        <span class="logo-text">Kanban<span class="logo-accent">Ex</span></span>
       </div>
       <p style="margin: 8px 0 0 0; font-size: 12px; color: #94A3B8;">Plateforme unifiée de gestion de projets agiles</p>
     </div>
@@ -177,7 +177,7 @@ export class MailService {
     <div class="content">
       <div class="greeting">Bonjour ${fullName},</div>
       <p class="description">
-        Bienvenue sur KabanEx ! Pour finaliser la création de votre compte et accéder à votre espace de travail, veuillez confirmer votre adresse email en cliquant sur le bouton ci-dessous :
+        Bienvenue sur KanbanEx ! Pour finaliser la création de votre compte et accéder à votre espace de travail, veuillez confirmer votre adresse email en cliquant sur le bouton ci-dessous :
       </p>
 
       <div class="btn-container">
@@ -195,7 +195,7 @@ export class MailService {
     </div>
 
     <div class="footer">
-      © 2026 KabanEx • Écosystème Expansion. Tous droits réservés.<br/>
+      © 2026 KanbanEx • Écosystème Expansion. Tous droits réservés.<br/>
       Si vous n'êtes pas à l'origine de cette inscription, vous pouvez ignorer cet email en toute sécurité.
     </div>
   </div>
@@ -231,7 +231,7 @@ export class MailService {
   private logVerificationLinkToConsole(email: string, url: string) {
     this.logger.warn(`
 ========================================================================
-📧 [EMAIL SIMULATION] VALIDATION DE COMPTE KABANEX
+📧 [EMAIL SIMULATION] VALIDATION DE COMPTE KANBANEX
 ------------------------------------------------------------------------
 Destinataire : ${email}
 Lien direct  : ${url}

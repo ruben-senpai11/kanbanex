@@ -5,11 +5,11 @@ export function middleware(request: NextRequest) {
   const host = request.headers.get('host') || '';
   const { pathname, search } = request.nextUrl;
 
-  // Detect if current request is accessing the App subdomain (e.g. app.kabanex.vercel.app, app.localhost:3000)
-  const isAppDomain = host.startsWith('app.') || host.includes('app.kabanex.vercel.app');
+  // Detect if current request is accessing the App subdomain (e.g. app.kanbanex.vercel.app, app.kabanex.vercel.app, app.localhost:3000)
+  const isAppDomain = host.startsWith('app.') || host.includes('app.kanbanex.vercel.app') || host.includes('app.kabanex.vercel.app');
   const token = request.cookies.get('kanbanex_token')?.value;
 
-  // Case 1: User is accessing via the App Domain (app.kabanex.vercel.app)
+  // Case 1: User is accessing via the App Domain
   if (isAppDomain) {
     // When hitting root `/` on app domain, never show landing page: go straight to app or login
     if (pathname === '/') {
@@ -25,7 +25,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Case 2: User is accessing via the Landing / Marketing Domain (e.g. kabanex.vercel.app)
+  // Case 2: User is accessing via the Landing / Marketing Domain (e.g. kanbanex.vercel.app, kabanex.vercel.app)
   // In production (non-localhost), app routes and auth routes accessed on marketing domain should redirect to app domain
   const isAppRoute =
     pathname === '/login' ||
@@ -43,7 +43,8 @@ export function middleware(request: NextRequest) {
     !host.includes('127.0.0.1');
 
   if (isAppRoute && isProduction) {
-    const appUrl = `https://app.kabanex.vercel.app${pathname}${search}`;
+    const targetAppDomain = host.includes('kanbanex.vercel.app') ? 'app.kanbanex.vercel.app' : 'app.kabanex.vercel.app';
+    const appUrl = `https://${targetAppDomain}${pathname}${search}`;
     return NextResponse.redirect(appUrl);
   }
 

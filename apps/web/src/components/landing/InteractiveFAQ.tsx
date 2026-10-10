@@ -12,7 +12,7 @@ const FAQS = [
   {
     question: 'Puis-je personnaliser les arrière-plans sur grand écran et smartphone ?',
     answer:
-      'Oui ! KabanEx est conçu pour une adaptation responsive totale. L\'image officielle KabanEx s\'affiche en panorama 16:9 cinématographique sur ordinateur et s\'adapte au format 9:16 portrait sur smartphone. Vous pouvez également ajuster le thème de chaque projet ou choisir un thème système automatique.',
+      'Oui ! KanbanEx est conçu pour une adaptation responsive totale. L\'image officielle KanbanEx s\'affiche en panorama 16:9 cinématographique sur ordinateur et s\'adapte au format 9:16 portrait sur smartphone. Vous pouvez également ajuster le thème de chaque projet ou choisir un thème système automatique.',
   },
   {
     question: 'Comment basculer entre le tableau Kanban, le diagramme de Gantt et le calendrier ?',
@@ -49,7 +49,7 @@ export function InteractiveFAQ() {
           Questions Fréquentes
         </h2>
         <p className="text-sm md:text-base text-slate-400">
-          Tout ce que vous devez savoir pour démarrer sereinement sur KabanEx.
+          Tout ce que vous devez savoir pour démarrer sereinement sur KanbanEx.
         </p>
       </div>
 

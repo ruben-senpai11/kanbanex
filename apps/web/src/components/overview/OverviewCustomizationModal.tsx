@@ -24,7 +24,7 @@ interface OverviewCustomizationModalProps {
 }
 
 const COLOR_PRESETS = [
-  { name: 'Orange KabanEx', value: '#FF7A00' },
+  { name: 'Orange KanbanEx', value: '#FF7A00' },
   { name: 'Ambre Solaire', value: '#F59E0B' },
   { name: 'Rouge Flamboyant', value: '#EF4444' },
   { name: 'Émeraude Agile', value: '#10B981' },
@@ -71,7 +71,7 @@ export function OverviewCustomizationModal({
   const handleResetDefaults = () => {
     setTempThemeMode('system');
     setTempColor('#FF7A00');
-    setTempBg('kabanex-horizon');
+    setTempBg('kanbanex-horizon');
   };
 
   const activeThemeObj = getThemeById(tempBg);

@@ -294,7 +294,7 @@ export class AuthService {
 
     return {
       success: true,
-      message: 'Votre adresse email a été validée avec succès ! Bienvenue sur KabanEx.',
+      message: 'Votre adresse email a été validée avec succès ! Bienvenue sur KanbanEx.',
       user: {
         id: updatedUser.id,
         email: updatedUser.email,

@@ -36,14 +36,14 @@ export default function TermsPage() {
             Conditions Générales d&apos;Utilisation (CGU)
           </h1>
           <p className="text-sm text-slate-400">
-            Dernière mise à jour : 9 octobre 2026 • Plateforme KabanEx
+            Dernière mise à jour : 9 octobre 2026 • Plateforme KanbanEx
           </p>
         </div>
 
         <section className="space-y-4 text-sm leading-relaxed text-slate-300">
           <h2 className="text-lg font-bold text-white">1. Objet et Présentation du Service</h2>
           <p>
-            KabanEx est une solution logicielle SaaS de gestion de projets collaborative développée pour offrir une expérience panoramique, intuitive et cinématique. Les présentes Conditions Générales d&apos;Utilisation régissent l&apos;accès et l&apos;utilisation de la plateforme KabanEx accessible via le web et tout service associé.
+            KanbanEx est une solution logicielle SaaS de gestion de projets collaborative développée pour offrir une expérience panoramique, intuitive et cinématique. Les présentes Conditions Générales d&apos;Utilisation régissent l&apos;accès et l&apos;utilisation de la plateforme KanbanEx accessible via le web et tout service associé.
           </p>
 
           <h2 className="text-lg font-bold text-white pt-4">2. Création de Compte et Rôles</h2>
@@ -53,22 +53,22 @@ export default function TermsPage() {
 
           <h2 className="text-lg font-bold text-white pt-4">3. Utilisation de la Plateforme</h2>
           <p>
-            L&apos;utilisateur s&apos;engage à utiliser KabanEx conformément aux lois applicables et à ne pas perturber l&apos;intégrité de l&apos;infrastructure, ni diffuser de contenus illicites ou malveillants au sein des tableaux, cartes, commentaires et pièces jointes.
+            L&apos;utilisateur s&apos;engage à utiliser KanbanEx conformément aux lois applicables et à ne pas perturber l&apos;intégrité de l&apos;infrastructure, ni diffuser de contenus illicites ou malveillants au sein des tableaux, cartes, commentaires et pièces jointes.
           </p>
 
           <h2 className="text-lg font-bold text-white pt-4">4. Abonnements et Facturation Sécurisée</h2>
           <p>
-            KabanEx propose différents niveaux d&apos;abonnements (Starter, Pro, Entreprise). Les paiements sont traités via des passerelles bancaires et financières cryptées certifiées garantissant une totale confidentialité et sécurité des transactions.
+            KanbanEx propose différents niveaux d&apos;abonnements (Starter, Pro, Entreprise). Les paiements sont traités via des passerelles bancaires et financières cryptées certifiées garantissant une totale confidentialité et sécurité des transactions.
           </p>
 
           <h2 className="text-lg font-bold text-white pt-4">5. Propriété Intellectuelle</h2>
           <p>
-            Les marques, interfaces, visuels officiels, codes sources et architectures de KabanEx demeurent la propriété exclusive de leurs ayants droit. Les contenus et données de projet créés par les utilisateurs restent leur entière propriété.
+            Les marques, interfaces, visuels officiels, codes sources et architectures de KanbanEx demeurent la propriété exclusive de leurs ayants droit. Les contenus et données de projet créés par les utilisateurs restent leur entière propriété.
           </p>
 
           <h2 className="text-lg font-bold text-white pt-4">6. Modification des Services</h2>
           <p>
-            KabanEx se réserve le droit de faire évoluer, mettre à jour ou optimiser ses fonctionnalités à tout moment pour garantir la meilleure expérience de collaboration et de sécurité.
+            KanbanEx se réserve le droit de faire évoluer, mettre à jour ou optimiser ses fonctionnalités à tout moment pour garantir la meilleure expérience de collaboration et de sécurité.
           </p>
         </section>
       </main>

@@ -109,12 +109,12 @@ export default function OverviewPage() {
           {/* Mobile Wallpaper: 9:16 Portrait */}
           <div
             className="block md:hidden absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url('/images/kabanex-mobile.jpg')` }}
+            style={{ backgroundImage: `url('/images/kanbanex-mobile.jpg')` }}
           />
           {/* Desktop Wallpaper: 16:9 Landscape */}
           <div
             className="hidden md:block absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url('/images/kabanex-desktop.jpg')` }}
+            style={{ backgroundImage: `url('/images/kanbanex-desktop.jpg')` }}
           />
           {/* Atmospheric Contrast Overlay */}
           <div className="absolute inset-0 bg-black/40 backdrop-blur-[0.5px]" />
@@ -123,7 +123,7 @@ export default function OverviewPage() {
 
       {/* 2. Top Header (Minimalist & Clean: Workspace Title on Left, Add Project on Right) */}
       <header className="h-16 px-4 md:px-8 flex items-center justify-between shrink-0 relative z-30">
-        {/* Top-Left: Workspace Title with KabanEx Emblem & Switcher */}
+        {/* Top-Left: Workspace Title with KanbanEx Emblem & Switcher */}
         <div className="flex items-center gap-3">
           <AppLogo size="md" priority />
 

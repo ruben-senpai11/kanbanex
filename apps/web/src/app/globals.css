@@ -138,9 +138,10 @@
   border: 1px solid rgba(51, 65, 85, 0.6);
 }
 
-/* KabanEx Official Responsive Wallpaper */
+/* KanbanEx Official Responsive Wallpaper */
+.bg-kanbanex-wallpaper,
 .bg-kabanex-wallpaper {
-  background-image: url('/images/kabanex-mobile.jpg');
+  background-image: url('/images/kanbanex-mobile.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -148,8 +149,9 @@
 }
 
 @media (min-width: 768px) {
+  .bg-kanbanex-wallpaper,
   .bg-kabanex-wallpaper {
-    background-image: url('/images/kabanex-desktop.jpg');
+    background-image: url('/images/kanbanex-desktop.jpg');
   }
 }
 

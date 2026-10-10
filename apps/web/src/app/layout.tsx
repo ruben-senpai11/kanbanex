@@ -5,14 +5,14 @@ import { PreferencesProvider } from '@/lib/preferences-context';
 import { SplashScreen } from '@/components/ui/SplashScreen';
 
 export const metadata: Metadata = {
-  title: 'KabanEx - Vos projets. Une seule vision.',
+  title: 'KanbanEx - Vos projets. Une seule vision.',
   description:
-    'Plateforme collaborative premium KabanEx. Vue panoramique signature Projects Overview, Kanban agile, Gantt interactif et calendrier unifié.',
+    'Plateforme collaborative premium KanbanEx. Vue panoramique signature Projects Overview, Kanban agile, Gantt interactif et calendrier unifié.',
   icons: {
     icon: [
       { url: '/favicon.ico' },
-      { url: '/images/kabanex-logo-small.png', sizes: '32x32', type: 'image/png' },
-      { url: '/images/kabanex-logo.png', sizes: '256x256', type: 'image/png' },
+      { url: '/images/kanbanex-logo-small.png', sizes: '32x32', type: 'image/png' },
+      { url: '/images/kanbanex-logo.png', sizes: '256x256', type: 'image/png' },
     ],
     apple: [
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },

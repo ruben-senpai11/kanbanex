@@ -107,7 +107,7 @@ function VerifyEmailContent() {
       <div className="flex flex-col items-center text-center space-y-2">
         <AppLogo size="xl" priority className="mb-2" />
         <h1 className="text-2xl font-extrabold text-white tracking-tight drop-shadow-sm">
-          Kaban<span className="text-orange-500">Ex</span>
+          Kanban<span className="text-orange-500">Ex</span>
         </h1>
         <p className="text-xs text-amber-100 font-medium drop-shadow-sm">
           Vos projets. Une seule vision.
@@ -263,7 +263,7 @@ function VerifyEmailContent() {
                 📬 Que devez-vous faire ?
               </p>
               <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-500 dark:text-slate-400">
-                <li>Ouvrez l&apos;email reçu de <strong>KabanEx</strong></li>
+                <li>Ouvrez l&apos;email reçu de <strong>KanbanEx</strong></li>
                 <li>Cliquez sur le bouton <strong>Valider mon adresse email</strong></li>
                 <li>Pensez à vérifier votre dossier <strong>Spams / Courriers indésirables</strong></li>
               </ul>
@@ -336,11 +336,11 @@ export default function VerifyEmailPage() {
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none select-none">
         <div
           className="block md:hidden absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url('/images/kabanex-mobile.jpg')` }}
+          style={{ backgroundImage: `url('/images/kanbanex-mobile.jpg')` }}
         />
         <div
           className="hidden md:block absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url('/images/kabanex-desktop.jpg')` }}
+          style={{ backgroundImage: `url('/images/kanbanex-desktop.jpg')` }}
         />
         <div className="absolute inset-0 bg-slate-900/40 dark:bg-black/75 backdrop-blur-md" />
       </div>
